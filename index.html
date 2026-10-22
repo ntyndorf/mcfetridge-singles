@@ -981,7 +981,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     const left = o ? `<div class="vs"><span class="wn">${esc(pname(o.w))}</span><span class="x">d.</span><span class="ln">${esc(pname(o.l))}</span>${editing === m.id ? '' : noteL}</div>`
                    : `<div class="vs"><span>${A}</span><span class="x">vs</span><span>${B}</span>${noteL}</div>`;
     let right = !o ? `<span class="pill">No result</span>` : o.ff ? `<span class="pill ff">${esc(pname(o.l))} ${o.reason === 'noshow' ? 'no-show' : o.reason === 'late' ? 'late cancel' : 'forfeit'}</span>` : `${setText(o.sets)} ${isMini(m) ? '<span class="pill">Mini</span> ' : ''}${o.close ? '<span class="pill tb">Close</span>' : ''}${playedUp(o) ? ' <span class="pill tb">Upset +1</span>' : ''}${o.ret ? `<span class="pill">${esc(pname(o.l))} retired</span>` : ''}`;
-    right += extra;
+    right += extra + locPill(m);
     const noteHtml = '';
     if (m.rep) return `<div class="match">${left}<div class="result">${right}${art ? `<br><button class="link" data-repx="${m.rep}">Remove</button>` : ''}</div></div>`;
     if (!art) return `<div class="match">${left}<div class="result">${right}${noteHtml}</div></div>`;
@@ -1040,7 +1040,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     const list = mine.map(m => {
       const o = outcome(m), won = o.w === id, opp = won ? o.l : o.w;
       const score = o.ff ? (won ? 'Won by forfeit' : 'Forfeit') : setText(won ? o.sets : o.sets.map(([a,b]) => [b,a]));
-      return `<div class="match"><div class="vs"><span class="wl ${won?'W':'L'}">${won?'W':'L'}</span>vs <button class="plink" data-player="${opp}">${esc(pname(opp))}</button></div><div class="result">${score}${o.close && !won ? ' <span class="pill tb">Close</span>' : ''}${o.ret ? ' <span class="pill">Retired</span>' : ''}${ok.has(m.id) ? '' : ' <span class="pill">Rematch · no pts</span>'}<br><span class="hint">${esc(fmtDate(m.date))}</span>${m.notes ? `<span class="note">“${esc(m.notes)}”</span>` : ''}</div></div>`;
+      return `<div class="match"><div class="vs"><span class="wl ${won?'W':'L'}">${won?'W':'L'}</span>vs <button class="plink" data-player="${opp}">${esc(pname(opp))}</button></div><div class="result">${score}${o.close && !won ? ' <span class="pill tb">Close</span>' : ''}${o.ret ? ' <span class="pill">Retired</span>' : ''}${ok.has(m.id) ? '' : ' <span class="pill">Rematch · no pts</span>'}${locPill(m)}<br><span class="hint">${esc(fmtDate(m.date))}</span>${m.notes ? `<span class="note">“${esc(m.notes)}”</span>` : ''}</div></div>`;
     }).join('');
     return `<button class="back" data-tab="standings">← Standings</button>
       <div><h2>${avatar(id,'lg')}${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}${p.level ? `<span class="lvl">NTRP ${esc(p.level)}</span>` : ''}${streakTag(id)}</h2>
@@ -1079,7 +1079,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     const ok = countedIds();
     return out + `<section class="logday"><header>Matches</header>${ms.map(m => { const o = outcome(m);
       const sc = o.ff ? (o.reason === 'noshow' ? 'No-show' : o.reason === 'late' ? 'Late cancel' : 'Forfeit') : setText(o.sets) + (o.ret ? ' ret.' : '');
-      return `<div class="match"><div class="vs"><span class="w">${esc(pname(o.w))}</span><span class="x">d.</span>${esc(pname(o.l))}</div><div class="result">${esc(sc)}${o.close ? ' <span class="pill tb">Close</span>' : ''}${ok.has(m.id) ? '' : ' <span class="pill">Rematch · no pts</span>'}<br><span class="hint">${esc(fmtDate(m.date))}</span>${m.notes ? `<span class="note">“${esc(m.notes)}”</span>` : ''}</div></div>`; }).join('')}</section>`;
+      return `<div class="match"><div class="vs"><span class="w">${esc(pname(o.w))}</span><span class="x">d.</span>${esc(pname(o.l))}</div><div class="result">${esc(sc)}${o.close ? ' <span class="pill tb">Close</span>' : ''}${ok.has(m.id) ? '' : ' <span class="pill">Rematch · no pts</span>'}${locPill(m)}<br><span class="hint">${esc(fmtDate(m.date))}</span>${m.notes ? `<span class="note">“${esc(m.notes)}”</span>` : ''}</div></div>`; }).join('')}</section>`;
   }
 
   const todayIso = () => today();
@@ -1253,6 +1253,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
             <label><input type="checkbox" id="l-ns"> Opponent did not show</label>
             <label><input type="checkbox" id="l-late"> Opponent cancelled inside 48 hours</label>
           </div>
+          ${courtField('l-loc')}
           <label class="field">Match notes (optional, everyone can see these, so be kind)<textarea id="l-notes" rows="2" maxlength="280" placeholder="Great match, came down to the wire"></textarea></label>
           <div><button class="btn" type="submit">Submit</button></div>
           <p class="hint" id="log-msg">Scores are entered from the winner's side. A no-show or late cancel counts as a forfeit. If the opponent retired, enter the score at the time they stopped.</p>
@@ -1384,12 +1385,16 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   }
   const meId = () => !art && FBL.user && myPid() ? myPid() : '';
   const whoSel = (id, sel, blank, skip) => meId() ? `<select id="${id}" disabled>${playerOpts(meId())}</select>` : `<select id="${id}">${playerOpts(sel || '', blank, skip)}</select>`;
+  const isMcF = l => !l || /^mcfetridge/i.test(String(l).trim());
+  const locPill = m => m && !isMcF(m.loc) ? ` <span class="pill loc">📍 ${esc(m.loc)}</span>` : '';
+  function courtList(){ const S = new Map([['mcfetridge', 'McFetridge']]); [].concat(state.matches || [], state.upcoming || [], LV.reports, LV.courts).forEach(x => { const l = clean(x && x.loc || ''); if (l && !S.has(l.toLowerCase())) S.set(l.toLowerCase(), l); }); return [...S.values()]; }
+  const courtField = id => `<label class="field">Court<input id="${id}" list="${id}-dl" maxlength="40" value="McFetridge" autocomplete="off"><datalist id="${id}-dl">${courtList().map(c => `<option value="${esc(c)}">`).join('')}</datalist></label>`;
   function sheetScore(){
     const me = meId();
     openSheet('Report a score', me ? `<div class="grid2"><label class="field">Result<select id="s-r"><option value="w">I won</option><option value="l">I lost</option></select></label><label class="field">Opponent<select id="s-o">${playerOpts('', 'Who did you play?', me)}</select></label></div>
-      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}" max="${today()}"></label></div>`
+      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}" max="${today()}"></label></div>${courtField('s-loc')}`
       : `<div class="grid2"><label class="field">Winner<select id="s-w">${playerOpts('', 'Who won?')}</select></label><label class="field">Loser<select id="s-l">${playerOpts('', 'Who lost?')}</select></label></div>
-      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}"></label></div>`,
+      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}"></label></div>${courtField('s-loc')}`,
       root => {
         const v = id => (root.querySelector('#' + id) || {value: ''}).value.trim(), sc = v('s-sc'), d = v('s-d') || today();
         let w, l; if (me) { const o = v('s-o'); if (!o) return {err: ''}; [w, l] = v('s-r') === 'l' ? [o, me] : [me, o]; } else { w = v('s-w'); l = v('s-l'); }
@@ -1398,12 +1403,12 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
         if (!sc) return {err: ''};
         const sets = parseSets(sc.replace(/\btb\b/ig, '')); if (!sets) return {err: 'Type the score like 8-5, or 6-1, 3-6, 10-2, or 4-2, 4-3 for mini tennis.'};
         const o = outcome({a: w, b: l, score: {sets}}); if (!o || o.w !== w) return {err: 'Write the score from the winner\'s side (winner\'s games first), like 8-5.'};
-        const msg = `${pname(w)} over ${pname(l)}\n${sets.map(([a, b]) => a + '-' + b).join(', ')}\n${mdy(d)}`;
+        const loc = clean(v('s-loc')) || 'McFetridge', base = `${pname(w)} over ${pname(l)}\n${sets.map(([a, b]) => a + '-' + b).join(', ')}\n${mdy(d)}`, msg = base + (isMcF(loc) ? '' : '\nat ' + loc);
         const dup = LV.reports.some(r => r.status !== 'removed' && r.d === d && [r.w, r.l].sort().join() === [w, l].sort().join());
         if (dup && !art) return {err: 'That match is already reported for ' + mdy(d) + '.'};
         const other = w === me ? l : w;
         return {msg, data: {t: 'score', w, l, d}, goL: 'Post score', goNote: pname(other) + ' gets a Confirm button on their Me page. It counts once they confirm, or after 48 hours.', done: 'Posted! Waiting for ' + first(state.players.find(x => x.id === other) || {name: ''}) + ' to confirm.',
-          go: () => liveAdd('reports', {by: me, uid: FBL.user.uid, w, l, sc: sets.map(([a, b]) => a + '-' + b).join(', '), d, status: 'pending', at: Date.now()}), note: 'Sign in to send it to ' + (state.league.commissioner || 'the commissioner') + '. Once it\'s approved, standings update for everyone.', apply: () => { const r = applyPaste(msg); return r.added ? '' : (r.skipped[0] || 'Could not log that score.'); }};
+          go: () => liveAdd('reports', {by: me, uid: FBL.user.uid, w, l, sc: sets.map(([a, b]) => a + '-' + b).join(', '), d, loc, status: 'pending', at: Date.now()}), note: 'Sign in to send it to ' + (state.league.commissioner || 'the commissioner') + '. Once it\'s approved, standings update for everyone.', apply: () => { const n0 = state.matches.length, r = applyPaste(base); if (!r.added) return r.skipped[0] || 'Could not log that score.'; if (!isMcF(loc)) state.matches.slice(n0).forEach(m => m.loc = loc); return ''; }};
       }, 'score');
   }
   function sheetBook(preB){
@@ -1721,6 +1726,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       const notes = g('l-notes').trim().slice(0, 280);
       const match = {id: uid(), date: g('l-date') || today(), a, b, score};
       if (notes) match.notes = notes;
+      { const lc = clean(g('l-loc')); if (!isMcF(lc)) match.loc = lc; }
       state.matches.push(match);
       markDirty();
       const m2 = document.getElementById('log-msg'); if (m2) m2.textContent = `Logged: ${pname(a)} over ${pname(b)}. Log another or hit Save and publish.`;
@@ -1788,7 +1794,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       else { const n = PRIV && PRIV[p.id]; if (n) { p.phone = n; p.ph = 1; } else delete p.phone; }
     });
     const ids = new Set(state.players.map(p => p.id));
-    state.matches = (state.matches || []).filter(m => !m.rep).concat(LV.reports.filter(r => counts(r) && ids.has(r.w) && ids.has(r.l)).map(r => { const sets = parseSets(r.sc || ''); return sets ? {id: 'r-' + r.id, a: r.w, b: r.l, date: r.d, score: {sets}, rep: r.id} : null; }).filter(Boolean));
+    state.matches = (state.matches || []).filter(m => !m.rep).concat(LV.reports.filter(r => counts(r) && ids.has(r.w) && ids.has(r.l)).map(r => { const sets = parseSets(r.sc || ''); return sets ? Object.assign({id: 'r-' + r.id, a: r.w, b: r.l, date: r.d, score: {sets}, rep: r.id}, isMcF(r.loc) ? {} : {loc: r.loc}) : null; }).filter(Boolean));
     state.upcoming = (state.upcoming || []).filter(u => !u.live).concat(LV.courts.filter(c => c.status === 'on' && ids.has(c.a)).map(c => { const u = {id: 'c-' + c.id, live: c.id, date: c.date, time: c.time, dur: c.dur || 1, a: c.a, loc: c.loc || 'McFetridge'}; if (c.b) u.b = c.b; if (c.note) u.note = c.note; return u; }));
   }
   function splitState(){ const pub = JSON.parse(JSON.stringify(state)), ph = {};
@@ -1852,7 +1858,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   const todoCount = () => { const t = todos(); return t.conf.length + t.chIn.length; };
   const meTabLabel = () => { const n = todoCount(); return n ? `Me <b class="tabn">${n}</b>` : 'Me'; };
   function goMe(jump){ moreOpen = false; tab = 'me'; editing = null; closeSheet(); try { history.replaceState(null, '', '#me'); } catch(_) {} render(); const el = jump && document.getElementById(jump); if (el) el.scrollIntoView({block: 'start'}); else window.scrollTo(0, 0); }
-  const repLine = r => `<b>${esc(pname(r.w))}</b> d. ${esc(pname(r.l))} · ${esc(setText(parseSets(r.sc || '') || []))} · ${esc(whenTxt(r))}`;
+  const repLine = r => `<b>${esc(pname(r.w))}</b> d. ${esc(pname(r.l))} · ${esc(setText(parseSets(r.sc || '') || []))} · ${esc(whenTxt(r))}${isMcF(r.loc) ? '' : ' · ' + esc(r.loc)}`;
   function repWaiting(){ const L = LV.reports.filter(r => r.status === 'pending' && !counts(r)), D = LV.reports.filter(r => r.status === 'disputed');
     if (!L.length && !D.length) return ''; const me = myPid();
     return `<section class="logday waitc"><header>Waiting for confirmation</header>${L.map(r => `<div class="wrow"><span>${repLine(r)}</span><span class="hint">${me && otherOf(r) === me ? `<button class="btn sm" data-rconf="${r.id}">Confirm</button> <button class="link" data-rdisp="${r.id}">Dispute</button>` : me && r.by === me ? `Waiting on ${esc(first(state.players.find(x => x.id === otherOf(r)) || {name: ''}))} · <button class="link" data-rwd="${r.id}">Withdraw</button>` : 'Counts once ' + esc(first(state.players.find(x => x.id === otherOf(r)) || {name: 'the opponent'})) + ' confirms'}</span></div>`).join('')}
