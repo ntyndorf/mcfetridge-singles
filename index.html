@@ -788,10 +788,22 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
 .inbox .req{border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:8px;display:grid;gap:6px}.req-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.req-h span{font-size:12px;color:var(--muted)}
 .inbox pre{margin:0;white-space:pre-wrap;font:13px/1.45 var(--mono);background:var(--bg);padding:8px;border-radius:6px}
 .lgtoast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;max-width:calc(100vw - 32px);padding:10px 16px;border-radius:99px;background:#0b1f24;color:#fff;font:600 14px var(--body);box-shadow:0 6px 18px rgba(0,0,0,.3);text-align:center}
+.mebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:12px 0 0;padding:12px 14px;border-radius:10px;background:var(--surface);border:1px solid var(--line)}
+.mebar p{margin:0;flex:1 1 220px;font-size:14px;color:var(--ink)}
+.mebar select{font:15px var(--body);padding:7px 9px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);flex:1 1 200px}
+.mb-go{font:700 14px var(--body);padding:9px 18px;border-radius:8px;border:0;background:var(--court);color:#fff;cursor:pointer}
+.mb-acts{display:flex;flex-wrap:wrap;gap:6px;flex:1 1 100%}
+.mb-acts button{font:600 13px var(--body);padding:7px 11px;border-radius:99px;border:1px solid var(--court);background:transparent;color:var(--accent);cursor:pointer}
+.mb-acts button:first-child{background:var(--court);color:#fff}
+.pend{display:grid;gap:4px;margin:0 0 12px;padding:10px 12px;border-radius:8px;background:var(--surface);border:1px dashed var(--ball);font-size:13px}.pend b{font-size:13px}.pend span{color:var(--muted)}
+.mems{display:grid;gap:4px;margin-top:8px}.mems div{display:flex;justify-content:space-between;gap:10px;padding:6px 9px;border-radius:6px;background:var(--bg);font-size:13px}.mems span{color:var(--muted);overflow:hidden;text-overflow:ellipsis}
+.inbox > .btn{margin:6px 0 2px}
+.sheet select[disabled]{opacity:1;color:var(--ink);background:var(--bg)}
 </style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=IBM+Plex+Sans:wght@400;600;700&amp;family=Saira+Condensed:wght@600;700&amp;family=Playfair+Display:wght@700;900&amp;family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&amp;family=UnifrakturMaguntia&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","phone":"8473705661","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"}},{"id":"p5onhu0","name":"Spencer C","level":"3.25","phone":"8592216232"},{"id":"wd1jmau","name":"Brendan O","level":"3.0","phone":"7732204199"},{"id":"ata2iuw","name":"Tim S","level":"3.0","phone":"3308358969"},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","phone":"6307883151"},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","phone":"3134455771"},{"id":"67cu010","name":"Vitaliy B","level":"3.25","phone":"3122858599"},{"id":"vswai94","name":"Luke H","level":"3.25","phone":"8155931653"},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","phone":"8029893524"},{"id":"cuwu10i","name":"Juan G","level":"3.0","phone":"5617587298"},{"id":"mfuf932","name":"Zach K","level":"3.0","phone":"4404524279"},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","phone":"7736812050"},{"id":"wg8fb4m","name":"John W","level":"3.25","phone":"7082145282"},{"id":"iev0edc","name":"Nathan H","level":"3.0","phone":"3129250266"},{"id":"tm2km4c","name":"Brian K","phone":"6168560533","level":"3.0"},{"id":"uu82eoc","name":"Aidan V","level":"3.0","phone":"8479098210"},{"id":"w5zwbyo","name":"Salem H","level":"3.25","phone":"2709930457"},{"id":"m620f34","name":"Bill J","level":"3.25","phone":"3125433273"}],"matches":[],"updated":"2026-10-16T16:25:46.833Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = document.getElementById('league-data').textContent;
   let state = JSON.parse(SRC);
+  const PH0 = {}; state.players.forEach(p => { if (p.phone) { PH0[p.id] = p.phone; p.ph = 1; } });
   let art = null, dirty = false, tab = 'standings', editing = null, saving = '', viewPlayer = null, moreOpen = false;
   let newsHidden = (() => { try { return localStorage.getItem('mws-news-hidden') || ''; } catch(_) { return ''; } })();
   const PRIMARY = ['standings', 'upcoming', 'results'];
@@ -970,8 +982,8 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   }
 
   function renderResults(){
-    const rep = `<button class="btn" data-sheet="score" style="margin:0 0 14px">Report a score</button>`;
-    if (!state.matches.length) return `<div><h2>Results</h2><p class="sub">Every match logged this season, newest first.</p></div>${rep}<div class="empty">No matches logged yet. Book a court, post it to the group, and get the first one on the board.</div>`;
+    const rep = `<button class="btn" data-sheet="score" style="margin:0 0 14px">Report a score</button>` + pendHtml('score');
+    if (!state.matches.length) return `<div><h2>Results</h2><p class="sub">Every match logged this season, newest first.</p></div>${rep}<div class="empty">No matches logged yet. Book a court, play, and report the first score.</div>`;
     const days = {}; OK = countedIds();
     state.matches.slice().sort((x,y) => (y.date||'').localeCompare(x.date||'')).forEach(m => (days[m.date || 'Undated'] = days[m.date || 'Undated'] || []).push(m));
     return `<div><h2>Results</h2><p class="sub">Every match logged this season, newest first.</p></div>${rep}
@@ -1018,7 +1030,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
         ${(() => { const pr = p.prof || {}; const chips = [pr.plays, pr.bh ? pr.bh + ' backhand' : '', pr.shot ? 'Favorite shot: ' + pr.shot : '', pr.pro ? 'Favorite pro: ' + pr.pro : ''].filter(Boolean);
           return (chips.length ? `<div class="about">${chips.map(c => `<span>${esc(c)}</span>`).join('')}</div>` : '') + (pr.bio ? `<p class="bio">“${esc(pr.bio)}”</p>` : ''); })()}
         ${(p.free || []).length ? `<p class="avail"><span>Usually free:</span> ${esc(freeText(p.free))}</p>` : ''}${p.avail ? `<p class="avail"><span>${(p.free || []).length ? 'Note:' : 'Usually available:'}</span> ${esc(p.avail)}</p>` : ''}<p class="sub">${r.mp ? `Ranked #${rank} of ${rows.length}` : 'No counted matches yet'}</p>
-        ${(() => { const h = smsHref(p, `Hey ${first(p)}! Want to get a match in this week? (McFetridge league)`); return h ? `<a class="textbtn" href="${esc(h)}" target="_top" data-sms="${esc(first(p))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg>Text ${esc(first(p))}</a>` : ''; })()}<div class="pactions"><button class="link" data-profile="${p.id}">Update profile</button><button class="link" data-sheet="free" data-pid="${p.id}">Update free times</button></div></div>
+        ${(() => { const h = smsHref(p, `Hey ${first(p)}! Want to get a match in this week? (McFetridge league)`); return h ? `<a class="textbtn" href="${esc(h)}" target="_top" data-sms="${esc(first(p))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg>Text ${esc(first(p))}</a>` : ''; })()}${!FBL.user && p.ph ? `<button type="button" class="link" data-acct="1">Sign in to text ${esc(first(p))}</button>` : ''}${art || !FBL.user || FBL.me === p.id ? `<div class="pactions"><button class="link" data-profile="${p.id}">Update profile</button><button class="link" data-sheet="free" data-pid="${p.id}">Update free times</button></div>` : ''}</div>
       <div class="statrow">
         <div class="stat"><b>${r.pts}</b><span>Points</span></div>
         <div class="stat"><b>${r.w}–${r.l}</b><span>Record</span></div>
@@ -1102,8 +1114,8 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   }
   function renderUpcoming(){
     const list = upcomingList();
-    return `<div><h2>Upcoming matches</h2><p class="sub">Courts that are booked. Open courts still need an opponent: tap Claim it, or jump in the group chat.</p></div>
-      ${list.length ? `<section class="logday">${list.map(upRow).join('')}</section>` : `<div class="empty">Nothing booked yet. Grab a court and post it in the group chat.</div>`}
+    return `<div><h2>Upcoming matches</h2><p class="sub">Courts that are booked. Open courts still need an opponent: tap Claim it.</p></div><button class="btn" data-sheet="book" style="margin:0 0 12px">Post a court</button>${pendHtml('book')}${pendHtml('claim')}
+      ${list.length ? `<section class="logday">${list.map(upRow).join('')}</section>` : `<div class="empty">Nothing booked yet. Book a court on the McFetridge site, then tap Post a court.</div>`}
       ${freeBoard()}`;
   }
 
@@ -1115,15 +1127,15 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       ['The idea', `${window_}Set up your own matches with anyone in the league, as often as you want. There's no schedule: you find an opponent, book a court, play, and report the score. Every reported match counts toward the standings.`],
       ['Find a match', `<ul>
         <li>Check <b>Who's free</b> on the Upcoming tab, or <b>Play next</b> on your player page for good matchups you haven't played yet.</li>
-        <li>Text someone directly (player pages have a Text button), or post in the group chat.</li>
+        <li>Sign in and text someone from their player page, or post in the group chat.</li>
         <li>If someone asks you to play, reply within a day, even if it's a no.</li></ul>`],
       ['Book a court', `<ul>
         <li>Book on the ${book}. Courts open 6 days ahead at 7am and are paid in full when you book. You need a Chicago Park District account.</li>
         <li><b>Courts at peak times go fast!</b> Weeknight evenings and weekends fill up quickly, so book as soon as they open at 7am.</li>
-        <li>Post it in the group chat right away with the day, time and place. ${cm} adds it to the Upcoming tab as an open court.</li>
+        <li>Tap <b>Post a court</b> on the Upcoming tab right away with the day, time and place. Once ${cm} approves it, it shows as an open court.</li>
         <li>Other indoor courts are fine if you both agree. Split the cost 50/50.</li></ul>`],
       ['Claim a court', `<ul>
-        <li>First to claim it gets it. Reply in the group chat, or tap <b>Claim it</b> on the Upcoming tab and send the booker the message it makes.</li>
+        <li>First to claim it gets it. Tap <b>Claim it</b> on the Upcoming tab and send it in.</li>
         <li>Confirm with the booker, then pay them $16 the same day.</li></ul>`],
       ['Cost', `No league fee. The only cost is the court: $31.37 an hour at McFetridge, or $15.69 each. Round up: the player who didn't book pays the booker $16, a small thank-you for grabbing the court.`],
       ['Match day', `<ul>
@@ -1137,11 +1149,8 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
         <li>Wins count the same in every format.</li></ul>`],
       ['Out of time', `The first bell rings 5 minutes before your time is up, and you need to be off the court at the second bell. If you run out of time, whoever is ahead in games wins. If it's tied, play one deciding point and record the winner one game ahead. In mini tennis, whoever has won more sets wins; if sets are level, it's whoever is ahead in the set being played.`],
       ['Report a score', `<ul>
-        <li>The winner posts the score in the group chat or texts it directly to ${cm}. Tap <b>Report a score</b> on the Results tab and it writes the message for you, or type it like this:
-          <pre class="fmt">Nick T over Spencer C
-6-1, 3-6, 10-2
-11/2/26</pre>A mini tennis score looks like <b>4-2, 3-4, 4-1</b>.</li>
-        <li>Winner's name first, the score from the winner's side, then the date. Use names exactly as they appear in the standings.</li></ul>`],
+        <li>The winner taps <b>Report a score</b> on the Results tab and sends it in. ${cm} approves it and the standings update for everyone. Not signed in? Copy the message it makes and text it to ${cm}.</li>
+        <li>The score is always from the winner's side, like <b>8-5</b> or <b>6-1, 3-6, 10-2</b>. A mini tennis score looks like <b>4-2, 3-4, 4-1</b>.</li></ul>`],
       ['Points', `<ul>
         <li><b>Win:</b> 3 points</li>
         <li><b>Close loss:</b> 2 points. You lost a tiebreak (like 9–8) or a deciding 3rd set.</li>
@@ -1154,8 +1163,9 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
         <li><b>48+ hours ahead:</b> the booker emails the permit number to tenniscourtrefunds@mcfetridgesportscenter.net. McFetridge refunds it minus a 15% fee (about $4.70 an hour) within 5 business days. Do this too if nobody claims your court.</li>
         <li><b>Less than 48 hours, or a no-show:</b> it's a forfeit, and you still owe the booker your $16.</li></ul>`],
       ['How the site updates', `<ul>
-        <li>Only ${cm} can save changes to the site. Buttons like <b>Report a score</b>, <b>Claim it</b>, <b>Update free times</b> and <b>Update profile</b> write a message for you. Post it in the group chat or text it to ${cm}.</li>
-        <li>It shows up on the site once ${cm} adds it, usually the same day.</li></ul>`],
+        <li>Sign in with Google or an email link, then pick which player you are.</li>
+        <li>Report scores, post and claim courts, and update your free times and profile right on the site. ${cm} approves each one and it shows up for everyone.</li>
+        <li>Phone numbers and Text buttons only show to players who are signed in.</li></ul>`],
       ['Using the site', `<ul>
         <li><b>Your player page:</b> tap your name anywhere. It shows your record, head-to-heads, awards and who to play next.</li>
         <li><b>Who's free</b> (Upcoming tab) shows when people usually play. Keep your times current.</li>
@@ -1203,7 +1213,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   function renderAdmin(){
     const L = state.league, P = state.players;
     const opts = sel => `<option value="">Choose…</option>` + P.map(p => `<option value="${p.id}" ${sel===p.id?'selected':''}>${esc(p.name)}</option>`).join('');
-    return `<div><h2>Commissioner</h2><p class="sub">Only you see this tab. Changes stay local until you save.</p></div>${inboxHtml()}
+    return `<div><h2>Commissioner</h2><p class="sub">Only you see this tab. Changes stay local until you save.</p></div>${inboxHtml()}${membersHtml()}
       <div class="card logcard"><h3>Log a match</h3>
         ${P.length < 2 ? `<p class="hint">Add at least 2 players to the roster first.</p>` : `
         <form id="log-form" style="display:grid;gap:16px">
@@ -1315,7 +1325,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   const clean = v => String(v || '').replace(/[·\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
   function toastLg(t){ const d = document.createElement('div'); d.className = 'lgtoast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 4200); }
   function closeSheet(){ if (sheetEl) { sheetEl.remove(); sheetEl = null; } }
-  function openSheet(title, body, build){
+  function openSheet(title, body, build, kind){
     closeSheet();
     sheetEl = document.createElement('div'); sheetEl.className = 'sheetwrap';
     sheetEl.innerHTML = `<div class="sheet-bg" data-close></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(title)}">
@@ -1329,56 +1339,76 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       errEl.textContent = cur.err || '';
       pre.hidden = !cur.msg || !!cur.err; pre.textContent = cur.msg || '';
       if (!cur.msg || cur.err) { acts.innerHTML = ''; acts.dataset.h = ''; note.textContent = ''; return; }
-      const to = cur.to, h = to ? smsHref(to, cur.msg) : '';
-      const signed = FBL.user && !art, cn = state.league.commissioner || 'the commissioner';
-      const ah = (signed ? `<button type="button" class="btn" data-act="send">Send to ${esc(cn)}</button><button type="button" class="btn ghost" data-act="copy">Copy message</button>` : `<button type="button" class="btn" data-act="copy">Copy message</button>`)
-        + (h && !signed ? `<a class="btnl ghost" href="${esc(h)}" target="_top" data-sms="${esc(first(to))}">Text ${esc(first(to))}</a>` : '')
-        + (!FBL.user && FBL.ready ? `<button type="button" class="btn ghost" data-acct="1">Sign in to send it to ${esc(cn)}</button>` : '');
-      const ah2 = ah + (art && cur.apply ? `<button type="button" class="btn ghost" data-act="apply">Add to site now</button>` : ''); if (acts.dataset.h !== ah2) { acts.dataset.h = ah2; acts.innerHTML = ah2; }
-      note.textContent = cur.note || '';
+      const cn = state.league.commissioner || 'the commissioner';
+      const ah = art ? (cur.apply ? `<button type="button" class="btn" data-act="apply">Add to the site</button>` : '')
+        : FBL.user && FBL.me ? `<button type="button" class="btn" data-act="send">Send to ${esc(cn)}</button>`
+        : FBL.user ? `<p class="hint" style="margin:0">Pick which player you are at the top of the page, then send it.</p>`
+        : `<button type="button" class="btn" data-acct="1">Sign in to send it</button><button type="button" class="btn ghost" data-act="copy">Copy message</button>`;
+      if (acts.dataset.h !== ah) { acts.dataset.h = ah; acts.innerHTML = ah; }
+      note.textContent = art ? 'Adds it straight to the site for everyone.' : FBL.user ? `${cn} gets it right away and approves it, then it shows up for everyone.` : (cur.note || '');
     };
     root.addEventListener('input', refresh); root.addEventListener('change', refresh);
     sheetEl.addEventListener('click', e => {
       if (e.target.closest('[data-close]')) { closeSheet(); return; }
-      const a = e.target.closest('a[data-sms]'); if (a) { const href = a.getAttribute('href'), nm = a.dataset.sms; setTimeout(() => { if (document.visibilityState !== 'hidden') smsSheet(href, nm); }, 1200); return; }
       const b = e.target.closest('button[data-act]'); if (!b) return;
       if (b.dataset.act === 'copy') copyText(cur.msg, b);
-      if (b.dataset.act === 'send') { b.disabled = true; fbSend(title, cur.msg).then(r => { b.disabled = false; if (r) { errEl.textContent = r; return; } closeSheet(); toastLg('Sent! ' + (state.league.commissioner || 'The commissioner') + ' will approve it, then it shows up for everyone.'); }); return; }
+      if (b.dataset.act === 'send') { b.disabled = true; fbSend(kind || 'other', cur.msg, cur.data).then(r => { b.disabled = false; if (r) { errEl.textContent = r; return; } closeSheet(); toastLg('Sent! ' + (state.league.commissioner || 'The commissioner') + ' approves it, then it shows up for everyone.'); }); return; }
       if (b.dataset.act === 'apply' && cur.apply) { const r = cur.apply(); if (r) { errEl.textContent = r; return; } closeSheet(); markDirty(); }
     });
     refresh();
-    const f = root.querySelector('select, input'); if (f && matchMedia('(pointer:fine)').matches) f.focus();
+    const f = root.querySelector('select:not([disabled]), input'); if (f && matchMedia('(pointer:fine)').matches) f.focus();
   }
+  const meId = () => !art && FBL.user && FBL.me ? FBL.me : '';
+  const whoSel = (id, sel, blank, skip) => meId() ? `<select id="${id}" disabled>${playerOpts(meId())}</select>` : `<select id="${id}">${playerOpts(sel || '', blank, skip)}</select>`;
   function sheetScore(){
-    const P = state.players;
-    openSheet('Report a score', `<p class="hint" style="margin:0">Fill this in, then post the message in the group chat or text it to ${esc(state.league.commissioner || 'the commissioner')}.</p>
-      <div class="grid2"><label class="field">Winner<select id="s-w">${playerOpts('', 'Who won?')}</select></label><label class="field">Loser<select id="s-l">${playerOpts('', 'Who lost?')}</select></label></div>
-      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date<input id="s-d" type="date" value="${today()}"></label></div>`,
+    const me = meId();
+    openSheet('Report a score', me ? `<div class="grid2"><label class="field">Result<select id="s-r"><option value="w">I won</option><option value="l">I lost</option></select></label><label class="field">Opponent<select id="s-o">${playerOpts('', 'Who did you play?', me)}</select></label></div>
+      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}" max="${today()}"></label></div>`
+      : `<div class="grid2"><label class="field">Winner<select id="s-w">${playerOpts('', 'Who won?')}</select></label><label class="field">Loser<select id="s-l">${playerOpts('', 'Who lost?')}</select></label></div>
+      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}"></label></div>`,
       root => {
-        const v = id => root.querySelector('#' + id).value.trim(), w = v('s-w'), l = v('s-l'), sc = v('s-sc'), d = v('s-d') || today();
+        const v = id => (root.querySelector('#' + id) || {value: ''}).value.trim(), sc = v('s-sc'), d = v('s-d') || today();
+        let w, l; if (me) { const o = v('s-o'); if (!o) return {err: ''}; [w, l] = v('s-r') === 'l' ? [o, me] : [me, o]; } else { w = v('s-w'); l = v('s-l'); }
         if (!w || !l) return {err: ''};
         if (w === l) return {err: 'Pick two different players.'};
         if (!sc) return {err: ''};
         const sets = parseSets(sc.replace(/\btb\b/ig, '')); if (!sets) return {err: 'Type the score like 8-5, or 6-1, 3-6, 10-2, or 4-2, 4-3 for mini tennis.'};
-        const o = outcome({a: w, b: l, score: {sets}}); if (!o || o.w !== w) return {err: 'Write the score from the winner\'s side (winner\'s games first).'};
+        const o = outcome({a: w, b: l, score: {sets}}); if (!o || o.w !== w) return {err: 'Write the score from the winner\'s side (winner\'s games first), like 8-5.'};
         const msg = `${pname(w)} over ${pname(l)}\n${sets.map(([a, b]) => a + '-' + b).join(', ')}\n${mdy(d)}`;
-        return {msg, to: commish(), note: 'Winners post the score in the group chat. Once it\'s logged, standings update for everyone.', apply: () => { const r = applyPaste(msg); return r.added ? '' : (r.skipped[0] || 'Could not log that score.'); }};
-      });
+        return {msg, data: {t: 'score', w, l, d}, note: 'Sign in to send it to ' + (state.league.commissioner || 'the commissioner') + '. Once it\'s approved, standings update for everyone.', apply: () => { const r = applyPaste(msg); return r.added ? '' : (r.skipped[0] || 'Could not log that score.'); }};
+      }, 'score');
   }
+  function sheetBook(){
+    const me = meId();
+    openSheet('Post a court', `<p class="hint" style="margin:0">Booked a court on the McFetridge site? Post it here so it shows on the Upcoming tab. Leave the opponent empty and anyone can claim it.</p>
+      <div class="grid2"><label class="field">Booked by${whoSel('b-a', '', 'Who booked it?')}</label><label class="field">Opponent<select id="b-b"><option value="">Open court (needs an opponent)</option>${state.players.map(p => `<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select></label></div>
+      <div class="grid2"><label class="field">Date<input id="b-d" type="date" value="${today()}" min="${today()}"></label><label class="field">Start time<input id="b-t" type="time" step="900"></label></div>
+      <div class="grid2"><label class="field">Length<select id="b-l"><option value="1">1 hour</option><option value="2">2 hours</option></select></label><label class="field">Location<input id="b-loc" value="McFetridge" maxlength="40"></label></div>
+      <label class="field">Note (optional)<input id="b-n" maxlength="80" placeholder="Court 3"></label>`,
+      root => {
+        const v = id => (root.querySelector('#' + id) || {value: ''}).value.trim(), a = v('b-a'), b = v('b-b'), d = v('b-d'), t = v('b-t'), dur = +v('b-l') || 1, loc = clean(v('b-loc')) || 'McFetridge', nt = clean(v('b-n'));
+        if (!a) return {}; if (a === b) return {err: 'Pick a different opponent, or leave it as an open court.'}; if (!d || !t) return {err: ''};
+        if (d < today()) return {err: 'That date has already passed.'};
+        const msg = `🎾 Court booked: ${pname(a)} · ${mdy(d)} ${fmtTime(t)} · ${dur} hr · ${loc} · ${b ? 'vs ' + pname(b) : 'open court'}${nt ? ' · ' + nt : ''}`;
+        const u = {date: d, time: t, dur, a, loc}; if (b) u.b = b; if (nt) u.note = nt;
+        return {msg, data: Object.assign({t: 'book'}, u), apply: () => { addUpcoming(u); return ''; }};
+      }, 'book');
+  }
+  function addUpcoming(u){ const x = Object.assign({id: uid()}, u); delete x.t; if (x.b == null || x.b === '') delete x.b; state.upcoming = (state.upcoming || []).concat(x); }
   function sheetClaim(id){
     const u = (state.upcoming || []).find(x => x.id === id); if (!u) return;
-    const when = fmtDate(u.date, {weekday: 'short', month: 'numeric', day: 'numeric'}) + (u.time ? ' ' + fmtSlot(u) : ''), bk = state.players.find(x => x.id === u.a);
+    const when = fmtDate(u.date, {weekday: 'short', month: 'numeric', day: 'numeric'}) + (u.time ? ' ' + fmtSlot(u) : '');
     openSheet('Claim this court', `<p style="margin:0"><b>${esc(pname(u.a))}'s court</b> · ${esc(when)} · ${esc(u.loc || 'McFetridge')}</p>
-      <label class="field">Your name<select id="c-n">${playerOpts('', '', u.a)}</select></label>`,
+      <label class="field">Your name${whoSel('c-n', '', '', u.a)}</label>`,
       root => {
-        const n = root.querySelector('#c-n').value; if (!n) return {};
+        const n = root.querySelector('#c-n').value; if (!n) return {}; if (n === u.a) return {err: 'That\'s your own court.'};
         const msg = `🎾 Court claim: ${pname(n)} takes ${pname(u.a)}'s ${when} court (ref ${u.id})`;
-        return {msg, to: bk, note: `First to claim gets it. Text ${bk ? first(bk) : 'the booker'} and post it in the group chat, then pay your $16 the same day.`, apply: () => { if (u.b) return 'That court is already claimed.'; u.b = n; return ''; }};
-      });
+        return {msg, data: {t: 'claim', ref: u.id, n}, note: 'First to claim it gets it. Pay the booker $16 the same day.', apply: () => { if (u.b) return 'That court is already claimed.'; u.b = n; return ''; }};
+      }, 'claim');
   }
   function sheetFree(pid){
-    let last = null;
-    openSheet('Update my free times', `<label class="field">Your name<select id="f-n">${playerOpts(pid || '')}</select></label>
+    let last = null; const me = meId();
+    openSheet('Update my free times', `<label class="field">Your name${me ? whoSel('f-n') : `<select id="f-n">${playerOpts(pid || '')}</select>`}</label>
       <div class="fpick sheetgrid"><span></span>${FSLOTS.map(([, L]) => `<span class="h">${L.slice(0, 3)}</span>`).join('')}${FDAYS.map(([d, D]) => `<span class="d">${D}</span>${FSLOTS.map(([k, L]) => `<label><input type="checkbox" data-fk="${d}-${k}" aria-label="${D} ${L}"></label>`).join('')}`).join('')}</div>`,
       root => {
         const n = root.querySelector('#f-n').value, boxes = [...root.querySelectorAll('input[data-fk]')];
@@ -1386,12 +1416,13 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
         if (!n) return {};
         const keys = boxes.filter(b => b.checked).map(b => b.dataset.fk);
         const msg = `🎾 Free times: ${pname(n)} — ${freeText(keys) || 'none'}`;
-        return {msg, to: commish(), note: 'Shows up in the Who\'s free grid once it\'s added.', apply: () => { const p = state.players.find(x => x.id === n); if (!p) return 'Player not found.'; if (keys.length) p.free = keys; else delete p.free; return ''; }};
-      });
+        return {msg, data: {t: 'free', n, keys}, note: 'Shows up in the Who\'s free grid once it\'s added.', apply: () => { const p = state.players.find(x => x.id === n); if (!p) return 'Player not found.'; if (keys.length) p.free = keys; else delete p.free; return ''; }};
+      }, 'free');
   }
   const PROF = [['plays', 'Plays'], ['bh', 'Backhand'], ['shot', 'Shot'], ['pro', 'Pro'], ['bio', 'Bio']];
   function sheetProfile(pid){
     const p = state.players.find(x => x.id === pid); if (!p) return; const pr = p.prof || {};
+    if (!art && FBL.user && FBL.me && FBL.me !== pid) { toastLg('You can only update your own profile.'); return; }
     const opt = (v, list) => list.map(x => `<option ${v === x ? 'selected' : ''}>${x}</option>`).join('');
     openSheet('Update profile · ' + p.name, `<div class="grid2"><label class="field">Plays<select id="p-plays"><option value=""></option>${opt(pr.plays, ['Righty', 'Lefty'])}</select></label>
       <label class="field">Backhand<select id="p-bh"><option value=""></option>${opt(pr.bh, ['One-handed', 'Two-handed'])}</select></label></div>
@@ -1401,8 +1432,8 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       root => {
         const vals = {}; PROF.forEach(([k]) => vals[k] = clean(root.querySelector('#p-' + k).value));
         const msg = `🎾 Profile: ${p.name} — ` + PROF.map(([k, L]) => L + ': ' + (vals[k] || '-')).join(' · ');
-        return {msg, to: commish(), note: 'Shows on your player page once it\'s added.', apply: () => { setProf(p, vals); return ''; }};
-      });
+        return {msg, data: {t: 'profile', n: p.id, vals}, note: 'Shows on your player page once it\'s added.', apply: () => { setProf(p, vals); return ''; }};
+      }, 'profile');
   }
   function setProf(p, vals){ const o = {}; PROF.forEach(([k]) => { const v = clean(vals[k]); if (v && v !== '-') o[k] = v; }); if (Object.keys(o).length) p.prof = o; else delete p.prof; }
 
@@ -1467,11 +1498,12 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
         <div class="board-top">
           ${L.draft ? '<div class="toprow"><span class="draft">Draft · feedback welcome</span></div>' : ''}
           <h1>${esc(L.name)}</h1>
-          <div class="chips">${dates ? `<span>${esc(dates)}</span>` : ''}<span>${state.players.length} players</span>${acctChip()}</div>
+          <div class="chips">${dates ? `<span>${esc(dates)}</span>` : ''}<span>${state.players.length} players</span></div>
         </div>
         <a class="gamelink" href="${gameHref()}" target="_blank" rel="noopener"><span aria-hidden="true">🎾</span><b>Play McFetridge Tour 2k26</b><i>${gameHref().includes('#carry') ? 'Opens in a new tab and brings your progress' : 'Opens in a new tab'}</i><em aria-hidden="true">›</em></a>
         <div class="ticker" aria-label="Latest results"><span class="tk-label">Latest</span>${ticker()}</div>
       </header>
+      ${meBar()}
       ${L.news && newsHidden !== L.news ? `<p class="news"><button type="button" class="newsx" data-newsx="1" aria-label="Hide this note">×</button><b>What's new${L.newsDate ? ' · ' + esc(fmtDate(L.newsDate,{month:'short',day:'numeric'})) : ''}:</b> ${esc(L.news)}</p>` : ''}
       <nav class="tabs" role="tablist">${tabs.map(([k,v]) => `<button class="tab${PRIMARY.includes(k) ? '' : ' xtra'}" role="tab" aria-selected="${tab===k || (tab==='player' && k==='standings')}" data-tab="${k}">${v}</button>`).join('')}${(() => {
         const sec = tabs.filter(t => !PRIMARY.includes(t[0])), cur = sec.find(t => t[0] === tab);
@@ -1545,6 +1577,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     if (t.dataset.newsx){ newsHidden = state.league.news || ''; try { localStorage.setItem('mws-news-hidden', newsHidden); } catch(_) {} render(); return; }
     if (t.dataset.sheet === 'score'){ sheetScore(); return; }
     if (t.dataset.sheet === 'free'){ sheetFree(t.dataset.pid || ''); return; }
+    if (t.dataset.sheet === 'book'){ sheetBook(); return; }
     if (t.dataset.claim){ sheetClaim(t.dataset.claim); return; }
     if (t.dataset.profile){ sheetProfile(t.dataset.profile); return; }
     if (t.dataset.player){ moreOpen = false; viewPlayer = t.dataset.player; tab = 'player'; editing = null; try { history.replaceState(null,'','#p-'+viewPlayer); } catch(_){} render(); window.scrollTo(0,0); return; }
@@ -1555,7 +1588,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     if (t.dataset.unup){ state.upcoming = (state.upcoming || []).filter(u => u.id !== t.dataset.unup); markDirty(); return; }
     if (t.dataset.free){ freeEdit = freeEdit === t.dataset.free ? null : t.dataset.free; render(); return; }
     if (t.dataset.remove){ state.players = state.players.filter(p => p.id !== t.dataset.remove); markDirty(); return; }
-    if (t.id === 'discard'){ state = JSON.parse(BASE); dirty = false; editing = null; render(); return; }
+    if (t.id === 'discard'){ state = JSON.parse(BASE); applyPriv(); dirty = false; editing = null; render(); return; }
     if (t.id === 'save'){ save(); return; }
     if (t.id === 'copy-recap'){
       const box = document.getElementById('recap-box'), msg = document.getElementById('recap-msg');
@@ -1682,7 +1715,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     } catch(_){}
     state.updated = new Date().toISOString();
     saving = 'Saving…'; render();
-    try { const j = JSON.stringify(state); await FBL.F.setDoc(stRef(), {json: j, updated: Date.now(), by: (FBL.user && FBL.user.email) || ''}); BASE = j; dirty = false; saving = ''; render(); }
+    try { const sp = splitState(), j = JSON.stringify(sp.pub); await FBL.F.setDoc(stRef(), {json: j, updated: Date.now(), by: (FBL.user && FBL.user.email) || ''}); if (FBL.privOk) { await FBL.F.setDoc(prRef(), {phones: sp.ph, updated: Date.now()}); PRIV = sp.ph; } BASE = j; dirty = false; saving = ''; render(); }
     catch(err){ saving = 'Could not save. Try again.'; render(); }
   }
 
@@ -1694,7 +1727,10 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   const FBU = m => 'https://www.gstatic.com/firebasejs/10.14.1/firebase-' + m + '.js';
   const FBL = {A: null, F: null, auth: null, db: null, user: null, me: null, admin: false, subs: [], mine: [], live: false, ready: false, err: '', msg: ''};
   let BASE = SRC;
-  const stRef = () => FBL.F.doc(FBL.db, 'league', 'state');
+  const stRef = () => FBL.F.doc(FBL.db, 'league', 'state'), prRef = () => FBL.F.doc(FBL.db, 'league', 'private');
+  let PRIV = null; // phone numbers, only for signed-in players
+  function applyPriv(){ state.players.forEach(p => { const n = PRIV && PRIV[p.id]; if (n) { p.phone = n; p.ph = 1; } else delete p.phone; }); }
+  function splitState(){ const pub = JSON.parse(JSON.stringify(state)), ph = {}; pub.players.forEach(p => { if (p.phone) { ph[p.id] = p.phone; p.ph = 1; } else delete p.ph; delete p.phone; }); return {pub, ph}; }
   async function fbBoot(){
     try { const [app, A, F] = await Promise.all([import(FBU('app')), import(FBU('auth')), import(FBU('firestore'))]); const a = app.initializeApp(FB_CFG); Object.assign(FBL, {A, F, auth: A.getAuth(a), db: F.getFirestore(a), ready: true}); }
     catch(_) { FBL.err = 'Sign-in couldn’t load. Check your connection and refresh.'; render(); return; }
@@ -1703,13 +1739,16 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
         if (em) { await A.signInWithEmailLink(FBL.auth, em, location.href); try { localStorage.removeItem('mws-lg-email'); } catch(_) {} }
         try { history.replaceState(null, '', location.pathname + location.hash); } catch(_) {} } } catch(_) { FBL.err = 'That sign-in link didn’t work. Send yourself a new one.'; }
     try { await A.getRedirectResult(FBL.auth); } catch(_) {}
-    F.onSnapshot(stRef(), snap => { FBL.live = true; if (!snap.exists()) return; const j = (snap.data() || {}).json; if (!j || j === BASE) return; BASE = j; if (dirty) return; try { state = JSON.parse(j); } catch(_) { return; } editing = null; render(); }, () => {});
+    F.onSnapshot(stRef(), snap => { FBL.live = true; if (!snap.exists()) return; const j = (snap.data() || {}).json; if (!j || j === BASE) return; BASE = j; if (dirty) return; try { state = JSON.parse(j); } catch(_) { return; } applyPriv(); editing = null; render(); }, () => {});
     A.onAuthStateChanged(FBL.auth, async u => {
       FBL.user = u || null; FBL.admin = !!(u && u.email && ADMIN_EMAILS.includes(u.email.toLowerCase())); art = FBL.admin ? {fb: 1} : null; FBL.me = null; FBL.subs = []; FBL.mine = [];
-      if (FBL.unsub) { FBL.unsub(); FBL.unsub = null; }
+      if (FBL.unsub) { FBL.unsub(); FBL.unsub = null; } if (FBL.unpriv) { FBL.unpriv(); FBL.unpriv = null; } if (FBL.unmem) { FBL.unmem(); FBL.unmem = null; }
+      FBL.privOk = false; if (!u) { PRIV = {}; applyPriv(); }
       if (u) {
         try { const m = await F.getDoc(F.doc(FBL.db, 'members', u.uid)); if (m.exists()) FBL.me = (m.data() || {}).pid || null; } catch(_) {}
-        if (FBL.admin) { try { const d = await F.getDoc(stRef()); if (!d.exists()) await F.setDoc(stRef(), {json: BASE, updated: Date.now(), by: u.email}); } catch(_) {} }
+        if (FBL.admin) { try { const d = await F.getDoc(stRef()), pv = await F.getDoc(prRef()); const sp = splitState(); if (!d.exists()) { await F.setDoc(stRef(), {json: JSON.stringify(sp.pub), updated: Date.now(), by: u.email}); } if (!pv.exists()) await F.setDoc(prRef(), {phones: Object.assign({}, PH0, sp.ph), updated: Date.now()}); } catch(_) {}
+          FBL.unmem = F.onSnapshot(F.collection(FBL.db, 'members'), s2 => { const L = []; s2.forEach(d => L.push(Object.assign({id: d.id}, d.data()))); FBL.members = L; render(); }, () => {}); }
+        FBL.unpriv = F.onSnapshot(prRef(), d => { if (d.exists()) { PRIV = (d.data() || {}).phones || {}; FBL.privOk = true; } applyPriv(); render(); }, () => {});
         const col = F.collection(FBL.db, 'submissions'), q = FBL.admin ? F.query(col, F.where('status', '==', 'pending')) : F.query(col, F.where('uid', '==', u.uid));
         FBL.unsub = F.onSnapshot(q, s => { const L = []; s.forEach(d => L.push(Object.assign({id: d.id}, d.data()))); L.sort((a, b) => (b.at || 0) - (a.at || 0)); if (FBL.admin) FBL.subs = L; else FBL.mine = L.slice(0, 8); render(); if (sheetEl && sheetEl.dataset.acct) sheetAccount(); }, () => {});
       }
@@ -1733,7 +1772,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
         <p class="hint" style="margin:0">Your email is only used to sign you in. Nobody else sees it.</p>`
       : `<p style="margin:0">Signed in as <b>${esc(u.email || u.displayName || 'you')}</b>${FBL.admin ? ' · commissioner' : ''}.</p>
         ${FBL.admin ? `<p class="hint" style="margin:0">${FBL.subs.length ? FBL.subs.length + ' request' + (FBL.subs.length > 1 ? 's' : '') + ' waiting in the Commissioner tab.' : 'No requests waiting.'}</p>` : `<label class="field">Which player are you?<select data-fb-me="1">${playerOpts(FBL.me || '')}</select></label>
-        ${FBL.mine.length ? `<div class="reqs"><b>Your requests</b>${FBL.mine.map(r => `<div><span>${esc(r.kind || 'Request')} · ${esc(new Date(r.at || 0).toLocaleDateString('en-US', {month: 'short', day: 'numeric'}))}</span><i>${st(r.status)}</i></div>`).join('')}</div>` : ''}`}
+        ${FBL.mine.length ? `<div class="reqs"><b>Your requests</b>${FBL.mine.map(r => `<div><span>${esc(KIND[r.kind] || r.kind || 'Request')} · ${esc(new Date(r.at || 0).toLocaleDateString('en-US', {month: 'short', day: 'numeric'}))}</span><i>${st(r.status)}</i></div>`).join('')}</div>` : ''}`}
         <button type="button" class="btn ghost" data-fb="out">Sign out</button>`;
     sheetEl.innerHTML = `<div class="sheet-bg" data-close></div><div class="sheet" role="dialog" aria-modal="true" aria-label="Your account"><div class="sheet-hd"><h3>${u ? 'Your account' : 'Sign in'}</h3><button type="button" class="sheetx" data-close aria-label="Close">×</button></div>${body}<p class="hint sheet-err" aria-live="polite">${esc(note || '')}</p></div>`;
     document.body.appendChild(sheetEl);
@@ -1749,27 +1788,49 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     if (k === 'out') { try { await A.signOut(FBL.auth); } catch(_) {} closeSheet(); return; }
     if (k === 'me') { const pid = el.value || null; FBL.me = pid; try { await F.setDoc(F.doc(FBL.db, 'members', FBL.user.uid), {pid, name: pid ? pname(pid) : '', email: FBL.user.email || '', at: Date.now()}); } catch(_) {} render(); return; }
   }
-  async function fbSend(kind, msg){
-    const {F} = FBL; if (!FBL.user) return 'Sign in first.';
-    try { await F.addDoc(F.collection(FBL.db, 'submissions'), {uid: FBL.user.uid, email: FBL.user.email || '', pid: FBL.me || '', who: meName(), kind, msg, at: Date.now(), status: 'pending'}); return ''; }
+  async function fbSend(kind, msg, data){
+    const {F} = FBL; if (!FBL.user) return 'Sign in first.'; if (!FBL.me) return 'Pick which player you are first.';
+    try { await F.addDoc(F.collection(FBL.db, 'submissions'), {uid: FBL.user.uid, email: FBL.user.email || '', pid: FBL.me || '', who: meName(), kind, msg, data: data || null, at: Date.now(), status: 'pending'}); return ''; }
     catch(_) { return 'Couldn’t send that. Check your connection and try again.'; }
   }
+  const KIND = {score: 'Score', book: 'New court', claim: 'Court claim', free: 'Free times', profile: 'Profile'};
+  function pendHtml(k){ const L = (FBL.mine || []).filter(r => r.status === 'pending' && r.kind === k); if (!L.length || art) return '';
+    return `<div class="pend"><b>Waiting for ${esc(state.league.commissioner || 'the commissioner')}'s OK</b>${L.map(r => `<span>${esc((r.msg || '').replace(/\n/g, ' · ').replace(/^🎾\s*/, ''))}</span>`).join('')}</div>`; }
+  function meBar(){
+    if (!FBL.ready) return FBL.err ? `<div class="mebar"><p>${esc(FBL.err)}</p></div>` : '';
+    const u = FBL.user, cn = esc(state.league.commissioner || 'the commissioner');
+    if (!u) return `<div class="mebar"><p><b>Sign in</b> to report scores, post and claim courts, and set your free times. ${cn} approves them, then they show up for everyone.</p><button type="button" class="mb-go" data-acct="1">Sign in</button></div>`;
+    if (FBL.admin) return `<div class="mebar"><p><b>Commissioner</b> · ${FBL.subs.length ? FBL.subs.length + ' request' + (FBL.subs.length > 1 ? 's' : '') + ' waiting' : 'no requests waiting'}</p><div class="mb-acts"><button type="button" data-tab="admin">${FBL.subs.length ? 'Review requests' : 'Commissioner tab'}</button><button type="button" data-acct="1">Account</button></div></div>`;
+    if (!FBL.me) return `<div class="mebar"><p><b>One more step:</b> which player are you?</p><select data-fb-me="1" aria-label="Which player are you?">${playerOpts('')}</select></div>`;
+    const pend = (FBL.mine || []).filter(r => r.status === 'pending').length, nm0 = first(state.players.find(p => p.id === FBL.me) || {name: ''});
+    return `<div class="mebar"><p>Hi, <b>${esc(nm0)}</b>${pend ? ` · ${pend} waiting for ${cn}` : ''}</p><div class="mb-acts"><button type="button" data-sheet="score">Report a score</button><button type="button" data-sheet="book">Post a court</button><button type="button" data-sheet="free" data-pid="${FBL.me}">My free times</button><button type="button" data-player="${FBL.me}">My page</button><button type="button" data-acct="1">Account</button></div></div>`;
+  }
+  function membersHtml(){ if (!FBL.admin) return ''; const L = (FBL.members || []).slice().sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    return `<div class="card"><h3>Signed-in players (${L.length})</h3><p class="hint" style="margin:0">Who has signed in and which player they picked. If someone picked the wrong name, ask them to fix it under Account.</p>${L.length ? `<div class="mems">${L.map(m => `<div><b>${esc(m.name || 'No player picked')}</b><span>${esc(m.email || '')}</span></div>`).join('')}</div>` : '<p class="hint">Nobody yet.</p>'}</div>`; }
   function inboxHtml(){
     if (!FBL.admin) return '';
     const L = FBL.subs;
-    return `<div class="card inbox"><h3>Requests from players${L.length ? ` (${L.length})` : ''}</h3>${L.length ? L.map(r => `<div class="req"><div class="req-h"><b>${esc(r.kind || 'Request')}</b><span>${esc(r.who || 'A player')}${r.email ? ' (' + esc(r.email) + ')' : ''} · ${esc(new Date(r.at || 0).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'}))}</span></div><pre>${esc(r.msg || '')}</pre><div class="row"><button type="button" class="btn" data-ok="${esc(r.id)}">Approve</button><button type="button" class="btn ghost" data-no="${esc(r.id)}">Decline</button><span class="hint" id="rq-${esc(r.id)}"></span></div></div>`).join('') : '<p class="hint">Nothing waiting. When a signed-in player sends a score, court claim, free times or profile update, it lands here.</p>'}</div>`;
+    return `<div class="card inbox"><h3>Requests from players${L.length ? ` (${L.length})` : ''}</h3>${L.length > 1 ? '<button type="button" class="btn" data-okall="1">Approve all</button>' : ''}${L.length ? L.map(r => `<div class="req"><div class="req-h"><b>${esc(KIND[r.kind] || r.kind || 'Request')}</b><span>${esc(r.who || 'A player')}${r.email ? ' (' + esc(r.email) + ')' : ''} · ${esc(new Date(r.at || 0).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'}))}</span></div><pre>${esc(r.msg || '')}</pre><div class="row"><button type="button" class="btn" data-ok="${esc(r.id)}">Approve</button><button type="button" class="btn ghost" data-no="${esc(r.id)}">Decline</button><span class="hint" id="rq-${esc(r.id)}"></span></div></div>`).join('') : '<p class="hint">Nothing waiting. When a signed-in player sends a score, court claim, free times or profile update, it lands here.</p>'}</div>`;
   }
-  async function reqDo(id, ok){
+  async function reqDo(id, ok, bulk){
     const r = FBL.subs.find(x => x.id === id); if (!r) return; const {F} = FBL, msgEl = document.getElementById('rq-' + id);
-    if (ok) { const res = applyPaste(r.msg || ''); if (!res.added) { if (msgEl) msgEl.textContent = res.skipped[0] || 'Nothing to add from that request.'; return; } }
-    try { await F.updateDoc(F.doc(FBL.db, 'submissions', id), {status: ok ? 'approved' : 'declined', doneAt: Date.now()}); } catch(_) { if (msgEl) msgEl.textContent = 'Couldn’t update that request. Try again.'; return; }
-    if (ok) { dirty = true; await save(); }
+    if (ok) { const e2 = applyReq(r); if (e2) { if (msgEl) msgEl.textContent = e2; return false; } }
+    try { await F.updateDoc(F.doc(FBL.db, 'submissions', id), {status: ok ? 'approved' : 'declined', doneAt: Date.now()}); } catch(_) { if (msgEl) msgEl.textContent = 'Couldn’t update that request. Try again.'; return false; }
+    if (ok && !bulk) { dirty = true; await save(); } return true;
   }
+  function applyReq(r){ const d = r.data || {};
+    if (d.t === 'book') { if (!state.players.some(p => p.id === d.a)) return 'That player isn’t on the roster anymore.'; if ((d.date || '') < today()) return 'That date has passed. Decline it instead.'; addUpcoming(d); return ''; }
+    if (d.t === 'claim') { const u = (state.upcoming || []).find(x => x.id === d.ref); if (!u) return 'That court isn’t listed anymore.'; if (u.b && u.b !== d.n) return 'Someone already claimed that court.'; u.b = d.n; return ''; }
+    if (d.t === 'free') { const p = state.players.find(x => x.id === d.n); if (!p) return 'Player not found.'; if ((d.keys || []).length) p.free = d.keys.slice(); else delete p.free; return ''; }
+    if (d.t === 'profile') { const p = state.players.find(x => x.id === d.n); if (!p) return 'Player not found.'; setProf(p, d.vals || {}); return ''; }
+    const res = applyPaste(r.msg || ''); return res.added ? '' : (res.skipped[0] || 'Nothing to add from that request.'); }
+  async function approveAll(btn){ btn.disabled = true; let n = 0; for (const r of FBL.subs.slice()) { if (await reqDo(r.id, true, true)) n++; } if (n) { dirty = true; await save(); } btn.disabled = false; toastLg(n ? 'Approved ' + n + ' request' + (n > 1 ? 's' : '') + '.' : 'Nothing could be approved. Check the notes on each one.'); }
   document.addEventListener('click', e => {
     const a = e.target.closest('button[data-acct]'); if (a) { sheetAccount(); return; }
     const f = e.target.closest('button[data-fb]'); if (f) { fbAct(f.dataset.fb, f); return; }
     const ok = e.target.closest('button[data-ok]'); if (ok) { ok.disabled = true; reqDo(ok.dataset.ok, true).finally(() => { ok.disabled = false; }); return; }
     const no = e.target.closest('button[data-no]'); if (no) { reqDo(no.dataset.no, false); return; }
+    const all = e.target.closest('button[data-okall]'); if (all) { approveAll(all); return; }
   });
   document.addEventListener('change', e => { const s2 = e.target.closest && e.target.closest('select[data-fb-me]'); if (s2) fbAct('me', s2); });
   render();
