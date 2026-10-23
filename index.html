@@ -778,8 +778,8 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
 .lb{display:grid;gap:4px}
 .lb div{display:flex;justify-content:space-between;gap:10px;padding:6px 9px;border-radius:8px;background:#10323a;font:600 12.5px var(--body);color:#cfe3e6}
 .lb b{color:#fff}
-.gamelink{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;column-gap:10px;align-items:center;margin:0 12px 12px;padding:10px 14px;border-radius:10px;background:#dfff4f;color:#0b1f24;text-decoration:none;box-shadow:0 2px 0 rgba(0,0,0,.2)}
-.gamelink span{grid-row:span 2;font-size:22px}.gamelink b{font:700 16px var(--display);letter-spacing:.06em;text-transform:uppercase}.gamelink i{font:500 12px var(--body);font-style:normal;color:#2a3a20}.gamelink em{grid-row:1/span 2;grid-column:3;font:700 22px var(--body);font-style:normal}
+.gamelink{display:grid;grid-template-columns:auto 1fr auto;column-gap:10px;align-items:center;margin:0 12px 12px;padding:9px 14px;border-radius:10px;background:#dfff4f;color:#0b1f24;text-decoration:none;box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.gamelink span{font-size:20px}.gamelink b{font:700 16px var(--display);letter-spacing:.06em;text-transform:uppercase}.gamelink i{font:500 12px var(--body);font-style:normal;color:#2a3a20}.gamelink em{font:700 22px var(--body);font-style:normal}
 .gamelink:hover,.gamelink:focus-visible{background:#ecff8a}
 .acct{display:inline-flex;align-items:center;gap:5px;margin-left:auto;font:600 12px var(--body);color:#0b1f24;background:#fff;border:0;border-radius:99px;padding:4px 11px;cursor:pointer}
 .acct b{font:800 11px var(--body);background:#ff5a5f;color:#fff;border-radius:99px;padding:0 6px}
@@ -1569,7 +1569,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
           <h1>${esc(L.name)}</h1>
           <div class="chips">${dates ? `<span>${esc(dates)}</span>` : ''}<span>${state.players.length} players</span></div>
         </div>
-        <a class="gamelink" href="${gameHref()}" target="_blank" rel="noopener"><span aria-hidden="true">🎾</span><b>Play McFetridge Tour 2k26</b><i>${gameHref().includes('#carry') ? 'Opens in a new tab and brings your progress' : 'Opens in a new tab'}</i><em aria-hidden="true">›</em></a>
+        <a class="gamelink" href="https://ntyndorf.github.io/mcfetridge-tour/"><span aria-hidden="true">🎾</span><b>Play McFetridge Tour 2k26</b><em aria-hidden="true">›</em></a>
         <div class="ticker" aria-label="Latest results"><span class="tk-label">Latest</span>${ticker()}</div>
       </header>
       ${meBar()}
