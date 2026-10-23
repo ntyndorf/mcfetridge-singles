@@ -2002,13 +2002,21 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     document.body.appendChild(sheetEl);
     sheetEl.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeSheet(); });
   }
+  const inApp = () => /FBAN|FBAV|Instagram|GroupMe|Line\/|Snapchat|Twitter|LinkedInApp|; wv\)/i.test(navigator.userAgent || '');
+  function fbWhy(e, what){ const c = String((e && e.code) || '').replace('auth/', ''), cn = state.league.commissioner || 'the commissioner';
+    const m = {'operation-not-allowed': what + ' isn’t switched on for this site yet. Let ' + cn + ' know.', 'unauthorized-domain': 'This site isn’t approved for sign-in yet. Let ' + cn + ' know.', 'unauthorized-continue-uri': 'This site isn’t approved for sign-in yet. Let ' + cn + ' know.',
+      'invalid-email': 'That email address doesn’t look right. Check it and try again.', 'quota-exceeded': 'Too many sign-in emails were sent today. Try Google instead, or try again tomorrow.', 'too-many-requests': 'Too many tries in a row. Wait a few minutes and try again.',
+      'network-request-failed': 'Couldn’t reach the sign-in service. Check your connection and try again.', 'popup-blocked': 'Your browser blocked the Google window. Allow pop-ups for this site, or use the email link.', 'web-storage-unsupported': 'This browser is blocking sign-in. Open the site in Safari or Chrome.'}[c];
+    return (m || what + ' didn’t work.') + (c ? ' (code: ' + c + ')' : ''); }
   async function fbAct(k, el){
     const {A, F} = FBL; if (!FBL.ready) return;
-    if (k === 'google') { const P = new A.GoogleAuthProvider(); try { await A.signInWithPopup(FBL.auth, P); }
-      catch(e) { const c = (e && e.code) || ''; if (/popup-blocked|operation-not-supported|web-storage-unsupported/.test(c)) { try { await A.signInWithRedirect(FBL.auth, P); } catch(_) { sheetAccount('Google sign-in didn’t work here. Try the email link.'); } } else sheetAccount(/popup-closed|cancelled-popup/.test(c) ? '' : 'Google sign-in didn’t work. Try the email link instead.'); } return; }
+    if (k === 'google') { if (inApp()) { sheetAccount('Google won’t sign you in inside this app’s browser. Tap ••• or the share icon and choose “Open in Safari” (or Chrome), then sign in there. The email link works here too.'); return; }
+      const P = new A.GoogleAuthProvider(); try { P.setCustomParameters({prompt: 'select_account'}); } catch(_) {} sheetAccount('Opening Google… finish signing in on the Google page, then come back to this tab.');
+      try { await A.signInWithPopup(FBL.auth, P); }
+      catch(e) { const c = (e && e.code) || ''; if (/popup-blocked|operation-not-supported|web-storage-unsupported/.test(c)) { try { await A.signInWithRedirect(FBL.auth, P); } catch(e2) { sheetAccount(fbWhy(e2, 'Google sign-in')); } } else sheetAccount(/popup-closed|cancelled-popup/.test(c) ? 'Google sign-in was closed before it finished. Try again, or use the email link.' : fbWhy(e, 'Google sign-in')); } return; }
     if (k === 'email') { const em = ((sheetEl && sheetEl.querySelector('.lg-em') || {}).value || '').trim(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { sheetAccount('Type your email address first.'); return; }
       try { await A.sendSignInLinkToEmail(FBL.auth, em, {url: location.origin + location.pathname, handleCodeInApp: true}); try { localStorage.setItem('mws-lg-email', em); } catch(_) {} sheetAccount('Sent! Open the link in ' + em + ' on this device to finish signing in. Check spam if it’s not there.'); }
-      catch(_) { sheetAccount('Couldn’t send the link. Check the address and try again.'); } return; }
+      catch(e) { sheetAccount(fbWhy(e, 'Email sign-in')); } return; }
     if (k === 'out') { try { await A.signOut(FBL.auth); } catch(_) {} closeSheet(); return; }
     if (k === 'me') { const pid = el.value || null, u = FBL.user, c = pid && LV.claims[pid];
       if (c && c.uid !== u.uid) { el.value = myPid() || ''; toastLg(pname(pid) + ' is already linked to someone else’s sign-in. If that’s you, ask ' + (state.league.commissioner || 'the commissioner') + ' to free it up.'); return; }
