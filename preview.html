@@ -60,6 +60,15 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15p
 .chipsrow{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
 .achip{display:inline-flex;align-items:center;gap:5px;font:600 12px var(--body);color:var(--accent);border:1px solid var(--accent);border-radius:99px;padding:2px 10px}
 .achip svg{width:13px;height:13px}
+.bd h3{margin-bottom:8px}
+.bdform{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:0 0 10px}.bdform b{color:var(--ink)}
+.bdt{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.bdt div{display:grid;gap:1px;padding:9px 10px;border:1px solid var(--line);border-radius:10px}
+.bdt span{font:600 11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.bdt b{font:700 22px/1.1 var(--display)}.bdt b small{font-size:14px;color:var(--muted)}.bdt i{font-style:normal;font-size:12px;color:var(--muted)}
+.bdrow{display:grid;gap:5px;margin-top:12px}.bdk{font:600 11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.bdf{display:flex;flex-wrap:wrap;gap:6px}.bdf span{font-size:13px;padding:4px 10px;border:1px solid var(--line);border-radius:999px}.bdf b{margin-left:3px}
+.bdc{font-size:14px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .formline{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:4px 0}
 .formline b{color:var(--ink);font-weight:600}
 .statsub{font-size:13px;color:var(--muted);margin:-6px 0 0}
@@ -820,7 +829,16 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
 .board.slim .board-top{padding:18px 20px 14px}.board.slim h1{font-size:clamp(32px,9vw,44px);line-height:1;margin:0}.board.slim .chips,.board.slim .ticker,.board.slim .toprow{display:none}.board.slim .gamelink{margin-top:0}
 .statline{display:grid;grid-template-columns:repeat(3,1fr);margin:12px 0;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
 .statline div{display:grid;justify-items:center;gap:1px;padding:10px 4px}.statline div+div{border-left:1px solid var(--line)}.statline b{font:700 22px var(--display)}.statline span{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.style{margin:4px 0 0;font-size:13px;color:var(--muted)}.achip.more{color:var(--muted);border-color:var(--line)}
+.style{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.pmeta{display:grid;gap:6px;margin:8px 0 2px}.pm{display:grid;grid-template-columns:70px 1fr;align-items:center;gap:8px}
+.pmk{font:600 11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
+.ptags{display:flex;flex-wrap:wrap;gap:5px}.ptag{font:600 12px var(--body);text-transform:none;letter-spacing:0;padding:2px 9px;border-radius:99px;background:color-mix(in srgb,var(--ink) 9%,transparent);color:var(--ink)}
+.ptag.po{background:none;border:1px dashed var(--accent);color:var(--accent);padding:1px 8px}
+.pfree{display:grid;grid-template-columns:70px auto;gap:6px 8px;margin:10px 0 4px;align-items:start;justify-content:start}.pfree .pmk{padding-top:14px}.pfree .fnote{grid-column:2}
+.fgrid{display:grid;grid-template-columns:30px repeat(7,26px);gap:3px;align-items:center}
+.fgrid b{font:600 10px var(--mono);text-align:center;color:var(--muted)}.fgrid i{font:600 10px var(--mono);font-style:normal;color:var(--muted)}
+.fgrid span{height:14px;border-radius:3px;background:color-mix(in srgb,var(--ink) 8%,transparent)}.fgrid span.on{background:var(--win)}.fgrid>span:first-child{background:none}
+.fnote{margin:0;font-size:13px;color:var(--muted)}.achip.more{color:var(--muted);border-color:var(--line)}
 .h2hb{font:600 11px var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:0 6px;margin-left:4px}
 .segs{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
 .seg label{position:relative;cursor:pointer}.seg input,.pills input{position:absolute;opacity:0;width:1px!important;height:1px;margin:0;pointer-events:none}
@@ -1171,14 +1189,14 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
     return `<button class="back" data-tab="standings">← Standings</button>
       <div class="phero" style="--pc:${avColor(id)}"><h2>${avatar(id,'lg')}${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}${p.level ? `<span class="lvl">NTRP ${esc(p.level)}</span>` : ''}${streakTag(id)}</h2>
         ${(() => { const held = awards().filter(a => a.ids.includes(id)); return held.length ? `<div class="chipsrow">${held.slice(0, 2).map(a => `<span class="achip">${icon(a.t)}${esc(a.t)}</span>`).join('')}${held.length > 2 ? `<span class="achip more" title="${esc(held.slice(2).map(a => a.t).join(', '))}">+${held.length - 2} more</span>` : ''}</div>` : ''; })()}
-        ${mine.length ? `<div class="formline">${formOf(id)}<span>Current streak: <b>${esc(curStreak(id))}</b></span></div>` : ''}
-        ${(() => { const pr = p.prof || {}; const bits = [pr.plays, pr.bh ? (pr.bh === 'One-handed' ? '1H' : '2H') + ' backhand' : ''].filter(Boolean), op = (p.open || []).map(k => (OPENL.find(x => x[0] === k) || [0, ''])[1].toLowerCase()).filter(Boolean);
-          if (op.length) bits.push('open to ' + op.join(', '));
-          return (pr.bio ? `<p class="bio">“${esc(pr.bio)}”</p>` : '') + (bits.length ? `<p class="style">${esc(bits.join(' · '))}</p>` : ''); })()}
-        ${(p.free || []).length ? `<p class="avail"><span>Usually free:</span> ${esc(freeText(p.free))}</p>` : ''}${p.avail ? `<p class="avail"><span>${(p.free || []).length ? 'Note:' : 'Usually available:'}</span> ${esc(p.avail)}</p>` : ''}<p class="sub">${r.mp ? `Ranked #${rank} of ${rows.length}` : 'No counted matches yet'}</p>
+        ${(() => { const pr = p.prof || {}; const bits = [pr.plays, pr.bh ? (pr.bh === 'One-handed' ? '1H' : '2H') + ' backhand' : ''].filter(Boolean), op = (p.open || []).map(k => (OPENL.find(x => x[0] === k) || [0, ''])[1]).filter(Boolean);
+          return (pr.bio ? `<p class="bio">“${esc(pr.bio)}”</p>` : '')
+            + (bits.length || op.length ? `<div class="pmeta">${bits.length ? `<div class="pm"><span class="pmk">Plays</span><span class="ptags">${bits.map(b => `<span class="ptag">${esc(b)}</span>`).join('')}</span></div>` : ''}${op.length ? `<div class="pm"><span class="pmk">Open to</span><span class="ptags">${op.map(b => `<span class="ptag po">${esc(b)}</span>`).join('')}</span></div>` : ''}</div>` : ''); })()}
+        ${(p.free || []).length || p.avail ? `<div class="pfree"><span class="pmk">Free</span>${(p.free || []).length ? freeGrid(p.free) : ''}${p.avail ? `<p class="fnote">${esc(p.avail)}</p>` : ''}</div>` : ''}<p class="sub">${r.mp ? `Ranked #${rank} of ${rows.length}` : 'No counted matches yet'}</p>
         ${(() => { const h = smsHref(p, `Hey ${first(p)}! Want to get a match in this week? (McFetridge league)`); return h ? `<a class="textbtn" href="${esc(h)}" target="_top" data-sms="${esc(first(p))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg>Text ${esc(first(p))}</a>` : ''; })()}${!FBL.user && p.ph ? `<button type="button" class="link" data-acct="1">Sign in to text ${esc(first(p))}</button>` : ''}${myPid() === p.id ? `<div class="pactions"><button class="link" data-tab="me">Edit my profile</button><button class="link" data-tab="me" data-jump="me-free">Edit my free times</button></div>` : art ? `<div class="pactions"><button class="link" data-profile="${p.id}">Update profile</button><button class="link" data-sheet="free" data-pid="${p.id}">Update free times</button></div>` : ''}</div>
       ${vsYou(id)}
       <div class="statline"><div><b>${r.pts}</b><span>Points</span></div><div><b>${r.w}–${r.l}</b><span>Record</span></div><div><b>${r.mp ? Math.round(r.wp*100)+'%' : '—'}</b><span>Win %</span></div></div>
+      ${breakdown(id, mine)}
       ${highlights(id)}
       ${playNext(id, h, rank, rows)}
       <section class="logday"><header>Matches</header>${list || '<div class="match"><div class="hint">No matches logged yet.</div><div></div></div>'}</section>`;
@@ -1213,6 +1231,10 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
     return 'sms:' + num + '?&body=' + encodeURIComponent(body);
   }
   const first = p => String(p.name || '').split(/\s+/)[0];
+  function freeGrid(keys){ // a little week calendar: days across, morning/afternoon/evening down
+    const set = new Set(keys || []), SH = {am: 'AM', mid: 'PM', eve: 'Eve'};
+    return `<div class="fgrid" role="table" aria-label="${esc(freeText(keys))}"><span></span>${FDAYS.map(([, D]) => `<b>${D.slice(0, 2)}</b>`).join('')}
+      ${FSLOTS.map(([k]) => `<i>${SH[k]}</i>${FDAYS.map(([d]) => `<span class="${set.has(d + '-' + k) ? 'on' : ''}"></span>`).join('')}`).join('')}</div>`; }
   function freeText(keys){
     const set = new Set(keys || []);
     return FDAYS.map(([d, D]) => { const sl = FSLOTS.filter(([k]) => set.has(d + '-' + k)).map(([, L]) => L.toLowerCase()); return sl.length ? D + ' ' + sl.join(' & ') : ''; }).filter(Boolean).join(' · ');
@@ -1422,6 +1444,45 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
   // ---- win odds: an Elo-style rating seeded from NTRP level, updated by every logged result ----
   let RAT = null;
   const OPENL = [['hits', 'Practice hits'], ['dbl', 'Doubles'], ['up', 'Playing up a level']];
+  // What format a match was played in: saved on newer scores, worked out from the sets on older ones.
+  function fmtOf(m){ const s = m.score || {}; if (s.format) return s.format; const st = setsOf(s); if (!st) return '';
+    if (st.length === 1) return Math.max(...st[0]) >= 10 ? 'pro10' : 'pro8';
+    if (isMini(m)) return 'fast4';
+    return st.length === 3 && Math.max(...st[2]) >= 10 ? 'bo3stb' : 'bo3'; }
+  const FMT_SHORT = {pro10: '10-game pro set', pro8: '8-game pro set', bo3stb: 'Best of 3 + TB', bo3: 'Best of 3', fast4: 'Mini tennis'};
+  function breakdown(id, mine){ // all worked out from posted scores
+    if (!mine.length) return '';
+    const old = mine.slice().reverse(); // oldest first
+    let gw = 0, gl = 0, tbw = 0, tbl = 0, dw = 0, dl = 0, bag = 0, brd = 0, run = 0, best = 0, close = null; const opp = new Set(), byF = {};
+    old.forEach(m => { const o = outcome(m), won = o.w === id; opp.add(won ? o.l : o.w);
+      if (won) { run++; best = Math.max(best, run); } else run = 0;
+      if (o.ff) return;
+      gw += won ? o.wg : o.lg; gl += won ? o.lg : o.wg;
+      const f = fmtOf(m); if (f) { const e = byF[f] = byF[f] || [0, 0]; e[won ? 0 : 1]++; }
+      const sets = (won ? o.sets : o.sets.map(([a, b]) => [b, a])).slice(0, o.ret ? -1 : undefined); // a retired match's last set wasn't finished
+      sets.forEach(([x, y], i) => { const hi = Math.max(x, y), lo = Math.min(x, y);
+        const stb = i === 2 && (f === 'bo3stb' || hi >= 10);
+        const tb = stb || (hi - lo === 1 && (f === 'fast4' ? hi === 4 : [7, 9, 11].includes(hi)));
+        if (tb) { if (x > y) tbw++; else tbl++; }
+        if (!stb && x > y) { if (y === 0) bag++; else if (y === 1) brd++; } });
+      if (o.sets.length === 3 && !o.ret) { if (won) dw++; else dl++; }
+      if (!o.ret) { const mg = Math.abs(o.wg - o.lg); if (!close || mg < close.mg || (mg === close.mg && o.sets.length >= close.n)) close = {mg, n: o.sets.length, m, o, won}; } });
+    const rec = (w, l) => `${w}–${l}`, others = state.players.length - 1;
+    const T = [
+      gw + gl && ['Games won', Math.round(gw / (gw + gl) * 100) + '%', `${gw}–${gl}`],
+      tbw + tbl && ['Tiebreaks', rec(tbw, tbl), tbw + tbl === 1 ? '1 played' : (tbw + tbl) + ' played'],
+      dw + dl && ['Deciding sets', rec(dw, dl), 'went the distance'],
+      bag + brd && ['Bagels · sticks', `${bag} · ${brd}`, 'sets won to 0 · to 1'],
+      ['Opponents', `${opp.size}<small> of ${others}</small>`, opp.size >= others ? 'played everyone' : 'played so far'],
+      best >= 2 && ['Best streak', 'W' + best, 'wins in a row']].filter(Boolean);
+    const F = Object.keys(FMT_SHORT).filter(k => byF[k]);
+    const last10 = old.slice(-10).map(m => outcome(m).w === id ? 'W' : 'L'), cur = curStreak(id);
+    const cm = close && (() => { const o = close.o, op = close.won ? o.l : o.w; return `<span class="wl ${close.won ? 'W' : 'L'}">${close.won ? 'W' : 'L'}</span>${setText(close.won ? o.sets : o.sets.map(([a, b]) => [b, a]))} vs <button class="plink" data-player="${op}">${esc(pname(op))}</button>${close.m.date ? ` <span class="hint">· ${esc(fmtDate(close.m.date, {month: 'short', day: 'numeric'}))}</span>` : ''}`; })();
+    return `<div class="card bd"><h3>Breakdown</h3>
+      <div class="bdform"><span class="form" title="Last ${last10.length} results, oldest to newest">${last10.map(r => `<i class="${r}"></i>`).join('')}</span><span>Now <b>${esc(cur)}</b></span></div>
+      <div class="bdt">${T.map(([k, v, sub]) => `<div><span>${k}</span><b>${v}</b><i>${sub}</i></div>`).join('')}</div>
+      ${F.length ? `<div class="bdrow"><span class="bdk">By format</span><div class="bdf">${F.map(k => `<span>${FMT_SHORT[k]} <b>${rec(byF[k][0], byF[k][1])}</b></span>`).join('')}</div></div>` : ''}
+      ${cm ? `<div class="bdrow"><span class="bdk">Closest match</span><div class="bdc">${cm}</div></div>` : ''}</div>`; }
   function highlights(id){ // worked out from results, nothing to fill in
     const rows = standings(), pos = {}; rows.forEach((r, i) => pos[r.id] = i + 1);
     const R = {}; state.players.forEach(p => { const l = parseFloat(p.level); R[p.id] = 1500 + (isNaN(l) ? 0 : (l - 3.25)*400); });
@@ -1435,7 +1496,6 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
     const sc = m => { const o = outcome(m); return setText(o.sets); };
     const L = [best && ['🏅', 'Best win', `vs <button class="plink" data-player="${best.o}">${esc(pname(best.o))}</button> (#${pos[best.o]}) · ${sc(best.m)}`],
       ups && ['⚡', 'Biggest upset', `vs <button class="plink" data-player="${ups.o}">${esc(pname(ups.o))}</button> · ${Math.round(ups.e*100)}% chance going in`],
-      maxRun >= 2 && ['🔥', 'Longest win streak', maxRun + ' in a row'],
       riv && riv[1] >= 2 && ['🤝', 'Most-played rival', `<button class="plink" data-player="${riv[0]}">${esc(pname(riv[0]))}</button> · ${riv[1]} matches`]].filter(Boolean);
     return L.length ? `<div class="card hl"><h3>Highlights</h3>${L.map(([i, t, v]) => `<div class="hlrow"><span aria-hidden="true">${i}</span><b>${t}</b><span>${v}</span></div>`).join('')}</div>` : ''; }
   function vsYou(id){ const me = typeof myPid === 'function' ? myPid() : ''; if (!me || me === id) return '';
@@ -1510,9 +1570,9 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
   function sheetScore(){
     const me = meId();
     openSheet('Report a score', me ? `<div class="grid2"><label class="field">Result<select id="s-r"><option value="w">I won</option><option value="l">I lost</option></select></label><label class="field">Opponent<select id="s-o">${playerOpts('', 'Who did you play?', me)}</select></label></div>
-      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}" max="${today()}"></label></div>${courtField('s-loc')}`
+      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}" max="${today()}"></label></div>${courtField('s-loc')}<label class="field">Note (optional)<input id="s-n" maxlength="140" placeholder="Came back from 2–5 down" autocomplete="off"></label>`
       : `<div class="grid2"><label class="field">Winner<select id="s-w">${playerOpts('', 'Who won?')}</select></label><label class="field">Loser<select id="s-l">${playerOpts('', 'Who lost?')}</select></label></div>
-      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}"></label></div>${courtField('s-loc')}`,
+      <div class="grid2"><label class="field">Score, winner's games first<input id="s-sc" placeholder="8-5  or  6-1, 3-6, 10-2  or  4-2, 4-3" autocomplete="off"></label><label class="field">Date played<input id="s-d" type="date" value="${today()}"></label></div>${courtField('s-loc')}<label class="field">Note (optional)<input id="s-n" maxlength="140" placeholder="Came back from 2–5 down" autocomplete="off"></label>`,
       root => {
         const v = id => (root.querySelector('#' + id) || {value: ''}).value.trim(), sc = v('s-sc'), d = v('s-d') || today();
         let w, l; if (me) { const o = v('s-o'); if (!o) return {err: ''}; [w, l] = v('s-r') === 'l' ? [o, me] : [me, o]; } else { w = v('s-w'); l = v('s-l'); }
@@ -1521,12 +1581,13 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
         if (!sc) return {err: ''};
         const sets = parseSets(sc.replace(/\btb\b/ig, '')); if (!sets) return {err: 'Type the score like 8-5, or 6-1, 3-6, 10-2, or 4-2, 4-3 for mini tennis.'};
         const o = outcome({a: w, b: l, score: {sets}}); if (!o || o.w !== w) return {err: 'Write the score from the winner\'s side (winner\'s games first), like 8-5.'};
-        const loc = clean(v('s-loc')) || 'McFetridge', base = `${pname(w)} over ${pname(l)}\n${sets.map(([a, b]) => a + '-' + b).join(', ')}\n${mdy(d)}`, msg = base + (isMcF(loc) ? '' : '\nat ' + loc);
+        const loc = clean(v('s-loc')) || 'McFetridge', nt = clean(v('s-n')).slice(0, 140), base = `${pname(w)} over ${pname(l)}\n${sets.map(([a, b]) => a + '-' + b).join(', ')}\n${mdy(d)}`, msg = base + (isMcF(loc) ? '' : '\nat ' + loc) + (nt ? '\n“' + nt + '”' : '');
         const dup = LV.reports.some(r => r.status !== 'removed' && r.d === d && [r.w, r.l].sort().join() === [w, l].sort().join());
         if (dup && !art) return {err: 'That match is already reported for ' + mdy(d) + '.'};
         const other = w === me ? l : w;
         return {msg, data: {t: 'score', w, l, d}, goL: 'Post score', goNote: 'Counts right away. ' + first(state.players.find(x => x.id === other) || {name: ''}) + ' can dispute it if it’s wrong.', done: 'Posted! The standings are updated.',
-          go: () => liveAdd('reports', {by: me, uid: FBL.user.uid, w, l, sc: sets.map(([a, b]) => a + '-' + b).join(', '), d, loc, status: 'confirmed', at: Date.now()}), note: 'Sign in to send it to ' + (state.league.commissioner || 'the commissioner') + '. Once it\'s approved, standings update for everyone.', apply: () => { const n0 = state.matches.length, r = applyPaste(base); if (!r.added) return r.skipped[0] || 'Could not log that score.'; if (!isMcF(loc)) state.matches.slice(n0).forEach(m => m.loc = loc); return ''; }};
+          go: async () => { const R = {by: me, uid: FBL.user.uid, w, l, sc: sets.map(([a, b]) => a + '-' + b).join(', '), d, loc, status: 'confirmed', at: Date.now()};
+            if (!nt) return liveAdd('reports', R); const e = await liveAdd('reports', Object.assign({note: nt}, R)); return e ? liveAdd('reports', R) : ''; }, note: 'Sign in to send it to ' + (state.league.commissioner || 'the commissioner') + '. Once it\'s approved, standings update for everyone.', apply: () => { const n0 = state.matches.length, r = applyPaste(base); if (!r.added) return r.skipped[0] || 'Could not log that score.'; state.matches.slice(n0).forEach(m => { if (!isMcF(loc)) m.loc = loc; if (nt) m.notes = nt; }); return ''; }};
       }, 'score');
   }
   function sheetBook(preB){
@@ -1914,7 +1975,7 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
       else { const n = PRIV && PRIV[p.id]; if (n) { p.phone = n; p.ph = 1; } else delete p.phone; }
     });
     const ids = new Set(state.players.map(p => p.id));
-    state.matches = (state.matches || []).filter(m => !m.rep).concat(LV.reports.filter(r => counts(r) && ids.has(r.w) && ids.has(r.l)).map(r => { const sets = parseSets(r.sc || ''); return sets ? Object.assign({id: 'r-' + r.id, a: r.w, b: r.l, date: r.d, score: {sets}, rep: r.id}, isMcF(r.loc) ? {} : {loc: r.loc}) : null; }).filter(Boolean));
+    state.matches = (state.matches || []).filter(m => !m.rep).concat(LV.reports.filter(r => counts(r) && ids.has(r.w) && ids.has(r.l)).map(r => { const sets = parseSets(r.sc || ''); return sets ? Object.assign({id: 'r-' + r.id, a: r.w, b: r.l, date: r.d, score: {sets}, rep: r.id}, isMcF(r.loc) ? {} : {loc: r.loc}, r.note && clean(r.note) ? {notes: clean(r.note).slice(0, 140)} : {}) : null; }).filter(Boolean));
     state.upcoming = (state.upcoming || []).filter(u => !u.live).concat(LV.courts.filter(c => c.status === 'on' && ids.has(c.a)).map(c => { const u = {id: 'c-' + c.id, live: c.id, date: c.date, time: c.time, dur: c.dur || 1, a: c.a, loc: c.loc || 'McFetridge'}; if (c.b) u.b = c.b; if (c.note) u.note = c.note; return u; }));
   }
   function splitState(){ const pub = JSON.parse(JSON.stringify(state)), ph = {};
