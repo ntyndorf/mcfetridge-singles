@@ -817,6 +817,16 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
 .meform .row,.card .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .mck{display:flex;gap:8px;align-items:flex-start;font-size:14px;margin:6px 0}.mck input{margin-top:3px;flex:none}
 .card .fpick{margin:4px 0}
+.board.slim .board-top{padding:12px 16px 10px}.board.slim h1{font-size:24px;line-height:1.1;margin:0}.board.slim .chips,.board.slim .ticker,.board.slim .toprow{display:none}.board.slim .gamelink{margin-top:0}
+.statline{display:grid;grid-template-columns:repeat(3,1fr);margin:12px 0;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.statline div{display:grid;justify-items:center;gap:1px;padding:10px 4px}.statline div+div{border-left:1px solid var(--line)}.statline b{font:700 22px var(--display)}.statline span{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.style{margin:4px 0 0;font-size:13px;color:var(--muted)}.achip.more{color:var(--muted);border-color:var(--line)}
+.h2hb{font:600 11px var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:0 6px;margin-left:4px}
+.segs{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.seg label{position:relative;cursor:pointer}.seg input,.pills input{position:absolute;opacity:0;width:1px!important;height:1px;margin:0;pointer-events:none}
+.seg span{display:block;padding:6px 12px;font-size:13px;color:var(--ink)}.seg label+label span{border-left:1px solid var(--line)}.seg input:checked+span{background:var(--court);color:#fff}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.pills label{cursor:pointer;position:relative}.pills span{display:block;padding:6px 12px;border:1px solid var(--line);border-radius:99px;font-size:13px;color:var(--ink)}.pills input:checked+span{background:var(--court);border-color:var(--court);color:#fff}
+.seg input:focus-visible+span,.pills input:focus-visible+span{outline:2px solid var(--court);outline-offset:1px}
 .opens .mck input{width:auto;margin:3px 0 0}.opens .mck{color:var(--ink)}
 .nomp{color:var(--muted);font-size:12px}
 details.med{padding:0}details.med>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;cursor:pointer}
@@ -840,8 +850,8 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
   const PH0 = {}; state.players.forEach(p => { if (p.phone) { PH0[p.id] = p.phone; p.ph = 1; } });
   let art = null, dirty = false, tab = 'standings', editing = null, saving = '', viewPlayer = null, moreOpen = false;
   let newsHidden = (() => { try { return localStorage.getItem('mws-news-hidden') || ''; } catch(_) { return ''; } })();
-  const PRIMARY = ['me', 'standings', 'upcoming', 'results'];
-  try { const h = location.hash.slice(1); if (['me','standings','upcoming','results','awards','h2h','rules','admin'].includes(h)) tab = h; else if (/^p-[a-z0-9]+$/.test(h)) { tab = 'player'; viewPlayer = h.slice(2); } } catch(e){}
+  const PRIMARY = ['me', 'standings', 'upcoming', 'results', 'rules'];
+  try { const h = location.hash.slice(1); if (['me','standings','upcoming','results','rules','admin'].includes(h)) tab = h; else if (h === 'awards' || h === 'h2h') tab = 'standings'; else if (/^p-[a-z0-9]+$/.test(h)) { tab = 'player'; viewPlayer = h.slice(2); } } catch(e){}
   const app = document.getElementById('app');
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const uid = () => Math.random().toString(36).slice(2, 9);
@@ -1040,7 +1050,6 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
       const both = (c.q.free || []).filter(k => (p0.free || []).includes(k)), bothTxt = both.length ? 'both free ' + freeText(both.slice(0, 2)).replace(/ · /g, ', ') : '';
       const why = [c.n ? `played ${c.n}×` : 'haven\'t played yet', c.l != null ? 'NTRP ' + (c.q.level || c.l) : '', bothTxt || (c.q.avail ? 'usually ' + c.q.avail : '')].filter(Boolean).join(' · ');
       return `<div class="row2"><button class="plink" data-player="${c.q.id}">${esc(c.q.name)}</button><span class="why">${esc(why)}${(() => { const h = smsHref(c.q, `Hey ${first(c.q)}! Want to get a match in this week? (McFetridge league)`); return h ? ` · <a class="smslink" href="${esc(h)}" target="_top" data-sms="${esc(first(c.q))}">Text</a>` : ''; })()}</span></div>`; }).join('')}</div>
-      ${rest.length ? `<p class="hint" style="margin:0">Also haven't played: ${rest.map(q => `<button class="plink" data-player="${q.id}">${esc(q.name)}</button>`).join(', ')}</p>` : ''}
       </div>`;
   }
 
@@ -1056,31 +1065,23 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     const list = mine.map(m => {
       const o = outcome(m), won = o.w === id, opp = won ? o.l : o.w;
       const score = o.ff ? (won ? 'Won by forfeit' : 'Forfeit') : setText(won ? o.sets : o.sets.map(([a,b]) => [b,a]));
-      return `<div class="match"><div class="vs"><span class="wl ${won?'W':'L'}">${won?'W':'L'}</span>vs <button class="plink" data-player="${opp}">${esc(pname(opp))}</button></div><div class="result">${score}${o.close && !won ? ' <span class="pill tb">Close</span>' : ''}${o.ret ? ' <span class="pill">Retired</span>' : ''}${ok.has(m.id) ? '' : ' <span class="pill">Rematch · no pts</span>'}${locPill(m)}<br><span class="hint">${esc(fmtDate(m.date))}</span>${m.notes ? `<span class="note">“${esc(m.notes)}”</span>` : ''}</div></div>`;
+      const hh = h[opp] || {w: 0, l: 0, n: 0};
+      return `<div class="match"><div class="vs"><span class="wl ${won?'W':'L'}">${won?'W':'L'}</span>vs <button class="plink" data-player="${opp}">${esc(pname(opp))}</button>${hh.n > 1 ? ` <span class="h2hb">${hh.w}–${hh.l}</span>` : ''}</div><div class="result">${score}${o.close && !won ? ' <span class="pill tb">Close</span>' : ''}${o.ret ? ' <span class="pill">Retired</span>' : ''}${ok.has(m.id) ? '' : ' <span class="pill">Rematch · no pts</span>'}${locPill(m)}<br><span class="hint">${esc(fmtDate(m.date))}</span>${m.notes ? `<span class="note">“${esc(m.notes)}”</span>` : ''}</div></div>`;
     }).join('');
     return `<button class="back" data-tab="standings">← Standings</button>
       <div><h2>${avatar(id,'lg')}${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}${p.level ? `<span class="lvl">NTRP ${esc(p.level)}</span>` : ''}${streakTag(id)}</h2>
-        ${(() => { const held = awards().filter(a => a.ids.includes(id)); return held.length ? `<div class="chipsrow">${held.map(a => `<span class="achip">${icon(a.t)}${esc(a.t)}</span>`).join('')}</div>` : ''; })()}
+        ${(() => { const held = awards().filter(a => a.ids.includes(id)); return held.length ? `<div class="chipsrow">${held.slice(0, 2).map(a => `<span class="achip">${icon(a.t)}${esc(a.t)}</span>`).join('')}${held.length > 2 ? `<span class="achip more" title="${esc(held.slice(2).map(a => a.t).join(', '))}">+${held.length - 2} more</span>` : ''}</div>` : ''; })()}
         ${mine.length ? `<div class="formline">${formOf(id)}<span>Current streak: <b>${esc(curStreak(id))}</b></span></div>` : ''}
-        ${(() => { const pr = p.prof || {}; const chips = [pr.plays, pr.bh ? pr.bh + ' backhand' : '', pr.shot ? 'Favorite shot: ' + pr.shot : '', pr.pro ? 'Favorite pro: ' + pr.pro : ''].filter(Boolean);
-          (p.open || []).forEach(k => { const o = OPENL.find(x => x[0] === k); if (o) chips.push('Open to ' + o[1].toLowerCase()); });
-          return (chips.length ? `<div class="about">${chips.map(c => `<span>${esc(c)}</span>`).join('')}</div>` : '') + (pr.bio ? `<p class="bio">“${esc(pr.bio)}”</p>` : ''); })()}
+        ${(() => { const pr = p.prof || {}; const bits = [pr.plays, pr.bh ? (pr.bh === 'One-handed' ? '1H' : '2H') + ' backhand' : ''].filter(Boolean), op = (p.open || []).map(k => (OPENL.find(x => x[0] === k) || [0, ''])[1].toLowerCase()).filter(Boolean);
+          if (op.length) bits.push('open to ' + op.join(', '));
+          return (pr.bio ? `<p class="bio">“${esc(pr.bio)}”</p>` : '') + (bits.length ? `<p class="style">${esc(bits.join(' · '))}</p>` : ''); })()}
         ${(p.free || []).length ? `<p class="avail"><span>Usually free:</span> ${esc(freeText(p.free))}</p>` : ''}${p.avail ? `<p class="avail"><span>${(p.free || []).length ? 'Note:' : 'Usually available:'}</span> ${esc(p.avail)}</p>` : ''}<p class="sub">${r.mp ? `Ranked #${rank} of ${rows.length}` : 'No counted matches yet'}</p>
         ${(() => { const h = smsHref(p, `Hey ${first(p)}! Want to get a match in this week? (McFetridge league)`); return h ? `<a class="textbtn" href="${esc(h)}" target="_top" data-sms="${esc(first(p))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg>Text ${esc(first(p))}</a>` : ''; })()}${!FBL.user && p.ph ? `<button type="button" class="link" data-acct="1">Sign in to text ${esc(first(p))}</button>` : ''}${myPid() === p.id ? `<div class="pactions"><button class="link" data-tab="me">Edit my profile</button><button class="link" data-tab="me" data-jump="me-free">Edit my free times</button></div>` : art ? `<div class="pactions"><button class="link" data-profile="${p.id}">Update profile</button><button class="link" data-sheet="free" data-pid="${p.id}">Update free times</button></div>` : ''}</div>
       ${vsYou(id)}
-      <div class="statrow">
-        <div class="stat"><b>${r.pts}</b><span>Points</span></div>
-        <div class="stat"><b>${r.w}–${r.l}</b><span>Record</span></div>
-        <div class="stat"><b>${r.mp ? Math.round(r.wp*100)+'%' : '—'}</b><span>Win %</span></div>
-        <div class="stat"><b>${r.gw + r.gl ? Math.round(r.gp*100)+'%' : '—'}</b><span>Games won</span></div>
-      </div>
-      <p class="statsub">${r.opp} different opponent${r.opp===1?'':'s'} · ${close} close loss${close===1?'':'es'}</p>
+      <div class="statline"><div><b>${r.pts}</b><span>Points</span></div><div><b>${r.w}–${r.l}</b><span>Record</span></div><div><b>${r.mp ? Math.round(r.wp*100)+'%' : '—'}</b><span>Win %</span></div></div>
       ${highlights(id)}
-      ${Object.keys(h).length ? `<section class="logday"><header>Head to head</header>
-        ${Object.entries(h).sort((a,b) => b[1].n - a[1].n).map(([o,e]) => `<div class="h2hrow"><button class="plink" data-player="${o}">${esc(pname(o))}</button><span class="pl">${e.n} played</span><span class="rec" style="color:${e.w > e.l ? 'var(--win)' : e.w < e.l ? 'var(--loss)' : 'var(--ink)'}">${e.w}–${e.l}</span></div>`).join('')}
-      </section>` : ''}
       ${playNext(id, h, rank, rows)}
-      <section class="logday"><header>Match history</header>${list || '<div class="match"><div class="hint">No matches logged yet.</div><div></div></div>'}</section>`;
+      <section class="logday"><header>Matches</header>${list || '<div class="match"><div class="hint">No matches logged yet.</div><div></div></div>'}</section>`;
   }
 
   let h2hA = '', h2hB = '';
@@ -1152,9 +1153,9 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
   }
   function renderUpcoming(){
     const list = upcomingList();
-    return `<div><h2>Upcoming matches</h2><p class="sub">Open courts need an opponent. Tap Claim it.</p></div><button class="btn" data-sheet="book" style="margin:0 0 12px">Post a court</button>${pendHtml('book')}${pendHtml('claim')}
+    return `<div><h2>Courts</h2><p class="sub">Open courts need an opponent. Tap Claim it.</p></div><button class="btn" data-sheet="book" style="margin:0 0 12px">Post a court</button>${pendHtml('book')}${pendHtml('claim')}
       ${list.length ? `<section class="logday">${list.map(upRow).join('')}</section>` : `<div class="empty">Nothing booked yet. Book a court on the McFetridge site, then tap Post a court.</div>`}
-      ${freeBoard()}`;
+      `;
   }
 
   function renderRules(){
@@ -1164,16 +1165,16 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     const items = [
       ['The idea', `${window_}Set up your own matches with anyone in the league, as often as you want. There's no schedule: you find an opponent, book a court, play, and report the score. Every reported match counts toward the standings.`],
       ['Find a match', `<ul>
-        <li>Check <b>Who's free</b> on the Upcoming tab, or <b>Play next</b> on your player page for good matchups you haven't played yet.</li>
+        <li>Open someone's player page to see when they're usually free, or check <b>Play next</b> on yours for good matchups.</li>
         <li>Sign in and text someone from their player page, or post in the group chat.</li>
         <li>If someone asks you to play, reply within a day, even if it's a no.</li></ul>`],
       ['Book a court', `<ul>
         <li>Book on the ${book}. Courts open 6 days ahead at 7am and are paid in full when you book. You need a Chicago Park District account.</li>
         <li><b>Courts at peak times go fast!</b> Weeknight evenings and weekends fill up quickly, so book as soon as they open at 7am.</li>
-        <li>Tap <b>Post a court</b> on the Upcoming tab right away. It shows up as an open court.</li>
+        <li>Tap <b>Post a court</b> on the Courts tab right away. It shows up as an open court.</li>
         <li>Other indoor courts are fine if you both agree. Split the cost 50/50.</li></ul>`],
       ['Claim a court', `<ul>
-        <li>First to claim it gets it. Tap <b>Claim it</b> on the Upcoming tab.</li>
+        <li>First to claim it gets it. Tap <b>Claim it</b> on the Courts tab.</li>
         <li>Confirm with the booker, then pay them $16 the same day.</li></ul>`],
       ['Cost', `No league fee. The only cost is the court: $31.37 an hour at McFetridge, or $15.69 each. Round up: the player who didn't book pays the booker $16, a small thank-you for grabbing the court.`],
       ['Match day', `<ul>
@@ -1447,7 +1448,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
   }
   function sheetBook(preB){
     const me = meId();
-    openSheet('Post a court', `<p class="hint" style="margin:0">Booked a court on the McFetridge site? Post it here so it shows on the Upcoming tab. Leave the opponent empty and anyone can claim it.</p>
+    openSheet('Post a court', `<p class="hint" style="margin:0">Leave the opponent empty to make it an open court.</p>
       <div class="grid2"><label class="field">Booked by${whoSel('b-a', '', 'Who booked it?')}</label><label class="field">Opponent<select id="b-b"><option value="">Open court (needs an opponent)</option>${state.players.map(p => `<option value="${p.id}" ${preB === p.id ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}</select></label></div>
       <div class="grid2"><label class="field">Date<input id="b-d" type="date" value="${today()}" min="${today()}"></label><label class="field">Start time<input id="b-t" type="time" step="900"></label></div>
       <div class="grid2"><label class="field">Length<select id="b-l"><option value="1">1 hour</option><option value="2">2 hours</option></select></label><label class="field">Location<input id="b-loc" value="McFetridge" maxlength="40"></label></div>
@@ -1458,7 +1459,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
         if (d < today()) return {err: 'That date has already passed.'};
         const msg = `🎾 Court booked: ${pname(a)} · ${mdy(d)} ${fmtTime(t)} · ${dur} hr · ${loc} · ${b ? 'vs ' + pname(b) : 'open court'}${nt ? ' · ' + nt : ''}`;
         const u = {date: d, time: t, dur, a, loc}; if (b) u.b = b; if (nt) u.note = nt;
-        return {msg, data: Object.assign({t: 'book'}, u), goL: 'Post court', done: b ? 'Posted! It’s on the Upcoming tab.' : 'Posted! It’s on the Upcoming tab as an open court.', go: () => liveAdd('courts', {uid: FBL.user.uid, a, b: b || '', date: d, time: t, dur, loc, note: nt, status: 'on', at: Date.now()}), apply: () => { addUpcoming(u); return ''; }};
+        return {msg, data: Object.assign({t: 'book'}, u), goL: 'Post court', done: b ? 'Posted! It’s on the Courts tab.' : 'Posted! It’s on the Courts tab as an open court.', go: () => liveAdd('courts', {uid: FBL.user.uid, a, b: b || '', date: d, time: t, dur, loc, note: nt, status: 'on', at: Date.now()}), apply: () => { addUpcoming(u); return ''; }};
       }, 'book');
   }
   function addUpcoming(u){ const x = Object.assign({id: uid()}, u); delete x.t; if (x.b == null || x.b === '') delete x.b; state.upcoming = (state.upcoming || []).concat(x); }
@@ -1495,12 +1496,10 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     const opt = (v, list) => list.map(x => `<option ${v === x ? 'selected' : ''}>${x}</option>`).join('');
     openSheet('Update profile · ' + p.name, `<div class="grid2"><label class="field">Plays<select id="p-plays"><option value=""></option>${opt(pr.plays, ['Righty', 'Lefty'])}</select></label>
       <label class="field">Backhand<select id="p-bh"><option value=""></option>${opt(pr.bh, ['One-handed', 'Two-handed'])}</select></label></div>
-      <div class="grid2"><label class="field">Favorite shot<input id="p-shot" maxlength="40" value="${esc(pr.shot || '')}" placeholder="Inside-out forehand"></label>
-      <label class="field">Favorite pro<input id="p-pro" maxlength="40" value="${esc(pr.pro || '')}" placeholder="Alcaraz"></label></div>
       <label class="field">One-line bio<input id="p-bio" maxlength="120" value="${esc(pr.bio || '')}" placeholder="Picked up a racquet again last summer"></label>`,
       root => {
-        const vals = {}; PROF.forEach(([k]) => vals[k] = clean(root.querySelector('#p-' + k).value));
-        const msg = `🎾 Profile: ${p.name} — ` + PROF.map(([k, L]) => L + ': ' + (vals[k] || '-')).join(' · ');
+        const vals = {}; PROF.forEach(([k]) => { const e = root.querySelector('#p-' + k); vals[k] = e ? clean(e.value) : ''; });
+        const msg = `🎾 Profile: ${p.name} — ` + PROF.filter(([k]) => k !== 'shot' && k !== 'pro').map(([k, L]) => L + ': ' + (vals[k] || '-')).join(' · ');
         return {msg, data: {t: 'profile', n: p.id, vals}, note: 'Shows on your player page once it\'s added.', apply: () => { if (LV.profiles[p.id]) { liveSet('profiles', p.id, vals); return ''; } setProf(p, vals); baseEdited(p); return ''; }};
       }, 'profile');
   }
@@ -1556,13 +1555,13 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     RAT = null;
     const L = state.league, tip = safeUrl(L.tipUrl);
     const upN = upcomingList().length;
-    const tabs = (FBL.user ? [['me', meTabLabel()]] : []).concat([['standings','Standings'],['upcoming', upN ? `Upcoming (${upN})` : 'Upcoming'],['results','Results'],['awards','Awards'],['h2h','Head to head'],['rules','Rules']]).concat(art ? [['admin','Commissioner']] : []);
+    const tabs = (FBL.user ? [['me', meTabLabel()]] : []).concat([['standings','Standings'],['upcoming', upN ? `Courts (${upN})` : 'Courts'],['results','Results'],['rules','Rules']]).concat(art ? [['admin','Commissioner']] : []);
     if (tab !== 'player' && !tabs.some(t => t[0] === tab)) tab = 'standings';
     const body = tab === 'me' ? renderMe() : tab === 'player' ? renderPlayer(viewPlayer) : tab === 'standings' ? renderStandings() : tab === 'upcoming' ? renderUpcoming() : tab === 'awards' ? renderAwards() : tab === 'results' ? renderResults() : tab === 'h2h' ? renderH2H() : tab === 'rules' ? renderRules() : renderAdmin();
     const dates = L.startDate && L.startDate > today() ? 'Season starts ' + fmtDate(L.startDate,{month:'short',day:'numeric'}) : L.endDate ? 'Through ' + fmtDate(L.endDate,{month:'short',day:'numeric'}) : '';
     const span = L.startDate || L.endDate ? `<span>${esc(fmtDate(L.startDate,{month:'short',day:'numeric'}) || 'Now')} – ${esc(fmtDate(L.endDate,{month:'short',day:'numeric'}) || 'Spring')}</span>` : '';
     app.innerHTML = `
-      <header class="board">
+      <header class="board${tab === 'standings' ? '' : ' slim'}">
         <div class="baseline"></div>
         <div class="board-top">
           ${L.draft ? '<div class="toprow"><span class="draft">Draft · feedback welcome</span></div>' : ''}
@@ -1575,7 +1574,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
       ${meBar()}
       ${L.news && newsHidden !== L.news ? `<p class="news"><button type="button" class="newsx" data-newsx="1" aria-label="Hide this note">×</button><b>What's new${L.newsDate ? ' · ' + esc(fmtDate(L.newsDate,{month:'short',day:'numeric'})) : ''}:</b> ${esc(L.news)}</p>` : ''}
       <nav class="tabs" role="tablist">${tabs.map(([k,v]) => `<button class="tab${PRIMARY.includes(k) ? '' : ' xtra'}" role="tab" aria-selected="${tab===k || (tab==='player' && k==='standings')}" data-tab="${k}">${v}</button>`).join('')}${(() => {
-        const sec = tabs.filter(t => !PRIMARY.includes(t[0])), cur = sec.find(t => t[0] === tab);
+        const sec = tabs.filter(t => !PRIMARY.includes(t[0])), cur = sec.find(t => t[0] === tab); if (!sec.length) return '';
         return `<button class="tab more" aria-haspopup="true" aria-expanded="${moreOpen}" aria-selected="${!!cur}" data-more="1">More <span aria-hidden="true">▾</span></button>`
           + (moreOpen ? `<div class="moremenu" role="menu">${sec.map(([k,v]) => `<button role="menuitem" class="${tab === k ? 'on' : ''}" data-tab="${k}">${v}</button>`).join('')}</div>` : '');
       })()}</nav>
@@ -1927,13 +1926,12 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
       ${mine.length || outs.length || ins.length ? `<section class="card"><h3>In progress</h3>${mine.map(x => `<div class="wrow"><span>${repLine(x)}</span><span class="hint">${x.status === 'disputed' ? 'Disputed · ' + cn + ' will sort it out' : `Waiting on ${esc(first(state.players.find(y => y.id === otherOf(x)) || {name: ''}))} · <button class="link" data-rwd="${x.id}">Withdraw</button>`}</span></div>`).join('')}${outs.map(chRow).join('')}${ins.map(chRow).join('')}</section>` : ''}
       ${fresh.length ? `<section class="card"><h3>Recent scores</h3>${fresh.map(x => `<div class="wrow"><span>${repLine(x)}</span><span>${x.by === me ? `<button class="link" data-rwd="${x.id}">Undo</button>` : `<button class="link" data-rdisp="${x.id}">Dispute</button>`}</span></div>`).join('')}</section>` : ''}
       ${myCourts.length ? `<section class="card"><h3>My courts</h3><section class="logday" style="margin:0">${myCourts.map(upRow).join('')}</section></section>` : ''}
-      <details class="card meform med" id="me-prof" ${meOpen['me-prof'] ? 'open' : ''}><summary><b>Profile</b><span>${esc([pf.nick || p.nick ? '“' + (pf.nick || p.nick) + '”' : '', pr.plays, pr.bio ? 'bio set' : ''].filter(Boolean).join(' · ') || 'Add your details')}</span></summary>
+      <details class="card meform med" id="me-prof" ${meOpen['me-prof'] ? 'open' : ''}><summary><b>Profile</b><span>${esc([pf.nick || p.nick ? '“' + (pf.nick || p.nick) + '”' : '', pr.plays, pr.bh ? (pr.bh === 'One-handed' ? '1H' : '2H') + ' backhand' : ''].filter(Boolean).join(' · ') || 'Add your details')}</span></summary>
         <div class="grid2"><label class="field">Nickname<input id="m-nick" data-md maxlength="20" value="${esc(dv('m-nick', pf.nick || p.nick || ''))}" placeholder="Optional"></label>
         <div class="field">Badge color<div class="swatches">${COLORS.map(c2 => `<label style="background:${c2}"><input type="radio" name="m-color" id="m-color-${c2.slice(1)}" data-md data-color="${c2}" ${col.toLowerCase() === c2.toLowerCase() ? 'checked' : ''} aria-label="Color ${c2}"></label>`).join('')}</div></div></div>
-        <div class="grid2"><label class="field">Plays<select id="m-plays" data-md><option value=""></option>${opt(dv('m-plays', pr.plays), ['Righty', 'Lefty'])}</select></label><label class="field">Backhand<select id="m-bh" data-md><option value=""></option>${opt(dv('m-bh', pr.bh), ['One-handed', 'Two-handed'])}</select></label></div>
-        <div class="grid2"><label class="field">Favorite shot<input id="m-shot" data-md maxlength="40" value="${esc(dv('m-shot', pr.shot))}" placeholder="Inside-out forehand"></label><label class="field">Favorite pro<input id="m-pro" data-md maxlength="40" value="${esc(dv('m-pro', pr.pro))}" placeholder="Alcaraz"></label></div>
         <label class="field">One-line bio<input id="m-bio" data-md maxlength="120" value="${esc(dv('m-bio', pr.bio))}" placeholder="Picked up a racquet again last summer"></label>
-        <div class="field">Also open to<div class="opens">${OPENL.map(([k, v]) => `<label class="mck"><input type="checkbox" id="m-open-${k}" data-md data-open="${k}" ${dc('m-open-' + k, (pf.open || []).includes(k)) ? 'checked' : ''}> ${v}</label>`).join('')}</div></div>
+        <div class="field">Style<div class="segs"><span class="seg">${['Righty', 'Lefty'].map(x => `<label><input type="radio" name="m-plays" id="m-plays-${x}" data-md data-v="${x}" ${dv('m-plays', pr.plays) === x ? 'checked' : ''}><span>${x}</span></label>`).join('')}</span><span class="seg">${[['One-handed', '1H backhand'], ['Two-handed', '2H backhand']].map(([x, l]) => `<label><input type="radio" name="m-bh" id="m-bh-${x}" data-md data-v="${x}" ${dv('m-bh', pr.bh) === x ? 'checked' : ''}><span>${l}</span></label>`).join('')}</span></div></div>
+        <div class="field">Open to<div class="pills">${OPENL.map(([k, v]) => `<label><input type="checkbox" id="m-open-${k}" data-md data-open="${k}" ${dc('m-open-' + k, (pf.open || []).includes(k)) ? 'checked' : ''}><span>${v}</span></label>`).join('')}</div></div>
         <div class="row"><button class="btn" data-msave="prof">Save</button><span class="hint" id="ms-prof"></span></div></details>
       <details class="card meform med" id="me-free" ${meOpen['me-free'] ? 'open' : ''}><summary><b>Free times</b><span>${esc(freeText(p.free || []) || 'Not set')}</span></summary>
         <div class="fpick sheetgrid"><span></span>${FSLOTS.map(([, L]) => `<span class="h">${L.slice(0, 3)}</span>`).join('')}${FDAYS.map(([d, D]) => `<span class="d">${D}</span>${FSLOTS.map(([k, L]) => `<label><input type="checkbox" data-mfk="${d}-${k}" ${fr.has(d + '-' + k) ? 'checked' : ''} aria-label="${D} ${L}"></label>`).join('')}`).join('')}</div>
@@ -1949,7 +1947,8 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     const me = myPid(); if (!me) return; const v = id => { const e = document.getElementById(id); return e ? clean(e.value) : ''; }, msg = document.getElementById('ms-' + k), say = t => { if (msg) msg.textContent = t; };
     btn.disabled = true; let err = '';
     if (k === 'prof') { const c = document.querySelector('input[name="m-color"]:checked');
-      err = await liveSet('profiles', me, {uid: FBL.user.uid, nick: v('m-nick'), color: c ? c.dataset.color : '', plays: v('m-plays'), bh: v('m-bh'), shot: v('m-shot'), pro: v('m-pro'), bio: v('m-bio'), open: [...document.querySelectorAll('input[data-open]')].filter(x => x.checked).map(x => x.dataset.open)});
+      const rv = n => { const x = document.querySelector('input[name="' + n + '"]:checked'); return x ? x.dataset.v : ''; };
+      err = await liveSet('profiles', me, {uid: FBL.user.uid, nick: v('m-nick'), color: c ? c.dataset.color : '', plays: rv('m-plays'), bh: rv('m-bh'), shot: '', pro: '', bio: v('m-bio'), open: [...document.querySelectorAll('input[data-open]')].filter(x => x.checked).map(x => x.dataset.open)});
       Object.keys(meDraft).filter(x => /^m-(nick|color|plays|bh|shot|pro|bio|open)/.test(x)).forEach(x => delete meDraft[x]); }
 
     if (k === 'free') { const keys = [...document.querySelectorAll('input[data-mfk]')].filter(b => b.checked).map(b => b.dataset.mfk);
@@ -2090,7 +2089,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     if (d.rwd) { if (confirm('Remove this score? It stops counting.')) run(liveUpd('reports', d.rwd, {status: 'removed', doneAt: Date.now()}), 'Removed.'); return; }
     if (d.rok) { run(liveUpd('reports', d.rok, {status: 'confirmed', doneAt: Date.now(), doneBy: 'commissioner'}), 'Counted.'); return; }
     if (d.repx) { if (confirm('Remove this score? It stops counting for everyone.')) run(liveUpd('reports', d.repx, {status: 'removed', doneAt: Date.now(), doneBy: FBL.admin ? 'commissioner' : 'player'}), 'Removed.'); return; }
-    if (d.cxc) { if (confirm('Cancel this court? It comes off the Upcoming tab.')) run(liveUpd('courts', d.cxc, {status: 'cancelled', doneAt: Date.now()}), 'Cancelled.'); return; }
+    if (d.cxc) { if (confirm('Cancel this court? It comes off the Courts tab.')) run(liveUpd('courts', d.cxc, {status: 'cancelled', doneAt: Date.now()}), 'Cancelled.'); return; }
     if (d.drop) { if (confirm('Drop out of this court? It goes back to being an open court.')) run(liveUpd('courts', d.drop, {b: '', claimAt: Date.now()}), 'You’re off that court.'); return; }
     if (d.chok) { run(liveUpd('challenges', d.chok, {status: 'accepted', doneAt: Date.now()}), 'Accepted! Agree on a time, then one of you books and posts the court.'); return; }
     if (d.chno) { const why = prompt('Optional: a quick note back (like “Away this week”)') || ''; run(liveUpd('challenges', d.chno, {status: 'declined', doneAt: Date.now(), reply: clean(why).slice(0, 120)}), 'Sent.'); return; }
@@ -2098,7 +2097,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     if (d.bookw) { sheetBook(d.bookw); return; }
     if (d.unclaim) { if (confirm('Unlink ' + pname(d.unclaim) + '? Whoever picked it will have to pick their player again.')) run((async () => { try { await FBL.F.deleteDoc(FBL.F.doc(FBL.db, 'claims', d.unclaim)); delete LV.claims[d.unclaim]; liveRender(); return ''; } catch(_) { return 'Couldn’t unlink that player.'; } })(), 'Unlinked.'); return; }
   });
-  const keepDraft = e => { const t = e.target; if (!t || !t.closest || !t.closest('.meform')) return; if (t.dataset.mfk) { meDraft.free = [...document.querySelectorAll('input[data-mfk]')].filter(x => x.checked).map(x => x.dataset.mfk); return; } if (t.name === 'm-color') { meDraft['m-color'] = t.dataset.color; return; } if (t.id) meDraft[t.id] = t.type === 'checkbox' ? t.checked : t.value; };
+  const keepDraft = e => { const t = e.target; if (!t || !t.closest || !t.closest('.meform')) return; if (t.dataset.mfk) { meDraft.free = [...document.querySelectorAll('input[data-mfk]')].filter(x => x.checked).map(x => x.dataset.mfk); return; } if (t.name === 'm-color') { meDraft['m-color'] = t.dataset.color; return; } if (t.name === 'm-plays' || t.name === 'm-bh') { meDraft[t.name] = t.dataset.v; return; } if (t.id) meDraft[t.id] = t.type === 'checkbox' ? t.checked : t.value; };
   document.addEventListener('input', keepDraft); document.addEventListener('change', keepDraft);
   document.addEventListener('change', e => { const s2 = e.target.closest && e.target.closest('select[data-fb-me]'); if (s2) fbAct('me', s2); });
   render();
