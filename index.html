@@ -1155,7 +1155,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
   function renderUpcoming(){
     const list = upcomingList();
     return `<div><h2>Courts</h2><p class="sub">Open courts need an opponent. Tap Claim it.</p></div><button class="btn" data-sheet="book" style="margin:0 0 12px">Post a court</button>${pendHtml('book')}${pendHtml('claim')}
-      ${list.length ? `<section class="logday">${list.map(upRow).join('')}</section>` : `<div class="empty">Nothing booked yet. Book a court on the McFetridge site, then tap Post a court.</div>`}
+      ${list.length ? `<section class="logday">${list.map(upRow).join('')}</section>` : `<div class="empty">Nothing booked yet. Book a court, then tap Post a court.</div>`}
       `;
   }
 
@@ -1165,10 +1165,9 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     const book = `<a class="inl" href="https://mcfetridgesportscenter.com/tennis/book-court-time" target="_blank" rel="noopener">McFetridge booking page</a>`, cm = L.commissioner ? esc(L.commissioner) : 'the commissioner';
     const items = [
       ['Courts and cost', `<ul>
-        <li>Book on the ${book} (Chicago Park District account needed). Courts open 6 days ahead at 7am, and peak times go fast.</li>
-        <li>Post it on the <b>Courts</b> tab. On an open court, the first to tap <b>Claim it</b> gets it.</li>
-        <li>A court is $31.37 an hour. The player who didn't book pays the booker <b>$16</b> the day you play.</li>
-        <li>Another indoor court is fine if you both agree. Split it 50/50.</li></ul>`],
+        <li>Play at any court you both agree on, then post it on the <b>Courts</b> tab. On an open court, the first to tap <b>Claim it</b> gets it.</li>
+        <li>Split the court cost: the player who didn't book pays the booker their half the day you play.</li>
+        <li><b>At McFetridge:</b> book on the ${book} (Chicago Park District account needed). Courts open 6 days ahead at 7am and go fast. An hour is $31.37, so the non-booker pays $16.</li></ul>`],
       ['Format', `<ul>
         <li><b>1 hour:</b> one set to 8, tiebreak at <span style="white-space:nowrap">8–8</span>.</li>
         <li><b>2 hours:</b> one set to 10, or best of 3 (a 10-point tiebreak for the 3rd is fine).</li>
@@ -1185,14 +1184,14 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
         <li>Wrong score? Tap <b>Dispute</b> on your Me tab and ${cm} sorts it out.</li></ul>`],
       ['Match day', `<ul>
         <li>Agree on the format and who brings balls.</li>
-        <li>Check in at the front desk early. The court is given away 10 minutes after the start.</li>
+        <li>Get there early. At McFetridge, check in at the front desk: the court is given away 10 minutes after the start.</li>
         <li>Call your own lines. If you're not sure, it's in.</li></ul>`],
       ['Cancelling', `<ul>
-        <li><b>48+ hours ahead:</b> the booker emails the permit number to tenniscourtrefunds@mcfetridgesportscenter.net for a refund (minus 15%).</li>
-        <li><b>Under 48 hours or a no-show:</b> it's a forfeit, and you still owe the booker $16.</li></ul>`]
+        <li><b>48+ hours ahead:</b> no penalty. The booker cancels with the facility. At McFetridge, email the permit number to tenniscourtrefunds@mcfetridgesportscenter.net for a refund (minus 15%).</li>
+        <li><b>Under 48 hours or a no-show:</b> it's a forfeit, and you still owe the booker your half.</li></ul>`]
     ];
     return `<div><h2>League rules</h2><p class="sub">${window_}Play anyone in the league, as often as you like.</p></div>
-      <div class="qs">${[['🔎', 'Find someone', 'Challenge from their page'], ['📅', 'Book a court', '6 days ahead at 7am'], ['🎾', 'Play', 'Non-booker pays the booker $16'], ['📝', 'Post the score', 'Counts right away']].map(([i, t, d], n) => `<div><span>${i}</span><b>${n + 1}. ${t}</b><i>${d}</i></div>`).join('')}</div>
+      <div class="qs">${[['🔎', 'Find someone'], ['📅', 'Book a court'], ['🎾', 'Play'], ['📝', 'Post the score']].map(([i, t], n) => `<div><span>${i}</span><b>${n + 1}. ${t}</b></div>`).join('')}</div>
       <div class="rules2">${items.map(([k, v]) => `<details class="rl"><summary>${k}</summary><div class="rl-b">${v}</div></details>`).join('')}</div>
       ${tip ? `<p class="hint" style="margin:0;text-align:center">Enjoying the league? <a class="inl" href="${esc(tip)}" target="_blank" rel="noopener">Tip the commissioner</a> (totally optional)</p>` : ''}`;
   }
