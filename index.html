@@ -817,6 +817,18 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
 .meform .row,.card .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .mck{display:flex;gap:8px;align-items:flex-start;font-size:14px;margin:6px 0}.mck input{margin-top:3px;flex:none}
 .card .fpick{margin:4px 0}
+.opens .mck input{width:auto;margin:3px 0 0}.opens .mck{color:var(--ink)}
+.nomp{color:var(--muted);font-size:12px}
+details.med{padding:0}details.med>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;cursor:pointer}
+details.med>summary::-webkit-details-marker{display:none}details.med>summary b{font-size:15px}details.med>summary span{color:var(--muted);font-size:13px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:65%}
+details.med>summary::after{content:'›';color:var(--muted);font-size:18px;transition:transform .15s}details.med[open]>summary::after{transform:rotate(90deg)}
+details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16px;margin-right:16px}details.med>.grid2,details.med>.field,details.med>.row,details.med>.fpick,details.med>.mck{margin-top:10px}
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 14px}.qs div{display:grid;gap:2px;padding:12px;border-radius:10px;background:var(--surface);border:1px solid var(--line)}
+.qs span{font-size:20px}.qs b{font-size:14px}.qs i{font-style:normal;font-size:12.5px;color:var(--muted)}
+.rules2{display:grid;gap:8px}.rl{border-radius:10px;background:var(--surface);border:1px solid var(--line)}
+.rl>summary{list-style:none;cursor:pointer;padding:13px 16px;font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center}.rl>summary::-webkit-details-marker{display:none}
+.rl>summary::after{content:'+';color:var(--muted);font-weight:400;font-size:18px}.rl[open]>summary::after{content:'−'}
+.rl-b{padding:0 16px 14px;font-size:14px;line-height:1.55}.rl-b ul{margin:0;padding-left:18px}.rl-b li{margin:4px 0}.rl-b a.inl{color:var(--accent);font-weight:600}
 .vsyou{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;margin:12px 0;padding:10px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-size:14px}
 .hl .hlrow{display:grid;grid-template-columns:22px auto 1fr;gap:4px 8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:14px}.hl .hlrow:first-of-type{border-top:0}
 .hl .hlrow b{white-space:nowrap}.hl .hlrow>span:last-child{color:var(--muted)}
@@ -969,10 +981,10 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       <section class="srows">${rows.map((r,i) => { const pl = state.players.find(x => x.id === r.id) || {};
         return `<div class="srow"><div class="srk"><span class="rank ${r.pts>0 ? ['first','second','third'][i]||'' : ''}">${i+1}</span>${move(r.id, i+1)}</div>
           <div class="smain"><div class="sname">${avatar(r.id)}<button class="plink" data-player="${r.id}">${esc(r.name)}</button>${pl.level ? `<span class="slvl">${esc(pl.level)}</span>` : ''}${streakTag(r.id)}</div>
-          <div class="sdet">${r.mp ? `${r.w}–${r.l} · ${Math.round(r.wp*100)}%` : 'No matches yet'} ${formOf(r.id)}</div></div>
+          <div class="sdet">${r.mp ? `${r.w}–${r.l} · ${Math.round(r.wp*100)}% ${formOf(r.id)}` : '<span class="nomp">No matches yet</span>'}</div></div>
           <div class="spts">${r.pts}<span>pts</span></div></div>`; }).join('')}</section>
 
-      <div class="scorebox"><b>How scoring works</b> Win 3 · Close loss (tiebreak or 3rd set) 2 · Loss 1 · Forfeit 0 · +1 for beating a higher level · Only the first 3 matches vs the same opponent count. <button class="link" data-tab="rules" style="padding:0">Full rules</button></div>
+      <div class="scorebox"><b>Scoring</b> Win 3 · Close loss 2 · Loss 1 · Forfeit 0 · Upset +1 <button class="link" data-tab="rules" style="padding:0">Rules</button></div>
       `;
   }
 
@@ -1006,10 +1018,10 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
 
   function renderResults(){
     const rep = `<button class="btn" data-sheet="score" style="margin:0 0 14px">Report a score</button>` + pendHtml('score') + repWaiting();
-    if (!state.matches.length) return `<div><h2>Results</h2><p class="sub">Every match logged this season, newest first. A reported score counts once the opponent confirms it, or after 48 hours.</p></div>${rep}<div class="empty">No matches logged yet. Book a court, play, and report the first score.</div>`;
+    if (!state.matches.length) return `<div><h2>Results</h2><p class="sub">Newest first.</p></div>${rep}<div class="empty">No matches logged yet. Book a court, play, and report the first score.</div>`;
     const days = {}; OK = countedIds();
     state.matches.slice().sort((x,y) => (y.date||'').localeCompare(x.date||'')).forEach(m => (days[m.date || 'Undated'] = days[m.date || 'Undated'] || []).push(m));
-    return `<div><h2>Results</h2><p class="sub">Every match logged this season, newest first. A reported score counts once the opponent confirms it, or after 48 hours.</p></div>${rep}
+    return `<div><h2>Results</h2><p class="sub">Newest first.</p></div>${rep}
       ${Object.keys(days).map(d => `<section class="logday"><header>${d === 'Undated' ? 'Undated' : esc(fmtDate(d))}</header>${days[d].map(matchRow).join('')}</section>`).join('')}`;
   }
 
@@ -1029,7 +1041,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       const why = [c.n ? `played ${c.n}×` : 'haven\'t played yet', c.l != null ? 'NTRP ' + (c.q.level || c.l) : '', bothTxt || (c.q.avail ? 'usually ' + c.q.avail : '')].filter(Boolean).join(' · ');
       return `<div class="row2"><button class="plink" data-player="${c.q.id}">${esc(c.q.name)}</button><span class="why">${esc(why)}${(() => { const h = smsHref(c.q, `Hey ${first(c.q)}! Want to get a match in this week? (McFetridge league)`); return h ? ` · <a class="smslink" href="${esc(h)}" target="_top" data-sms="${esc(first(c.q))}">Text</a>` : ''; })()}</span></div>`; }).join('')}</div>
       ${rest.length ? `<p class="hint" style="margin:0">Also haven't played: ${rest.map(q => `<button class="plink" data-player="${q.id}">${esc(q.name)}</button>`).join(', ')}</p>` : ''}
-      <p class="hint" style="margin:0">Picked by who you haven't played, closest level, and closest in the standings.</p></div>`;
+      </div>`;
   }
 
   function renderPlayer(id){
@@ -1110,7 +1122,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     if (!who.length) return `<div><h2>Who's free</h2></div>${upd}<div class="empty">Nobody has added their usual free times yet. Tap Update my free times to add yours.</div>`;
     const cells = {}; let max = 0;
     FDAYS.forEach(([d]) => FSLOTS.forEach(([k]) => { const ids = who.filter(p => p.free.includes(d + '-' + k)).map(p => p.id); cells[d + '-' + k] = ids; max = Math.max(max, ids.length); }));
-    return `<div><h2>Who's free</h2><p class="sub">When people can usually play. Tap a face to open their page. The busiest slot${max > 1 ? 's are' : ' is'} outlined.</p></div>${upd}
+    return `<div><h2>Who's free</h2><p class="sub">Usual free times. Tap a face for their page.</p></div>${upd}
       <div class="fb" role="table" aria-label="Who's free by day and time"><span></span>${FSLOTS.map(([, L]) => `<span class="h">${L}</span>`).join('')}
       ${FDAYS.map(([d, D]) => `<span class="d">${D}</span>${FSLOTS.map(([k, L]) => { const ids = cells[d + '-' + k];
         return `<div class="c${max > 1 && ids.length === max ? ' hot' : ''}" aria-label="${D} ${L}: ${ids.length} free">${ids.map(id => `<button class="avbtn" data-player="${id}" title="${esc(pname(id))}" aria-label="${esc(pname(id))}">${avatar(id, 'xs')}</button>`).join('')}</div>`; }).join('')}`).join('')}</div>`;
@@ -1140,7 +1152,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   }
   function renderUpcoming(){
     const list = upcomingList();
-    return `<div><h2>Upcoming matches</h2><p class="sub">Courts players have booked. Open courts still need an opponent: tap Claim it and it's yours.</p></div><button class="btn" data-sheet="book" style="margin:0 0 12px">Post a court</button>${pendHtml('book')}${pendHtml('claim')}
+    return `<div><h2>Upcoming matches</h2><p class="sub">Open courts need an opponent. Tap Claim it.</p></div><button class="btn" data-sheet="book" style="margin:0 0 12px">Post a court</button>${pendHtml('book')}${pendHtml('claim')}
       ${list.length ? `<section class="logday">${list.map(upRow).join('')}</section>` : `<div class="empty">Nothing booked yet. Book a court on the McFetridge site, then tap Post a court.</div>`}
       ${freeBoard()}`;
   }
@@ -1158,10 +1170,10 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       ['Book a court', `<ul>
         <li>Book on the ${book}. Courts open 6 days ahead at 7am and are paid in full when you book. You need a Chicago Park District account.</li>
         <li><b>Courts at peak times go fast!</b> Weeknight evenings and weekends fill up quickly, so book as soon as they open at 7am.</li>
-        <li>Tap <b>Post a court</b> on the Upcoming tab right away with the day, time and place. Once ${cm} approves it, it shows as an open court.</li>
+        <li>Tap <b>Post a court</b> on the Upcoming tab right away. It shows up as an open court.</li>
         <li>Other indoor courts are fine if you both agree. Split the cost 50/50.</li></ul>`],
       ['Claim a court', `<ul>
-        <li>First to claim it gets it. Tap <b>Claim it</b> on the Upcoming tab and send it in.</li>
+        <li>First to claim it gets it. Tap <b>Claim it</b> on the Upcoming tab.</li>
         <li>Confirm with the booker, then pay them $16 the same day.</li></ul>`],
       ['Cost', `No league fee. The only cost is the court: $31.37 an hour at McFetridge, or $15.69 each. Round up: the player who didn't book pays the booker $16, a small thank-you for grabbing the court.`],
       ['Match day', `<ul>
@@ -1176,8 +1188,8 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       ['Out of time', `The first bell rings 5 minutes before your time is up, and you need to be off the court at the second bell. If you run out of time, whoever is ahead in games wins. If it's tied, play one deciding point and record the winner one game ahead. In mini tennis, whoever has won more sets wins; if sets are level, it's whoever is ahead in the set being played.`],
       ['Challenges', `Tap <b>Challenge</b> on anyone's player page to ask them for a match. They get it on their Me page and can accept or decline. Once you agree on a time, one of you books the court and posts it.`],
       ['Report a score', `<ul>
-        <li>Either player taps <b>Report a score</b> and posts it. The other player gets a <b>Confirm</b> button on their Me page. The score counts once they confirm, or automatically after 48 hours.</li>
-        <li>Score wrong? Tap <b>Dispute</b> instead and ${cm} sorts it out.</li>
+        <li>Either player taps <b>Report a score</b>. It counts right away.</li>
+        <li>Score wrong? Tap <b>Dispute</b> on your Me tab and ${cm} sorts it out.</li>
         <li>The score is always from the winner's side, like <b>8-5</b> or <b>6-1, 3-6, 10-2</b>. A mini tennis score looks like <b>4-2, 3-4, 4-1</b>.</li></ul>`],
       ['Points', `<ul>
         <li><b>Win:</b> 3 points</li>
@@ -1190,21 +1202,15 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       ['Cancelling', `<ul>
         <li><b>48+ hours ahead:</b> the booker emails the permit number to tenniscourtrefunds@mcfetridgesportscenter.net. McFetridge refunds it minus a 15% fee (about $4.70 an hour) within 5 business days. Do this too if nobody claims your court.</li>
         <li><b>Less than 48 hours, or a no-show:</b> it's a forfeit, and you still owe the booker your $16.</li></ul>`],
-      ['How the site updates', `<ul>
-        <li>Sign in with Google or an email link, then pick which player you are. Each player can only be picked once.</li>
-        <li>Your <b>Me</b> tab is your home base: scores to confirm, challenges, your courts, your profile, free times and phone number.</li>
-        <li>Profiles, free times and courts show up for everyone right away. Scores count once the opponent confirms them.</li>
-        <li>Your phone number only shows to signed-in players, and only if you choose to show it.</li></ul>`],
       ['Using the site', `<ul>
-        <li><b>Your player page:</b> tap your name anywhere. It shows your record, head-to-heads, awards and who to play next.</li>
-        <li><b>Who's free</b> (Upcoming tab) shows when people usually play. Keep your times current.</li>
-        <li><b>Text</b> buttons open a message to a player. If Messages doesn't open, the number pops up to copy.</li>
-        <li><b>+ Calendar</b> saves a booked match to your calendar.</li>
-        <li><b>Win odds</b> on booked matches come from NTRP level and results so far. They're just for fun and don't affect standings.</li></ul>`]
+        <li>Sign in, pick your name, and your <b>Me</b> tab has everything: scores, challenges, courts, profile, free times and phone.</li>
+        <li>Phone numbers only show to signed-in players, and only if you allow it.</li>
+        <li><b>+ Calendar</b> saves a booked match. <b>Win odds</b> are just for fun.</li></ul>`]
     ];
     if (tip) items.push(['Tip jar', `Totally optional. If you want to chip in for the upkeep: <a class="tip" href="${esc(tip)}" target="_blank" rel="noopener">Tip the commissioner${L.commissioner ? ' (' + esc(L.commissioner) + ')' : ''}</a>`]);
     return `<div><h2>League rules</h2></div>
-      <div class="rules"><dl>${items.map(([k,v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl></div>`;
+      <div class="qs">${[['🔎', 'Find someone', 'Who’s free or Challenge'], ['📅', 'Book a court', '6 days ahead, 7am'], ['🎾', 'Play', 'Non-booker pays the booker $16'], ['📝', 'Post the score', 'Counts right away']].map(([i, t, d], n) => `<div><span>${i}</span><b>${n + 1}. ${t}</b><i>${d}</i></div>`).join('')}</div>
+      <div class="rules2">${items.map(([k, v], n) => `<details class="rl" ${n === 0 ? 'open' : ''}><summary>${k}</summary><div class="rl-b">${v}</div></details>`).join('')}</div>`;
   }
 
   const FORMATS = [['pro8','8-game pro set'],['pro10','10-game pro set'],['bo3','2 out of 3 sets'],['bo3stb','2 sets + 3rd-set super tiebreak'],['fast4','Mini tennis: 2 out of 3 sets to 4 games']];
@@ -1242,7 +1248,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   function renderAdmin(){
     const L = state.league, P = state.players;
     const opts = sel => `<option value="">Choose…</option>` + P.map(p => `<option value="${p.id}" ${sel===p.id?'selected':''}>${esc(p.name)}</option>`).join('');
-    return `<div><h2>Commissioner</h2><p class="sub">Only you see this tab. Changes stay local until you save.</p></div>${liveHtml()}${FBL.subs.length ? inboxHtml() : ''}
+    return `<div><h2>Commissioner</h2><p class="sub">Only you see this tab.</p></div>${liveHtml()}${FBL.subs.length ? inboxHtml() : ''}
       <div class="card logcard"><h3>Log a match</h3>
         ${P.length < 2 ? `<p class="hint">Add at least 2 players to the roster first.</p>` : `
         <form id="log-form" style="display:grid;gap:16px">
@@ -1263,10 +1269,10 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
           ${courtField('l-loc')}
           <label class="field">Match notes (optional, everyone can see these, so be kind)<textarea id="l-notes" rows="2" maxlength="280" placeholder="Great match, came down to the wire"></textarea></label>
           <div><button class="btn" type="submit">Submit</button></div>
-          <p class="hint" id="log-msg">Scores are entered from the winner's side. A no-show or late cancel counts as a forfeit. If the opponent retired, enter the score at the time they stopped.</p>
+          <p class="hint" id="log-msg">Winner's games first. No-shows and late cancels count as forfeits.</p>
         </form>`}
       </div>
-      <div class="card"><h3>Add an upcoming match</h3>
+      <details class="card med" id="adm-up" ${meOpen['adm-up'] ? 'open' : ''}><summary><b>Add an upcoming match</b><span>Book it for a player</span></summary>
         <form id="up-form" class="grid2">
           <label class="field">Date<input type="date" id="u-date" value="${today()}"></label>
           <label class="field">Start time<input type="time" id="u-time" step="900" required></label>
@@ -1278,22 +1284,21 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
           <div><button class="btn" type="submit">Add to Upcoming</button></div>
         </form>
         <p class="hint" id="up-msg">Past dates drop off the board automatically. Once it's played, log the score as usual.</p>
-      </div>
-      <div class="card"><h3>Weekly recap</h3>
-        <p class="hint">A ready-to-send group chat message covering the last 7 days, built from what's logged.</p>
+      </details>
+      <details class="card med" id="adm-recap" ${meOpen['adm-recap'] ? 'open' : ''}><summary><b>Weekly recap</b><span>Copy for the group chat</span></summary>
         <textarea id="recap-box" class="recapbox" rows="10" readonly>${esc(recapText())}</textarea>
         <div class="row"><button class="btn" type="button" id="copy-recap">Copy recap</button><span class="hint" id="recap-msg"></span></div>
-      </div>
-      <div class="card"><h3>Paste from the chat</h3>
-        <p class="hint">Paste score posts from the group chat, plus any court claims, free times or profile updates players send you from the site. Paste several at once.</p>
+      </details>
+      <details class="card med" id="adm-paste" ${meOpen['adm-paste'] ? 'open' : ''}><summary><b>Paste from the chat</b><span>Log texted scores</span></summary>
+        <p class="hint">One score per message, like the example. Paste several at once.</p>
         <form id="paste-form" style="display:grid;gap:8px">
           <textarea id="paste-box" rows="6" placeholder="Nick T over Spencer C&#10;6-1, 3-6, 10-2 TB&#10;11/2/26" style="font:14px/1.5 var(--mono);padding:9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);resize:vertical"></textarea>
           <div><button class="btn" type="submit">Log pasted scores</button></div>
         </form>
         <div class="hint" id="paste-msg"></div>
-      </div>
+      </details>
       <div class="card"><h3>Roster (${P.length})</h3>
-        <p class="hint" style="margin:0">Phone numbers turn on the Text buttons on player pages and open courts. Anyone with the site link can see them, so only add people who are OK with that.</p>
+        <p class="hint" style="margin:0">Phone numbers only show to signed-in players. Players can update or hide their own on their Me tab.</p>
         <p class="hint" style="margin:0">In-game Cup: tick players who said yes to showing up as opponents in the game’s McFetridge Cup. They appear by initials only, starting once the game is connected to the league with sign-in. Off by default.</p>
         <form class="row" id="add-form"><input id="new-player" placeholder="Player name" autocomplete="off"><button class="btn" type="submit">Add</button></form>
         ${P.length ? `<ul class="roster">${P.map(p => `<li><span class="rname">${esc(p.name)}</span>
@@ -1436,8 +1441,8 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
         const dup = LV.reports.some(r => r.status !== 'removed' && r.d === d && [r.w, r.l].sort().join() === [w, l].sort().join());
         if (dup && !art) return {err: 'That match is already reported for ' + mdy(d) + '.'};
         const other = w === me ? l : w;
-        return {msg, data: {t: 'score', w, l, d}, goL: 'Post score', goNote: pname(other) + ' gets a Confirm button on their Me page. It counts once they confirm, or after 48 hours.', done: 'Posted! Waiting for ' + first(state.players.find(x => x.id === other) || {name: ''}) + ' to confirm.',
-          go: () => liveAdd('reports', {by: me, uid: FBL.user.uid, w, l, sc: sets.map(([a, b]) => a + '-' + b).join(', '), d, loc, status: 'pending', at: Date.now()}), note: 'Sign in to send it to ' + (state.league.commissioner || 'the commissioner') + '. Once it\'s approved, standings update for everyone.', apply: () => { const n0 = state.matches.length, r = applyPaste(base); if (!r.added) return r.skipped[0] || 'Could not log that score.'; if (!isMcF(loc)) state.matches.slice(n0).forEach(m => m.loc = loc); return ''; }};
+        return {msg, data: {t: 'score', w, l, d}, goL: 'Post score', goNote: 'Counts right away. ' + first(state.players.find(x => x.id === other) || {name: ''}) + ' can dispute it if it’s wrong.', done: 'Posted! The standings are updated.',
+          go: () => liveAdd('reports', {by: me, uid: FBL.user.uid, w, l, sc: sets.map(([a, b]) => a + '-' + b).join(', '), d, loc, status: 'confirmed', at: Date.now()}), note: 'Sign in to send it to ' + (state.league.commissioner || 'the commissioner') + '. Once it\'s approved, standings update for everyone.', apply: () => { const n0 = state.matches.length, r = applyPaste(base); if (!r.added) return r.skipped[0] || 'Could not log that score.'; if (!isMcF(loc)) state.matches.slice(n0).forEach(m => m.loc = loc); return ''; }};
       }, 'score');
   }
   function sheetBook(preB){
@@ -1791,7 +1796,8 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   const ADMIN_EMAILS = ['tyndorf99@gmail.com', 'nicktyndorf@gmail.com'];
   const FBU = m => 'https://www.gstatic.com/firebasejs/10.14.1/firebase-' + m + '.js';
   const FBL = {A: null, F: null, auth: null, db: null, user: null, me: null, admin: false, subs: [], mine: [], live: false, ready: false, err: '', msg: '', unl: []};
-  let meDraft = {};
+  let meDraft = {}, meOpen = {};
+  document.addEventListener('toggle', e => { const d = e.target; if (d && d.classList && d.classList.contains('med')) meOpen[d.id] = d.open; }, true);
   let BASE = SRC;
   const stRef = () => FBL.F.doc(FBL.db, 'league', 'state'), prRef = () => FBL.F.doc(FBL.db, 'league', 'private');
   let PRIV = null; // phone numbers from the commissioner, only for signed-in players
@@ -1887,11 +1893,11 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     return {conf: LV.reports.filter(r => r.status === 'pending' && !counts(r) && otherOf(r) === me), chIn: LV.chIn.filter(c => c.status === 'open')}; }
   const todoCount = () => { const t = todos(); return t.conf.length + t.chIn.length; };
   const meTabLabel = () => { const n = todoCount(); return n ? `Me <b class="tabn">${n}</b>` : 'Me'; };
-  function goMe(jump){ moreOpen = false; tab = 'me'; editing = null; closeSheet(); try { history.replaceState(null, '', '#me'); } catch(_) {} render(); const el = jump && document.getElementById(jump); if (el) el.scrollIntoView({block: 'start'}); else window.scrollTo(0, 0); }
+  function goMe(jump){ if (jump) meOpen[jump] = true; moreOpen = false; tab = 'me'; editing = null; closeSheet(); try { history.replaceState(null, '', '#me'); } catch(_) {} render(); const el = jump && document.getElementById(jump); if (el) el.scrollIntoView({block: 'start'}); else window.scrollTo(0, 0); }
   const repLine = r => `<b>${esc(pname(r.w))}</b> d. ${esc(pname(r.l))} · ${esc(setText(parseSets(r.sc || '') || []))} · ${esc(whenTxt(r))}${isMcF(r.loc) ? '' : ' · ' + esc(r.loc)}`;
   function repWaiting(){ const L = LV.reports.filter(r => r.status === 'pending' && !counts(r)), D = LV.reports.filter(r => r.status === 'disputed');
     if (!L.length && !D.length) return ''; const me = myPid();
-    return `<section class="logday waitc"><header>Waiting for confirmation</header>${L.map(r => `<div class="wrow"><span>${repLine(r)}</span><span class="hint">${me && otherOf(r) === me ? `<button class="btn sm" data-rconf="${r.id}">Confirm</button> <button class="link" data-rdisp="${r.id}">Dispute</button>` : me && r.by === me ? `Waiting on ${esc(first(state.players.find(x => x.id === otherOf(r)) || {name: ''}))} · <button class="link" data-rwd="${r.id}">Withdraw</button>` : 'Counts once ' + esc(first(state.players.find(x => x.id === otherOf(r)) || {name: 'the opponent'})) + ' confirms'}</span></div>`).join('')}
+    return `<section class="logday waitc"><header>Under review</header>${L.map(r => `<div class="wrow"><span>${repLine(r)}</span><span class="hint">${me && otherOf(r) === me ? `<button class="btn sm" data-rconf="${r.id}">Confirm</button> <button class="link" data-rdisp="${r.id}">Dispute</button>` : me && r.by === me ? `Waiting on ${esc(first(state.players.find(x => x.id === otherOf(r)) || {name: ''}))} · <button class="link" data-rwd="${r.id}">Withdraw</button>` : 'Counts once ' + esc(first(state.players.find(x => x.id === otherOf(r)) || {name: 'the opponent'})) + ' confirms'}</span></div>`).join('')}
       ${D.map(r => `<div class="wrow"><span>${repLine(r)}</span><span class="hint">Disputed · ${esc(state.league.commissioner || 'the commissioner')} will sort it out</span></div>`).join('')}</section>`; }
   const COLORS = ['#006778', '#1f6f9f', '#2b4c7e', '#4b4fa6', '#6b3f7a', '#9a2f55', '#c0392b', '#a5512a', '#b7791f', '#5b5f1f', '#2f6b45', '#3d6b6b', '#4a4a4a'];
   function renderMe(){
@@ -1904,6 +1910,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     const rows = standings(), rank = rows.findIndex(r => r.id === me) + 1, r = rows[rank - 1] || {pts: 0, w: 0, l: 0, mp: 0};
     const myCourts = upcomingList().filter(x => x.a === me || x.b === me);
     const mine = LV.reports.filter(x => x.by === me && (x.status === 'pending' && !counts(x) || x.status === 'disputed'));
+    const fresh = LV.reports.filter(x => x.status === 'confirmed' && (x.w === me || x.l === me) && Date.now() - (x.at || 0) < 3*864e5);
     const outs = LV.chOut.filter(c => c.status === 'open' || (c.status !== 'cancelled' && Date.now() - (c.doneAt || c.at || 0) < 7*864e5));
     const ins = LV.chIn.filter(c => c.status === 'accepted' && Date.now() - (c.doneAt || 0) < 7*864e5);
     const opt = (v, list) => list.map(x => `<option ${v === x ? 'selected' : ''}>${x}</option>`).join('');
@@ -1916,26 +1923,26 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
       ${T.conf.length || T.chIn.length ? `<section class="card todo"><h3>Needs you</h3>
         ${T.conf.map(x => `<div class="wrow"><span>${esc(pname(x.by))} reported: ${repLine(x)}</span><span><button class="btn sm" data-rconf="${x.id}">Confirm</button> <button class="link" data-rdisp="${x.id}">Dispute</button></span></div>`).join('')}
         ${T.chIn.map(c => `<div class="wrow"><span><b>${esc(pname(c.from))}</b> challenged you${c.when ? ' · ' + esc(c.when) : ''}${c.msg ? `<br><i class="hint">“${esc(c.msg)}”</i>` : ''}</span><span><button class="btn sm" data-chok="${c.id}">Accept</button> <button class="link" data-chno="${c.id}">Can't</button></span></div>`).join('')}
-        <p class="hint" style="margin:0">Scores you don't confirm or dispute count automatically after 48 hours.</p></section>` : ''}
+        </section>` : ''}
       ${mine.length || outs.length || ins.length ? `<section class="card"><h3>In progress</h3>${mine.map(x => `<div class="wrow"><span>${repLine(x)}</span><span class="hint">${x.status === 'disputed' ? 'Disputed · ' + cn + ' will sort it out' : `Waiting on ${esc(first(state.players.find(y => y.id === otherOf(x)) || {name: ''}))} · <button class="link" data-rwd="${x.id}">Withdraw</button>`}</span></div>`).join('')}${outs.map(chRow).join('')}${ins.map(chRow).join('')}</section>` : ''}
-      <section class="card"><h3>My courts</h3>${myCourts.length ? `<section class="logday" style="margin:0">${myCourts.map(upRow).join('')}</section>` : '<p class="hint" style="margin:0">Nothing booked. Post a court when you book one, or claim an open one on the Upcoming tab.</p>'}</section>
-      <section class="card meform" id="me-prof"><h3>My profile</h3><p class="hint" style="margin:0">Shows on your player page for everyone.</p>
+      ${fresh.length ? `<section class="card"><h3>Recent scores</h3>${fresh.map(x => `<div class="wrow"><span>${repLine(x)}</span><span>${x.by === me ? `<button class="link" data-rwd="${x.id}">Undo</button>` : `<button class="link" data-rdisp="${x.id}">Dispute</button>`}</span></div>`).join('')}</section>` : ''}
+      ${myCourts.length ? `<section class="card"><h3>My courts</h3><section class="logday" style="margin:0">${myCourts.map(upRow).join('')}</section></section>` : ''}
+      <details class="card meform med" id="me-prof" ${meOpen['me-prof'] ? 'open' : ''}><summary><b>Profile</b><span>${esc([pf.nick || p.nick ? '“' + (pf.nick || p.nick) + '”' : '', pr.plays, pr.bio ? 'bio set' : ''].filter(Boolean).join(' · ') || 'Add your details')}</span></summary>
         <div class="grid2"><label class="field">Nickname<input id="m-nick" data-md maxlength="20" value="${esc(dv('m-nick', pf.nick || p.nick || ''))}" placeholder="Optional"></label>
         <div class="field">Badge color<div class="swatches">${COLORS.map(c2 => `<label style="background:${c2}"><input type="radio" name="m-color" id="m-color-${c2.slice(1)}" data-md data-color="${c2}" ${col.toLowerCase() === c2.toLowerCase() ? 'checked' : ''} aria-label="Color ${c2}"></label>`).join('')}</div></div></div>
         <div class="grid2"><label class="field">Plays<select id="m-plays" data-md><option value=""></option>${opt(dv('m-plays', pr.plays), ['Righty', 'Lefty'])}</select></label><label class="field">Backhand<select id="m-bh" data-md><option value=""></option>${opt(dv('m-bh', pr.bh), ['One-handed', 'Two-handed'])}</select></label></div>
         <div class="grid2"><label class="field">Favorite shot<input id="m-shot" data-md maxlength="40" value="${esc(dv('m-shot', pr.shot))}" placeholder="Inside-out forehand"></label><label class="field">Favorite pro<input id="m-pro" data-md maxlength="40" value="${esc(dv('m-pro', pr.pro))}" placeholder="Alcaraz"></label></div>
         <label class="field">One-line bio<input id="m-bio" data-md maxlength="120" value="${esc(dv('m-bio', pr.bio))}" placeholder="Picked up a racquet again last summer"></label>
         <div class="field">Also open to<div class="opens">${OPENL.map(([k, v]) => `<label class="mck"><input type="checkbox" id="m-open-${k}" data-md data-open="${k}" ${dc('m-open-' + k, (pf.open || []).includes(k)) ? 'checked' : ''}> ${v}</label>`).join('')}</div></div>
-        <div class="row"><button class="btn" data-msave="prof">Save profile</button><span class="hint" id="ms-prof"></span></div></section>
-      <section class="card meform" id="me-free"><h3>When I'm usually free</h3><p class="hint" style="margin:0">Puts you in the Who's free grid and helps people pick a time to challenge you.</p>
+        <div class="row"><button class="btn" data-msave="prof">Save</button><span class="hint" id="ms-prof"></span></div></details>
+      <details class="card meform med" id="me-free" ${meOpen['me-free'] ? 'open' : ''}><summary><b>Free times</b><span>${esc(freeText(p.free || []) || 'Not set')}</span></summary>
         <div class="fpick sheetgrid"><span></span>${FSLOTS.map(([, L]) => `<span class="h">${L.slice(0, 3)}</span>`).join('')}${FDAYS.map(([d, D]) => `<span class="d">${D}</span>${FSLOTS.map(([k, L]) => `<label><input type="checkbox" data-mfk="${d}-${k}" ${fr.has(d + '-' + k) ? 'checked' : ''} aria-label="${D} ${L}"></label>`).join('')}`).join('')}</div>
-        <label class="field">Anything else? (optional)<input id="m-note" data-md maxlength="80" value="${esc(dv('m-note', pf.note != null ? pf.note : p.avail || ''))}" placeholder="Weeknights after 7 work best"></label>
-        <div class="row"><button class="btn" data-msave="free">Save free times</button><span class="hint" id="ms-free"></span></div></section>
-      <section class="card meform" id="me-ct"><h3>My phone number</h3>
+        <label class="field">Note (optional)<input id="m-note" data-md maxlength="80" value="${esc(dv('m-note', pf.note != null ? pf.note : p.avail || ''))}" placeholder="Weeknights after 7 work best"></label>
+        <div class="row"><button class="btn" data-msave="free">Save</button><span class="hint" id="ms-free"></span></div></details>
+      <details class="card meform med" id="me-ct" ${meOpen['me-ct'] ? 'open' : ''}><summary><b>Phone</b><span>${phone ? (show ? 'Shown to players' : 'Hidden') : 'Not added'}</span></summary>
         <label class="field">Mobile number<input id="m-phone" data-md type="tel" inputmode="tel" autocomplete="tel" maxlength="20" value="${esc(phone)}" placeholder="(312) 555-0100"></label>
-        <label class="mck"><input type="checkbox" id="m-show" data-md ${show ? 'checked' : ''}> Show my number to signed-in players so they can text me</label>
-        <p class="hint" style="margin:0">Never shown to people who aren't signed in. ${cn} can always see it.</p>
-        <div class="row"><button class="btn" data-msave="ct">Save phone settings</button><span class="hint" id="ms-ct"></span></div></section>
+        <label class="mck"><input type="checkbox" id="m-show" data-md ${show ? 'checked' : ''}> Let signed-in players see it</label>
+        <div class="row"><button class="btn" data-msave="ct">Save</button><span class="hint" id="ms-ct"></span></div></details>
       <section class="card"><h3>Account</h3><p style="margin:0">Signed in as <b>${esc(u.email || 'you')}</b>.</p><div class="row"><button class="btn ghost" data-acct="1">Switch player</button><button class="btn ghost" data-fb="out">Sign out</button></div></section>`;
   }
   async function meSave(k, btn){
@@ -1974,9 +1981,9 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   }
   function liveHtml(){ if (!FBL.admin) return '';
     const D = LV.reports.filter(r => r.status === 'disputed'), P = LV.reports.filter(r => r.status === 'pending' && !counts(r)), C = Object.values(LV.claims), M = {}; (FBL.members || []).forEach(m => M[m.id] = m);
-    return `<div class="card"><h3>Player scores${D.length ? ` · ${D.length} disputed` : ''}</h3><p class="hint" style="margin:0">Scores players post count once the opponent confirms, or after 48 hours. You can count or remove any of them. Counted ones show in Results with a Remove link.</p>
+    return `<div class="card"><h3>Player scores${D.length ? ` · ${D.length} disputed` : ''}</h3><p class="hint" style="margin:0">Disputed scores land here. Count it or remove it.</p>
       ${D.concat(P).length ? D.concat(P).map(r => `<div class="wrow"><span>${repLine(r)}<br><i class="hint">Posted by ${esc(pname(r.by))} · ${r.status === 'disputed' ? '<b>disputed by ' + esc(pname(otherOf(r))) + '</b>' : 'waiting on ' + esc(pname(otherOf(r)))}</i></span><span><button class="btn sm" data-rok="${r.id}">Count it</button> <button class="link" data-repx="${r.id}">Remove</button></span></div>`).join('') : '<p class="hint">Nothing waiting.</p>'}</div>
-      <div class="card"><h3>Linked players (${C.length} of ${state.players.length})</h3><p class="hint" style="margin:0">Who has claimed which player. If someone picked the wrong name, tap Unlink and they can pick again.</p>
+      <div class="card"><h3>Linked players (${C.length} of ${state.players.length})</h3><p class="hint" style="margin:0">Wrong name picked? Tap Unlink.</p>
       ${C.length ? `<div class="mems">${C.sort((a, b) => pname(a.id).localeCompare(pname(b.id))).map(c => { const m = (FBL.members || []).find(x => x.uid === c.uid || x.id === c.uid); return `<div><b>${esc(pname(c.id))}</b><span>${esc(m && m.email || 'signed in')} · <button class="link" data-unclaim="${esc(c.id)}">Unlink</button></span></div>`; }).join('')}</div>` : '<p class="hint">Nobody yet.</p>'}
       ${state.players.filter(x => !LV.claims[x.id]).length ? `<p class="hint" style="margin:0">Not signed in yet: ${state.players.filter(x => !LV.claims[x.id]).map(x => esc(x.name)).join(', ')}</p>` : ''}</div>`; }
   function acctChip(){
@@ -2040,7 +2047,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
   function meBar(){
     if (!FBL.ready) return FBL.err ? `<div class="mebar"><p>${esc(FBL.err)}</p></div>` : '';
     const u = FBL.user, cn = esc(state.league.commissioner || 'the commissioner');
-    if (!u) return `<div class="mebar"><p><b>Sign in</b> to post scores and courts, challenge players, and run your own profile.</p><button type="button" class="mb-go" data-acct="1">Sign in</button></div>`;
+    if (!u) return `<div class="mebar"><p><b>Sign in</b> to post scores, courts and your profile.</p><button type="button" class="mb-go" data-acct="1">Sign in</button></div>`;
     if (FBL.admin) { const nA = FBL.subs.length + LV.reports.filter(r => r.status === 'disputed').length;
       return `<div class="mebar"><p><b>Commissioner</b> · ${nA ? nA + ' thing' + (nA > 1 ? 's' : '') + ' need you' : 'nothing waiting'}</p><div class="mb-acts"><button type="button" data-tab="admin">Commissioner tab</button>${myPid() ? '<button type="button" data-tab="me">Me</button>' : ''}<button type="button" data-acct="1">Account</button></div></div>`; }
     if (tab === 'me') return '';
@@ -2075,12 +2082,12 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
     const no = e.target.closest('button[data-no]'); if (no) { reqDo(no.dataset.no, false); return; }
     const all = e.target.closest('button[data-okall]'); if (all) { approveAll(all); return; }
     const b = e.target.closest('button'); if (!b || !FBL.ready) return; const d = b.dataset, run = async (fn, ok) => { b.disabled = true; const r = await fn; b.disabled = false; if (r) toastLg(r); else if (ok) toastLg(ok); };
-    if (d.jump) { setTimeout(() => { const el = document.getElementById(d.jump); if (el) el.scrollIntoView({block: 'start'}); }, 30); }
+    if (d.jump) { meOpen[d.jump] = true; setTimeout(() => { const el0 = document.getElementById(d.jump); if (el0 && el0.tagName === 'DETAILS') el0.open = true; const el = document.getElementById(d.jump); if (el) el.scrollIntoView({block: 'start'}); }, 30); }
     if (d.chal !== undefined) { sheetChallenge(d.chal); return; }
     if (d.msave) { meSave(d.msave, b); return; }
     if (d.rconf) { run(liveUpd('reports', d.rconf, {status: 'confirmed', doneAt: Date.now()}), 'Confirmed. It counts now.'); return; }
-    if (d.rdisp) { if (confirm('Dispute this score? ' + (state.league.commissioner || 'The commissioner') + ' will sort it out.')) run(liveUpd('reports', d.rdisp, {status: 'disputed', doneAt: Date.now()}), 'Disputed. ' + (state.league.commissioner || 'The commissioner') + ' will take a look.'); return; }
-    if (d.rwd) { if (confirm('Withdraw this score?')) run(liveUpd('reports', d.rwd, {status: 'removed', doneAt: Date.now()}), 'Withdrawn.'); return; }
+    if (d.rdisp) { if (confirm('Dispute this score? It stops counting until ' + (state.league.commissioner || 'the commissioner') + ' sorts it out.')) run(liveUpd('reports', d.rdisp, {status: 'disputed', doneAt: Date.now()}), 'Disputed. ' + (state.league.commissioner || 'The commissioner') + ' will take a look.'); return; }
+    if (d.rwd) { if (confirm('Remove this score? It stops counting.')) run(liveUpd('reports', d.rwd, {status: 'removed', doneAt: Date.now()}), 'Removed.'); return; }
     if (d.rok) { run(liveUpd('reports', d.rok, {status: 'confirmed', doneAt: Date.now(), doneBy: 'commissioner'}), 'Counted.'); return; }
     if (d.repx) { if (confirm('Remove this score? It stops counting for everyone.')) run(liveUpd('reports', d.repx, {status: 'removed', doneAt: Date.now(), doneBy: FBL.admin ? 'commissioner' : 'player'}), 'Removed.'); return; }
     if (d.cxc) { if (confirm('Cancel this court? It comes off the Upcoming tab.')) run(liveUpd('courts', d.cxc, {status: 'cancelled', doneAt: Date.now()}), 'Cancelled.'); return; }
