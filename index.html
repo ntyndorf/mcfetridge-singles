@@ -843,6 +843,7 @@ button.danger{border-color:var(--loss);background:var(--loss);color:#fff}
 .segs{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
 .seg label{position:relative;cursor:pointer}.seg input,.pills input{position:absolute;opacity:0;width:1px!important;height:1px;margin:0;pointer-events:none}
 .seg span{display:block;padding:6px 12px;font-size:13px;color:var(--ink)}.seg label+label span{border-left:1px solid var(--line)}.seg input:checked+span{background:var(--court);color:#fff}
+.sdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 .pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.pills label{cursor:pointer;position:relative}.pills span{display:block;padding:6px 12px;border:1px solid var(--line);border-radius:99px;font-size:13px;color:var(--ink)}.pills input:checked+span{background:var(--court);border-color:var(--court);color:#fff}
 .seg input:focus-visible+span,.pills input:focus-visible+span{outline:2px solid var(--court);outline-offset:1px}
 .opens .mck input{width:auto;margin:3px 0 0}.opens .mck{color:var(--ink)}
@@ -954,7 +955,10 @@ button.btn{background:transparent;color:var(--ink);border:1px solid var(--paint-
 :root[data-theme="light"] button.btn{border-color:#B9C6D4}
 button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data-okall]{background:var(--accent);border-color:var(--accent);color:var(--act-ink)}
 .mb-acts button:first-child{background:transparent;color:var(--ink);border-color:var(--line)}
-.phero{position:relative;margin:0 -16px;padding:18px 16px 14px;border-radius:0 0 18px 18px;background:linear-gradient(180deg,color-mix(in srgb,var(--pc) 42%,transparent) 0%,color-mix(in srgb,var(--pc) 12%,transparent) 70%,transparent 100%)}
+.phero{position:relative;margin:0 -16px;padding:18px 16px 14px;border-radius:0 0 18px 18px;background:linear-gradient(180deg,color-mix(in srgb,var(--bc,var(--pc)) 42%,transparent) 0%,color-mix(in srgb,var(--bc,var(--pc)) 12%,transparent) 70%,transparent 100%)}
+.phero.surf::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:.22;background:no-repeat right -40px top 8px/260px auto url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 130' fill='none' stroke='white' stroke-width='2'%3E%3Crect x='4' y='4' width='252' height='122'/%3E%3Cpath d='M4 19h252M4 111h252M60 19v92M200 19v92M60 65h140'/%3E%3Cpath d='M130 4v122' stroke-dasharray='3 4'/%3E%3C/svg%3E")}
+.phero>*{position:relative}
+.shelf{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.shelf .achip:not(.off){color:var(--accent);border:1px solid var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}.achip.off{color:var(--muted);border:1px dashed var(--line);opacity:.6;background:none}.achip.off svg{opacity:.6}
 .phero .av.lg{box-shadow:0 0 0 3px var(--bg),0 0 0 6px var(--pc)}
 .av.hot{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ball),0 0 12px 2px color-mix(in srgb,var(--ball) 55%,transparent)}
 .mv{display:block;font:800 13px/1 var(--display);margin-top:2px}.mv.up{color:var(--win)}.mv.dn{color:var(--loss)}
@@ -1188,18 +1192,17 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
       return `<div class="match"><div class="vs"><span class="wl ${won?'W':'L'}">${won?'W':'L'}</span>vs <button class="plink" data-player="${opp}">${esc(pname(opp))}</button>${hh.n > 1 ? ` <span class="h2hb">${hh.w}–${hh.l}</span>` : ''}</div><div class="result">${score}${o.close && !won ? ' <span class="pill tb">Close</span>' : ''}${o.ret ? ' <span class="pill">Retired</span>' : ''}${ok.has(m.id) ? '' : ' <span class="pill">Rematch · no pts</span>'}${locPill(m)}<br><span class="hint">${esc(fmtDate(m.date))}</span>${m.notes ? `<span class="note">“${esc(m.notes)}”</span>` : ''}</div></div>`;
     }).join('');
     return `<button class="back" data-tab="standings">← Standings</button>
-      <div class="phero" style="--pc:${avColor(id)}"><h2>${avatar(id,'lg')}${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}${p.level ? `<span class="lvl">NTRP ${esc(p.level)}</span>` : ''}${streakTag(id)}</h2>
-        ${(() => { const held = awards().filter(a => a.ids.includes(id)); return held.length ? `<div class="chipsrow">${held.slice(0, 2).map(a => `<span class="achip">${icon(a.t)}${esc(a.t)}</span>`).join('')}${held.length > 2 ? `<span class="achip more" title="${esc(held.slice(2).map(a => a.t).join(', '))}">+${held.length - 2} more</span>` : ''}</div>` : ''; })()}
-        ${(() => { const pr = p.prof || {}; const bits = [pr.plays, pr.bh ? (pr.bh === 'One-handed' ? '1H' : '2H') + ' backhand' : ''].filter(Boolean), op = (p.open || []).map(k => (OPENL.find(x => x[0] === k) || [0, ''])[1]).filter(Boolean);
+      <div class="phero${(p.prof || {}).surf ? ' surf' : ''}" style="--pc:${avColor(id)}${(() => { const f = SURF.find(x => x[0] === (p.prof || {}).surf); return f ? ';--bc:' + f[2] : ''; })()}"><h2>${avatar(id,'lg')}${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}${p.level ? `<span class="lvl">NTRP ${esc(p.level)}</span>` : ''}${streakTag(id)}</h2>
+        ${(() => { const A = awards(), held = A.filter(a => a.ids.includes(id)); return `<div class="shelf" aria-label="Badges: ${held.length} of ${A.length} earned">${A.map(a => { const on = a.ids.includes(id); return `<span class="achip${on ? '' : ' off'}" title="${esc(a.t + ' · ' + a.d + (on ? ' · earned' : ' · not yet'))}">${icon(a.t)}${esc(a.t)}</span>`; }).join('')}</div>`; })()}
+        ${(() => { const pr = p.prof || {}; const bits = [pr.plays, pr.bh ? (pr.bh === 'One-handed' ? '1H' : '2H') + ' backhand' : '', pr.shot ? '⚡ ' + pr.shot : ''].filter(Boolean), op = (p.open || []).map(k => (OPENL.find(x => x[0] === k) || [0, ''])[1]).filter(Boolean);
           return (pr.bio ? `<p class="bio">“${esc(pr.bio)}”</p>` : '')
-            + (bits.length || op.length || pr.pro ? `<div class="pmeta">${bits.length ? `<div class="pm"><span class="pmk">Plays</span><span class="ptags">${bits.map(b => `<span class="ptag">${esc(b)}</span>`).join('')}</span></div>` : ''}${pr.pro ? `<div class="pm"><span class="pmk">Fave pro</span><span class="ptags"><span class="ptag">⭐ ${esc(pr.pro)}</span></span></div>` : ''}${op.length ? `<div class="pm"><span class="pmk">Open to</span><span class="ptags">${op.map(b => `<span class="ptag po">${esc(b)}</span>`).join('')}</span></div>` : ''}</div>` : ''); })()}
+            + (bits.length || op.length || pr.pro || pr.gear || pr.home || pr.since ? `<div class="pmeta">${bits.length ? `<div class="pm"><span class="pmk">Plays</span><span class="ptags">${bits.map(b => `<span class="ptag">${esc(b)}</span>`).join('')}</span></div>` : ''}${[['gear', 'Gear', '🎾 '], ['pro', 'Fave pro', '⭐ '], ['home', 'Home', '📍 '], ['since', 'Since', '']].filter(([k]) => pr[k]).map(([k, L, ic]) => `<div class="pm"><span class="pmk">${L}</span><span class="ptags"><span class="ptag">${ic}${esc(k === 'since' ? sinceTxt(pr.since) : pr[k])}</span></span></div>`).join('')}${op.length ? `<div class="pm"><span class="pmk">Open to</span><span class="ptags">${op.map(b => `<span class="ptag po">${esc(b)}</span>`).join('')}</span></div>` : ''}</div>` : ''); })()}
         ${(p.free || []).length || p.avail ? `<div class="pfree"><span class="pmk">Free</span>${(p.free || []).length ? freeGrid(p.free) : ''}${p.avail ? `<p class="fnote">${esc(p.avail)}</p>` : ''}</div>` : ''}<p class="sub">${r.mp ? `Ranked #${rank} of ${rows.length}` : 'No counted matches yet'}</p>
         ${(() => { const h = smsHref(p, `Hey ${first(p)}! Want to get a match in this week? (McFetridge league)`); return h ? `<a class="textbtn" href="${esc(h)}" target="_top" data-sms="${esc(first(p))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg>Text ${esc(first(p))}</a>` : ''; })()}${!FBL.user && p.ph ? `<button type="button" class="link" data-acct="1">Sign in to text ${esc(first(p))}</button>` : ''}${myPid() === p.id ? `<div class="pactions"><button class="link" data-tab="me">Edit my profile</button><button class="link" data-tab="me" data-jump="me-free">Edit my free times</button></div>` : art ? `<div class="pactions"><button class="link" data-profile="${p.id}">Update profile</button><button class="link" data-sheet="free" data-pid="${p.id}">Update free times</button></div>` : ''}</div>
       ${vsYou(id)}
       <div class="statline"><div><b>${r.pts}</b><span>Points</span></div><div><b>${r.w}–${r.l}</b><span>Record</span></div><div><b>${r.mp ? Math.round(r.wp*100)+'%' : '—'}</b><span>Win %</span></div></div>
       ${breakdown(id, mine)}
       ${highlights(id)}
-      ${playNext(id, h, rank, rows)}
       <section class="logday"><header>Matches</header>${list || '<div class="match"><div class="hint">No matches logged yet.</div><div></div></div>'}</section>`;
   }
 
@@ -1444,6 +1447,10 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
 
   // ---- win odds: an Elo-style rating seeded from NTRP level, updated by every logged result ----
   let RAT = null;
+  const SHOTS = ['Big serve', 'Inside-out forehand', 'Slice', 'Drop shot', 'Volleys', 'Moonballs'];
+  const SURF = [['hard', 'Hard', '#2f6fb3'], ['clay', 'Clay', '#c2562e'], ['grass', 'Grass', '#3f8a3a'], ['indoor', 'Indoor', '#6a5acd']];
+  const cleanL = v => String(v || '').replace(/[\r\n]+/g, ' ').replace(/\s+/g, ' ').trim(); // keeps the · in "Pure Aero · poly at 52"
+  const sinceTxt = v => /^\d{4}$/.test(v || '') ? 'Playing since ' + v : v;
   const OPENL = [['hits', 'Practice hits'], ['dbl', 'Doubles'], ['up', 'Playing up a level']];
   // What format a match was played in: saved on newer scores, worked out from the sets on older ones.
   function fmtOf(m){ const s = m.score || {}; if (s.format) return s.format; const st = setsOf(s); if (!st) return '';
@@ -1964,7 +1971,7 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
       const pf = LV.profiles[p.id], o = ORIG[p.id];
       PF.forEach(k => { if (o[k] === undefined) delete p[k]; else p[k] = cl(o[k]); });
       if (pf) {
-        const pr = {}; ['plays', 'bh', 'shot', 'pro', 'bio'].forEach(k => { const v = clean(pf[k] || ''); if (v) pr[k] = v; });
+        const pr = {}; ['plays', 'bh', 'shot', 'pro', 'bio', 'home', 'since'].forEach(k => { const v = clean(pf[k] || ''); if (v) pr[k] = v; }); { const g = cleanL(pf.gear).slice(0, 60); if (g) pr.gear = g; } if (SURF.some(x => x[0] === pf.surf)) pr.surf = pf.surf;
         if (Object.keys(pr).length) p.prof = pr; else delete p.prof;
         if (Array.isArray(pf.free)) { if (pf.free.length) p.free = pf.free.slice(); else delete p.free; }
         if (pf.note != null) { if (clean(pf.note)) p.avail = clean(pf.note); else delete p.avail; }
@@ -2077,8 +2084,13 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
         <div class="grid2"><label class="field">Nickname<input id="m-nick" data-md maxlength="20" value="${esc(dv('m-nick', pf.nick || p.nick || ''))}" placeholder="Optional"></label>
         <div class="field">Badge color<div class="swatches">${COLORS.map(c2 => `<label style="background:${c2}"><input type="radio" name="m-color" id="m-color-${c2.slice(1)}" data-md data-color="${c2}" ${col.toLowerCase() === c2.toLowerCase() ? 'checked' : ''} aria-label="Color ${c2}"></label>`).join('')}</div></div></div>
         <label class="field">One-line bio<input id="m-bio" data-md maxlength="120" value="${esc(dv('m-bio', pr.bio))}" placeholder="Picked up a racquet again last summer"></label>
-        <label class="field">Favorite pro<input id="m-pro" data-md maxlength="30" value="${esc(dv('m-pro', pr.pro))}" placeholder="Optional, e.g. Carlos Alcaraz" autocomplete="off"></label>
+        <div class="grid2"><label class="field">Favorite pro<input id="m-pro" data-md maxlength="30" value="${esc(dv('m-pro', pr.pro))}" placeholder="Optional, e.g. Carlos Alcaraz" autocomplete="off"></label>
+        <label class="field">Racquet and string<input id="m-gear" data-md maxlength="60" value="${esc(dv('m-gear', pr.gear))}" placeholder="Babolat Pure Aero · poly at 52" autocomplete="off"></label></div>
+        <div class="grid2"><label class="field">Home court<input id="m-home" data-md maxlength="40" list="m-home-dl" value="${esc(dv('m-home', pr.home))}" placeholder="Where you usually book" autocomplete="off"><datalist id="m-home-dl">${courtList().map(c => `<option value="${esc(c)}">`).join('')}</datalist></label>
+        <label class="field">Playing since<input id="m-since" data-md maxlength="30" value="${esc(dv('m-since', pr.since))}" placeholder="2019, or Back after 10 years" autocomplete="off"></label></div>
         <div class="field">Style<div class="segs"><span class="seg">${['Righty', 'Lefty'].map(x => `<label><input type="radio" name="m-plays" id="m-plays-${x}" data-md data-v="${x}" ${dv('m-plays', pr.plays) === x ? 'checked' : ''}><span>${x}</span></label>`).join('')}</span><span class="seg">${[['One-handed', '1H backhand'], ['Two-handed', '2H backhand']].map(([x, l]) => `<label><input type="radio" name="m-bh" id="m-bh-${x}" data-md data-v="${x}" ${dv('m-bh', pr.bh) === x ? 'checked' : ''}><span>${l}</span></label>`).join('')}</span></div></div>
+        <div class="field">Go-to shot<div class="pills">${(() => { const cur = dv('m-shot', pr.shot || ''), L = SHOTS.concat(cur && !SHOTS.includes(cur) ? [cur] : []); return [['', 'None']].concat(L.map(x => [x, x])).map(([x, l]) => `<label><input type="radio" name="m-shot" id="m-shot-${L.indexOf(x) + 1}" data-md data-v="${esc(x)}" ${cur === x ? 'checked' : ''}><span>${esc(l)}</span></label>`).join(''); })()}</div></div>
+        <div class="field">Page banner<div class="pills">${[['', 'Badge color', '']].concat(SURF).map(([x, l, c2]) => `<label><input type="radio" name="m-surf" id="m-surf-${x || 'none'}" data-md data-v="${x}" ${dv('m-surf', pr.surf || '') === x ? 'checked' : ''}><span>${c2 ? `<i class="sdot" style="background:${c2}"></i>` : ''}${l}</span></label>`).join('')}</div></div>
         <div class="field">Open to<div class="pills">${OPENL.map(([k, v]) => `<label><input type="checkbox" id="m-open-${k}" data-md data-open="${k}" ${dc('m-open-' + k, (pf.open || []).includes(k)) ? 'checked' : ''}><span>${v}</span></label>`).join('')}</div></div>
         <div class="row"><button class="btn" data-msave="prof">Save</button><span class="hint" id="ms-prof"></span></div></details>
       <details class="card meform med" id="me-free" ${meOpen['me-free'] ? 'open' : ''}><summary><b>Free times</b><span>${esc(freeText(p.free || []) || 'Not set')}</span></summary>
@@ -2096,8 +2108,10 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
     btn.disabled = true; let err = '';
     if (k === 'prof') { const c = document.querySelector('input[name="m-color"]:checked');
       const rv = n => { const x = document.querySelector('input[name="' + n + '"]:checked'); return x ? x.dataset.v : ''; };
-      err = await liveSet('profiles', me, {uid: FBL.user.uid, nick: v('m-nick'), color: c ? c.dataset.color : '', plays: rv('m-plays'), bh: rv('m-bh'), shot: clean((LV.profiles[me] || {}).shot || ''), pro: v('m-pro'), bio: v('m-bio'), open: [...document.querySelectorAll('input[data-open]')].filter(x => x.checked).map(x => x.dataset.open)});
-      Object.keys(meDraft).filter(x => /^m-(nick|color|plays|bh|shot|pro|bio|open)/.test(x)).forEach(x => delete meDraft[x]); }
+      const gv = (document.getElementById('m-gear') || {value: ''}).value, X = {gear: cleanL(gv).slice(0, 60), home: v('m-home'), since: v('m-since'), surf: rv('m-surf')};
+      const P0 = {uid: FBL.user.uid, nick: v('m-nick'), color: c ? c.dataset.color : '', plays: rv('m-plays'), bh: rv('m-bh'), shot: rv('m-shot'), pro: v('m-pro'), bio: v('m-bio'), open: [...document.querySelectorAll('input[data-open]')].filter(x => x.checked).map(x => x.dataset.open)};
+      err = await liveSet('profiles', me, Object.assign({}, P0, X)); if (err) { err = await liveSet('profiles', me, P0); if (!err) err = 'Saved, but gear, home court, playing since and banner need a database rules update first.'; }
+      Object.keys(meDraft).filter(x => /^m-(nick|color|plays|bh|shot|pro|bio|open|gear|home|since|surf)/.test(x)).forEach(x => delete meDraft[x]); }
 
     if (k === 'free') { const keys = [...document.querySelectorAll('input[data-mfk]')].filter(b => b.checked).map(b => b.dataset.mfk);
       err = await liveSet('profiles', me, {uid: FBL.user.uid, free: keys, note: v('m-note')}); delete meDraft.free; delete meDraft['m-note']; }
@@ -2245,7 +2259,7 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
     if (d.bookw) { sheetBook(d.bookw); return; }
     if (d.unclaim) { if (confirm('Unlink ' + pname(d.unclaim) + '? Whoever picked it will have to pick their player again.')) run((async () => { try { await FBL.F.deleteDoc(FBL.F.doc(FBL.db, 'claims', d.unclaim)); delete LV.claims[d.unclaim]; liveRender(); return ''; } catch(_) { return 'Couldn’t unlink that player.'; } })(), 'Unlinked.'); return; }
   });
-  const keepDraft = e => { const t = e.target; if (!t || !t.closest || !t.closest('.meform')) return; if (t.dataset.mfk) { meDraft.free = [...document.querySelectorAll('input[data-mfk]')].filter(x => x.checked).map(x => x.dataset.mfk); return; } if (t.name === 'm-color') { meDraft['m-color'] = t.dataset.color; return; } if (t.name === 'm-plays' || t.name === 'm-bh') { meDraft[t.name] = t.dataset.v; return; } if (t.id) meDraft[t.id] = t.type === 'checkbox' ? t.checked : t.value; };
+  const keepDraft = e => { const t = e.target; if (!t || !t.closest || !t.closest('.meform')) return; if (t.dataset.mfk) { meDraft.free = [...document.querySelectorAll('input[data-mfk]')].filter(x => x.checked).map(x => x.dataset.mfk); return; } if (t.name === 'm-color') { meDraft['m-color'] = t.dataset.color; return; } if (t.name === 'm-plays' || t.name === 'm-bh' || t.name === 'm-shot' || t.name === 'm-surf') { meDraft[t.name] = t.dataset.v; return; } if (t.id) meDraft[t.id] = t.type === 'checkbox' ? t.checked : t.value; };
   document.addEventListener('input', keepDraft); document.addEventListener('change', keepDraft);
   document.addEventListener('change', e => { const s2 = e.target.closest && e.target.closest('select[data-fb-me]'); if (s2) fbAct('me', s2); });
   try { const t = localStorage.getItem('mws-theme'); document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'; } catch(_) { document.documentElement.dataset.theme = 'dark'; }
