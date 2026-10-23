@@ -838,6 +838,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
 .rules2{display:grid;gap:8px}.rl{border-radius:10px;background:var(--surface);border:1px solid var(--line)}
 .rl>summary{list-style:none;cursor:pointer;padding:13px 16px;font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center}.rl>summary::-webkit-details-marker{display:none}
 .rl>summary::after{content:'+';color:var(--muted);font-weight:400;font-size:18px}.rl[open]>summary::after{content:'−'}
+.hint a.inl{color:var(--accent);font-weight:600}
 .rl-b{padding:0 16px 14px;font-size:14px;line-height:1.55}.rl-b ul{margin:0;padding-left:18px}.rl-b li{margin:4px 0}.rl-b a.inl{color:var(--accent);font-weight:600}
 .vsyou{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;margin:12px 0;padding:10px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-size:14px}
 .hl .hlrow{display:grid;grid-template-columns:22px auto 1fr;gap:4px 8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:14px}.hl .hlrow:first-of-type{border-top:0}
@@ -1163,55 +1164,37 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     const window_ = L.endDate ? `Season runs through ${esc(fmtDate(L.endDate,{month:'short',day:'numeric'}))}. ` : '';
     const book = `<a class="inl" href="https://mcfetridgesportscenter.com/tennis/book-court-time" target="_blank" rel="noopener">McFetridge booking page</a>`, cm = L.commissioner ? esc(L.commissioner) : 'the commissioner';
     const items = [
-      ['The idea', `${window_}Set up your own matches with anyone in the league, as often as you want. There's no schedule: you find an opponent, book a court, play, and report the score. Every reported match counts toward the standings.`],
-      ['Find a match', `<ul>
-        <li>Open someone's player page to see when they're usually free, or check <b>Play next</b> on yours for good matchups.</li>
-        <li>Sign in and text someone from their player page, or post in the group chat.</li>
-        <li>If someone asks you to play, reply within a day, even if it's a no.</li></ul>`],
-      ['Book a court', `<ul>
-        <li>Book on the ${book}. Courts open 6 days ahead at 7am and are paid in full when you book. You need a Chicago Park District account.</li>
-        <li><b>Courts at peak times go fast!</b> Weeknight evenings and weekends fill up quickly, so book as soon as they open at 7am.</li>
-        <li>Tap <b>Post a court</b> on the Courts tab right away. It shows up as an open court.</li>
-        <li>Other indoor courts are fine if you both agree. Split the cost 50/50.</li></ul>`],
-      ['Claim a court', `<ul>
-        <li>First to claim it gets it. Tap <b>Claim it</b> on the Courts tab.</li>
-        <li>Confirm with the booker, then pay them $16 the same day.</li></ul>`],
-      ['Cost', `No league fee. The only cost is the court: $31.37 an hour at McFetridge, or $15.69 each. Round up: the player who didn't book pays the booker $16, a small thank-you for grabbing the court.`],
-      ['Match day', `<ul>
-        <li>Agree on the format and who brings balls before the day.</li>
-        <li>Get there a few minutes early and check in at the front desk. McFetridge gives the court away if nobody checks in within 10 minutes of the start.</li>
-        <li>Call your own lines fairly. If you're not sure, it's in.</li></ul>`],
+      ['Courts and cost', `<ul>
+        <li>Book on the ${book} (Chicago Park District account needed). Courts open 6 days ahead at 7am, and peak times go fast.</li>
+        <li>Post it on the <b>Courts</b> tab. On an open court, the first to tap <b>Claim it</b> gets it.</li>
+        <li>A court is $31.37 an hour. The player who didn't book pays the booker <b>$16</b> the day you play.</li>
+        <li>Another indoor court is fine if you both agree. Split it 50/50.</li></ul>`],
       ['Format', `<ul>
-        <li><b>1-hour court:</b> one set to 8 games, tiebreak at <span style="white-space:nowrap">8–8</span>.</li>
-        <li><b>2-hour court:</b> one set to 10 games, or best 2 out of 3 sets (a 10-point tiebreak instead of a 3rd set is fine).</li>
-        <li><b>Mini tennis (any court):</b> 2 out of 3 sets, first to 4 games. No-ad scoring: at deuce, play one deciding point and the receiver picks the side. At <span style="white-space:nowrap">3–3</span>, play a 7-point tiebreak (first to 7, win by 2). Every set stays close, and a full match takes about an hour.</li>
-        <li>Wins count the same in every format.</li></ul>`],
-      ['Out of time', `The first bell rings 5 minutes before your time is up, and you need to be off the court at the second bell. If you run out of time, whoever is ahead in games wins. If it's tied, play one deciding point and record the winner one game ahead. In mini tennis, whoever has won more sets wins; if sets are level, it's whoever is ahead in the set being played.`],
-      ['Challenges', `Tap <b>Challenge</b> on anyone's player page to ask them for a match. They get it on their Me page and can accept or decline. Once you agree on a time, one of you books the court and posts it.`],
-      ['Report a score', `<ul>
+        <li><b>1 hour:</b> one set to 8, tiebreak at <span style="white-space:nowrap">8–8</span>.</li>
+        <li><b>2 hours:</b> one set to 10, or best of 3 (a 10-point tiebreak for the 3rd is fine).</li>
+        <li><b>Mini tennis:</b> best of 3 sets to 4 games, no-ad, tiebreak at <span style="white-space:nowrap">3–3</span>.</li>
+        <li><b>Out of time:</b> whoever is ahead wins. Tied? Play one deciding point.</li></ul>`],
+      ['Scoring', `<ul>
+        <li><b>Win</b> 3 · <b>close loss</b> (tiebreak or 3rd set) 2 · <b>loss</b> 1 · <b>forfeit</b> 0.</li>
+        <li><b>+1</b> for beating someone at a higher level.</li>
+        <li>Only your first 3 matches against the same person count.</li>
+        <li>Ties go to win %, then head-to-head, then games won.</li></ul>`],
+      ['Posting a score', `<ul>
         <li>Either player taps <b>Report a score</b>. It counts right away.</li>
-        <li>Score wrong? Tap <b>Dispute</b> on your Me tab and ${cm} sorts it out.</li>
-        <li>The score is always from the winner's side, like <b>8-5</b> or <b>6-1, 3-6, 10-2</b>. A mini tennis score looks like <b>4-2, 3-4, 4-1</b>.</li></ul>`],
-      ['Points', `<ul>
-        <li><b>Win:</b> 3 points</li>
-        <li><b>Close loss:</b> 2 points. You lost a tiebreak (like 9–8) or a deciding 3rd set.</li>
-        <li><b>Any other loss:</b> 1 point. You get a point just for playing.</li>
-        <li><b>Forfeit or no-show:</b> 0 points</li>
-        <li><b>Play-up bonus:</b> +1 for beating someone at a higher NTRP level (a 3.0 beating a 3.25 gets 4 points).</li></ul>`],
-      ['Rematches', `Play the same person as much as you like. Only your first 3 matches against each person count toward standings. Extra matches still show in Results.`],
-      ['Ranking', `Most points wins. Ties go to win %, then head-to-head, then % of games won. The Standings tab shows each player's record, last 5 results (green win, red loss), win streaks, and movement since the last update.`],
+        <li>Winner's games first, like <b>8-5</b> or <b>6-1, 3-6, 10-2</b>.</li>
+        <li>Wrong score? Tap <b>Dispute</b> on your Me tab and ${cm} sorts it out.</li></ul>`],
+      ['Match day', `<ul>
+        <li>Agree on the format and who brings balls.</li>
+        <li>Check in at the front desk early. The court is given away 10 minutes after the start.</li>
+        <li>Call your own lines. If you're not sure, it's in.</li></ul>`],
       ['Cancelling', `<ul>
-        <li><b>48+ hours ahead:</b> the booker emails the permit number to tenniscourtrefunds@mcfetridgesportscenter.net. McFetridge refunds it minus a 15% fee (about $4.70 an hour) within 5 business days. Do this too if nobody claims your court.</li>
-        <li><b>Less than 48 hours, or a no-show:</b> it's a forfeit, and you still owe the booker your $16.</li></ul>`],
-      ['Using the site', `<ul>
-        <li>Sign in, pick your name, and your <b>Me</b> tab has everything: scores, challenges, courts, profile, free times and phone.</li>
-        <li>Phone numbers only show to signed-in players, and only if you allow it.</li>
-        <li><b>+ Calendar</b> saves a booked match. <b>Win odds</b> are just for fun.</li></ul>`]
+        <li><b>48+ hours ahead:</b> the booker emails the permit number to tenniscourtrefunds@mcfetridgesportscenter.net for a refund (minus 15%).</li>
+        <li><b>Under 48 hours or a no-show:</b> it's a forfeit, and you still owe the booker $16.</li></ul>`]
     ];
-    if (tip) items.push(['Tip jar', `Totally optional. If you want to chip in for the upkeep: <a class="tip" href="${esc(tip)}" target="_blank" rel="noopener">Tip the commissioner${L.commissioner ? ' (' + esc(L.commissioner) + ')' : ''}</a>`]);
-    return `<div><h2>League rules</h2></div>
-      <div class="qs">${[['🔎', 'Find someone', 'Who’s free or Challenge'], ['📅', 'Book a court', '6 days ahead, 7am'], ['🎾', 'Play', 'Non-booker pays the booker $16'], ['📝', 'Post the score', 'Counts right away']].map(([i, t, d], n) => `<div><span>${i}</span><b>${n + 1}. ${t}</b><i>${d}</i></div>`).join('')}</div>
-      <div class="rules2">${items.map(([k, v], n) => `<details class="rl" ${n === 0 ? 'open' : ''}><summary>${k}</summary><div class="rl-b">${v}</div></details>`).join('')}</div>`;
+    return `<div><h2>League rules</h2><p class="sub">${window_}Play anyone in the league, as often as you like.</p></div>
+      <div class="qs">${[['🔎', 'Find someone', 'Challenge from their page'], ['📅', 'Book a court', '6 days ahead at 7am'], ['🎾', 'Play', 'Non-booker pays the booker $16'], ['📝', 'Post the score', 'Counts right away']].map(([i, t, d], n) => `<div><span>${i}</span><b>${n + 1}. ${t}</b><i>${d}</i></div>`).join('')}</div>
+      <div class="rules2">${items.map(([k, v]) => `<details class="rl"><summary>${k}</summary><div class="rl-b">${v}</div></details>`).join('')}</div>
+      ${tip ? `<p class="hint" style="margin:0;text-align:center">Enjoying the league? <a class="inl" href="${esc(tip)}" target="_blank" rel="noopener">Tip the commissioner</a> (totally optional)</p>` : ''}`;
   }
 
   const FORMATS = [['pro8','8-game pro set'],['pro10','10-game pro set'],['bo3','2 out of 3 sets'],['bo3stb','2 sets + 3rd-set super tiebreak'],['fast4','Mini tennis: 2 out of 3 sets to 4 games']];
