@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif;background:#fafafa}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>McFetridge Winter Singles</title><style id="page-css">
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#0D1B2A"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Singles"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif;background:#fafafa}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>McFetridge Winter Singles</title><style id="page-css">
 /* Layout: one narrow column like a clipboard on a court bench — scoreboard header, tabs, then the sheet. */
 :root{
   --bg:#f1f6f6; --surface:#ffffff; --ink:#0f2023; --muted:#506a6e; --line:#d3e1e2;
@@ -862,7 +862,106 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
 .hl .hlrow{display:grid;grid-template-columns:22px auto 1fr;gap:4px 8px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:14px}.hl .hlrow:first-of-type{border-top:0}
 .hl .hlrow b{white-space:nowrap}.hl .hlrow>span:last-child{color:var(--muted)}
 .opens{display:grid;gap:2px;margin-top:2px}.opens .mck{margin:2px 0}
-</style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=IBM+Plex+Sans:wght@400;600;700&amp;family=Saira+Condensed:wght@600;700&amp;family=Playfair+Display:wght@700;900&amp;family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&amp;family=UnifrakturMaguntia&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","phone":"8473705661","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"}},{"id":"p5onhu0","name":"Spencer C","level":"3.25","phone":"8592216232"},{"id":"wd1jmau","name":"Brendan O","level":"3.0","phone":"7732204199"},{"id":"ata2iuw","name":"Tim S","level":"3.0","phone":"3308358969"},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","phone":"6307883151"},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","phone":"3134455771"},{"id":"67cu010","name":"Vitaliy B","level":"3.25","phone":"3122858599"},{"id":"vswai94","name":"Luke H","level":"3.25","phone":"8155931653"},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","phone":"8029893524"},{"id":"cuwu10i","name":"Juan G","level":"3.0","phone":"5617587298"},{"id":"mfuf932","name":"Zach K","level":"3.0","phone":"4404524279"},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","phone":"7736812050"},{"id":"wg8fb4m","name":"John W","level":"3.25","phone":"7082145282"},{"id":"iev0edc","name":"Nathan H","level":"3.0","phone":"3129250266"},{"id":"tm2km4c","name":"Brian K","phone":"6168560533","level":"3.0"},{"id":"uu82eoc","name":"Aidan V","level":"3.0","phone":"8479098210"},{"id":"w5zwbyo","name":"Salem H","level":"3.25","phone":"2709930457"},{"id":"m620f34","name":"Bill J","level":"3.25","phone":"3125433273"}],"matches":[],"updated":"2026-10-16T16:25:46.833Z","upcoming":[]}</script><script id="page-js">
+
+/* ===== Night Session: an indoor hard court at night. Court blue, white paint, one optic-yellow ball. ===== */
+:root[data-theme="dark"]{
+  --bg:#0D1B2A; --surface:#132A42; --surface2:#183552; --ink:#F2F5F7; --muted:#93A7BA; --line:rgba(255,255,255,.12);
+  --court:#1D4E89; --court-ink:#FFFFFF; --accent:#DDF24A; --act-ink:#10202E; --ball:#DDF24A; --win:#3FBF8A; --loss:#F07167; --paint:rgba(255,255,255,.22); color-scheme:dark}
+:root[data-theme="light"]{
+  --bg:#EDF2F7; --surface:#FFFFFF; --surface2:#F4F7FA; --ink:#0D1B2A; --muted:#5B6B7C; --line:#D6DEE7;
+  --court:#1D4E89; --court-ink:#FFFFFF; --accent:#1D4E89; --act-ink:#FFFFFF; --ball:#C9DE2F; --win:#1F8A5B; --loss:#C2453C; --paint:rgba(255,255,255,.35); color-scheme:light}
+:root{--display:"Big Shoulders Display","Arial Narrow",sans-serif; --body:"Atkinson Hyperlegible",system-ui,-apple-system,sans-serif; --mono:"Atkinson Hyperlegible",system-ui,sans-serif}
+body{background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+.pvbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px;font-size:13px;color:var(--muted)}.pvbar a{color:var(--ink);font-weight:700}
+.thsw{margin-left:auto;font:700 13px var(--body);padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+/* the header is a court seen from above, with the name across the net */
+.board{position:relative;background:linear-gradient(180deg,#1D4E89 0%,#17406F 100%);border-radius:16px;cursor:default}
+.board .courtlines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.board .courtlines rect,.board .courtlines line{fill:none;stroke:var(--paint);stroke-width:2;vector-effect:non-scaling-stroke}
+.board .courtlines .net{stroke:rgba(255,255,255,.3);stroke-dasharray:2 5}
+.board .baseline{display:none}
+.board-top{position:relative;padding:28px 24px 18px}
+.board h1{font-family:var(--display);font-weight:900;font-size:clamp(52px,15vw,84px);line-height:.86;letter-spacing:-.005em;margin:0 0 14px;color:#fff;text-wrap:balance}
+.board.slim .board-top{padding:20px 22px 12px}.board.slim h1{font-size:clamp(36px,10vw,52px);line-height:.9;margin:0}
+.chips span{border:0;background:rgba(13,27,42,.35);color:#E7EEF5;font-size:13px;padding:4px 11px}
+.gamelink{position:relative;background:var(--ball);color:#10202E;border-radius:99px;box-shadow:none;margin:0 20px 18px;padding:9px 16px}
+.gamelink b{font:800 18px var(--display);letter-spacing:.02em;text-transform:none}
+.ticker{position:relative;background:rgba(8,18,30,.55);font-size:14px}.tk-label{font:800 14px var(--display);letter-spacing:.02em;text-transform:none;color:var(--ball)}
+/* type */
+h2{font-family:var(--display);font-weight:800;font-size:34px;line-height:1;letter-spacing:0;margin:0 0 6px}
+h3{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:0}
+.sub{font-size:14px}
+/* tabs: a bar at the bottom on phones, like an app */
+.tabs{border-bottom:1px solid var(--line);background:var(--bg)}
+.tab{font:700 15px var(--body);color:var(--muted)}.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ball)}
+.tab .ti{display:none}
+@media (max-width:640px){
+  .wrap{padding-bottom:110px}.panel{margin-top:18px}
+  .tabs{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:40;margin:0;display:flex;justify-content:space-around;gap:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);border-bottom:0;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow:visible}
+  .tab{display:grid!important;justify-items:center;gap:2px;flex:1;padding:6px 2px;border:0;font-size:11.5px}
+  .tab .ti{display:block;width:24px;height:24px}.tab .ti svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .tab[aria-selected="true"]{color:var(--ink)}.tab[aria-selected="true"] .ti svg{stroke:var(--ball)}
+  :root[data-theme="light"] .tab[aria-selected="true"] .ti svg{stroke:var(--court)}
+  .tab .tl{white-space:nowrap}.tab .tabn{position:absolute;margin:-4px 0 0 18px}
+  .tab.more{display:grid!important}.tabs .tab.xtra{display:none!important}
+  .moremenu{bottom:72px;top:auto}
+}
+/* cards: one radius for containers, pills for actions */
+.card,.logday,.srows,.mebar,.rules2 .rl,details.med,.vsyou,.statline,.qs div{border-radius:14px;border-color:var(--line);background:var(--surface)}
+button.btn{font:700 15px var(--body);border-radius:99px;padding:10px 18px;background:var(--accent);border-color:var(--accent);color:var(--act-ink)}
+button.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 14px}
+.mb-acts button{border-color:var(--line);color:var(--ink)}.mb-acts button:first-child{background:var(--accent);border-color:var(--accent);color:var(--act-ink)}
+.mb-go{background:var(--accent);color:var(--act-ink);border-radius:99px}
+.link,.plink{color:var(--ink)}a.inl,.rl-b a.inl{color:var(--ball)}:root[data-theme="light"] a.inl{color:var(--court)}
+.logday header{font:800 18px var(--display);letter-spacing:0;text-transform:none;color:var(--ink);padding:12px 16px 8px;border-bottom:1px solid var(--line)}
+/* standings: big rank numerals, the top three marked like a podium, points in scoreboard type */
+.srows{background:transparent;border:0;display:grid;gap:8px}
+.srow{grid-template-columns:44px minmax(0,1fr) auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px 12px 10px;position:relative;overflow:hidden}
+.srow:last-child{border-bottom:1px solid var(--line)}
+.rank{width:auto;height:auto;background:none!important;color:var(--muted)!important;font:800 30px/1 var(--display)}
+.srow:nth-child(1){box-shadow:inset 4px 0 0 #E8C35A}.srow:nth-child(2){box-shadow:inset 4px 0 0 #C9D3DD}.srow:nth-child(3){box-shadow:inset 4px 0 0 #D19563}
+.srow:nth-child(-n+3) .rank{color:var(--ink)!important}
+.sname{font-size:17px;font-weight:700}.sname .plink{font-weight:700}
+.slvl{font:700 12px var(--body);color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:0 7px}
+.sdet{font-size:13px;color:var(--muted)}
+.spts{color:var(--ink);font:900 34px/1 var(--display)}.spts span{font:700 12px var(--body);color:var(--muted);letter-spacing:0;text-transform:none}
+.srow:nth-child(1) .spts b{color:var(--ball)}:root[data-theme="light"] .srow:nth-child(1) .spts b{color:var(--court)}
+.form i{border-radius:50%;width:9px;height:9px}
+.yet{margin-top:4px}.yet h3{margin:0 0 8px;font-size:20px;color:var(--muted)}
+.yet-l{display:flex;flex-wrap:wrap;gap:6px}.yet-p{display:inline-flex;align-items:center;gap:0;font:700 14px var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:4px 12px 4px 4px;cursor:pointer}
+.yet-p .av{width:24px;height:24px;margin-right:6px}
+.scorebox{border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+/* avatars and the player page hero */
+.av{font:700 11px var(--body)}.av.lg{width:64px;height:64px;font-size:22px;box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--paint)}
+.statline{background:var(--surface)}.statline b{font:900 30px/1 var(--display)}.statline span{font:700 12px var(--body);letter-spacing:0;text-transform:none}
+.lvl{font:700 12px var(--body);border-radius:99px}
+.achip{border-color:var(--line);color:var(--ink)}
+.wl.W{background:var(--win)}.wl.L{background:var(--loss)}
+/* results: winner bright, loser dimmed, scores in scoreboard type */
+.match .wn{font-weight:700}.match .ln{color:var(--muted)}.match .result{font:800 19px var(--display);letter-spacing:.02em}
+.pill{border-radius:99px;font:700 11px var(--body);letter-spacing:0;text-transform:none}
+.open{background:var(--ball);color:#10202E;border-color:var(--ball);font:700 11px var(--body);text-transform:none;letter-spacing:0}
+.up .when{font:800 17px/1.1 var(--display);color:var(--ink)}
+/* sheets */
+.sheet{background:var(--surface);border-radius:20px 20px 0 0}.sheet h3{font-size:26px}
+input,select,textarea{background:var(--surface2)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:10px!important}
+.field{color:var(--muted);font-size:14px}
+:focus-visible{outline:2px solid var(--ball);outline-offset:2px}
+
+/* round 2 */
+button.btn{background:transparent;color:var(--ink);border:1px solid var(--paint-strong,rgba(255,255,255,.28))}
+:root[data-theme="light"] button.btn{border-color:#B9C6D4}
+button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data-okall]{background:var(--accent);border-color:var(--accent);color:var(--act-ink)}
+.mb-acts button:first-child{background:transparent;color:var(--ink);border-color:var(--line)}
+.phero{position:relative;margin:0 -16px;padding:18px 16px 14px;border-radius:0 0 18px 18px;background:linear-gradient(180deg,color-mix(in srgb,var(--pc) 42%,transparent) 0%,color-mix(in srgb,var(--pc) 12%,transparent) 70%,transparent 100%)}
+.phero .av.lg{box-shadow:0 0 0 3px var(--bg),0 0 0 6px var(--pc)}
+.av.hot{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ball),0 0 12px 2px color-mix(in srgb,var(--ball) 55%,transparent)}
+.mv{display:block;font:800 13px/1 var(--display);margin-top:2px}.mv.up{color:var(--win)}.mv.dn{color:var(--loss)}
+.empty{position:relative;padding:118px 20px 22px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:14px}
+.empty::before{content:'';position:absolute;left:50%;top:22px;width:150px;height:78px;transform:translateX(-50%);background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 78' fill='none' stroke='%2393A7BA' stroke-width='1.6'%3E%3Crect x='3' y='3' width='144' height='72' rx='2'/%3E%3Cpath d='M3 12h144M3 66h144M38 12v54M112 12v54M38 39h74'/%3E%3Cpath d='M75 3v72' stroke-dasharray='2 3'/%3E%3Ccircle cx='96' cy='27' r='4' fill='%23DDF24A' stroke='none'/%3E%3C/svg%3E")}
+.foot .thsw{margin:0;padding:0;border:0;border-radius:0;background:none;font:inherit;color:var(--accent);text-decoration:underline;cursor:pointer}
+</style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","phone":"8473705661","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"}},{"id":"p5onhu0","name":"Spencer C","level":"3.25","phone":"8592216232"},{"id":"wd1jmau","name":"Brendan O","level":"3.0","phone":"7732204199"},{"id":"ata2iuw","name":"Tim S","level":"3.0","phone":"3308358969"},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","phone":"6307883151"},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","phone":"3134455771"},{"id":"67cu010","name":"Vitaliy B","level":"3.25","phone":"3122858599"},{"id":"vswai94","name":"Luke H","level":"3.25","phone":"8155931653"},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","phone":"8029893524"},{"id":"cuwu10i","name":"Juan G","level":"3.0","phone":"5617587298"},{"id":"mfuf932","name":"Zach K","level":"3.0","phone":"4404524279"},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","phone":"7736812050"},{"id":"wg8fb4m","name":"John W","level":"3.25","phone":"7082145282"},{"id":"iev0edc","name":"Nathan H","level":"3.0","phone":"3129250266"},{"id":"tm2km4c","name":"Brian K","phone":"6168560533","level":"3.0"},{"id":"uu82eoc","name":"Aidan V","level":"3.0","phone":"8479098210"},{"id":"w5zwbyo","name":"Salem H","level":"3.25","phone":"2709930457"},{"id":"m620f34","name":"Bill J","level":"3.25","phone":"3125433273"}],"matches":[],"updated":"2026-10-16T16:25:46.833Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = document.getElementById('league-data').textContent;
   let state = JSON.parse(SRC);
@@ -1007,11 +1106,12 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     const move = (id, now) => { const was = snap[id]; if (!was || was === now) return ''; return was > now ? `<span class="mv up">▲${was-now}</span>` : `<span class="mv dn">▼${now-was}</span>`; };
 
     return `<div><h2>Standings</h2><p class="sub">${state.players.length} players · ${played} match${played===1?'':'es'} played</p></div>
-      <section class="srows">${rows.map((r,i) => { const pl = state.players.find(x => x.id === r.id) || {};
+      <section class="srows">${rows.filter(r => r.mp || rows.every(x => !x.mp)).map((r,i) => { const pl = state.players.find(x => x.id === r.id) || {};
         return `<div class="srow"><div class="srk"><span class="rank ${r.pts>0 ? ['first','second','third'][i]||'' : ''}">${i+1}</span>${move(r.id, i+1)}</div>
-          <div class="smain"><div class="sname">${avatar(r.id)}<button class="plink" data-player="${r.id}">${esc(r.name)}</button>${pl.level ? `<span class="slvl">${esc(pl.level)}</span>` : ''}${streakTag(r.id)}</div>
+          <div class="smain"><div class="sname">${avatar(r.id, streakOf(r.id) >= 3 ? 'hot' : '')}<button class="plink" data-player="${r.id}">${esc(r.name)}</button>${pl.level ? `<span class="slvl">${esc(pl.level)}</span>` : ''}${streakTag(r.id)}</div>
           <div class="sdet">${r.mp ? `${r.w}–${r.l} · ${Math.round(r.wp*100)}% ${formOf(r.id)}` : '<span class="nomp">No matches yet</span>'}</div></div>
-          <div class="spts">${r.pts}<span>pts</span></div></div>`; }).join('')}</section>
+          <div class="spts"><b data-count="${r.pts}">${r.pts}</b><span>pts</span></div></div>`; }).join('')}</section>
+      ${(() => { const yet = rows.filter(r => !r.mp); if (!yet.length || yet.length === rows.length) return ''; return `<section class="yet"><h3>Yet to play</h3><div class="yet-l">${yet.map(r => `<button class="yet-p" data-player="${r.id}">${avatar(r.id)}<span>${esc(r.name)}</span></button>`).join('')}</div></section>`; })()}
 
       <div class="scorebox"><b>Scoring</b> Win 3 · Close loss 2 · Loss 1 · Forfeit 0 · Upset +1 <button class="link" data-tab="rules" style="padding:0">Rules</button></div>
       `;
@@ -1046,7 +1146,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
   }
 
   function renderResults(){
-    const rep = `<button class="btn" data-sheet="score" style="margin:0 0 14px">Report a score</button>` + pendHtml('score') + repWaiting();
+    const rep = `<button class="btn pri" data-sheet="score" style="margin:0 0 14px">Report a score</button>` + pendHtml('score') + repWaiting();
     if (!state.matches.length) return `<div><h2>Results</h2><p class="sub">Newest first.</p></div>${rep}<div class="empty">No matches logged yet. Book a court, play, and report the first score.</div>`;
     const days = {}; OK = countedIds();
     state.matches.slice().sort((x,y) => (y.date||'').localeCompare(x.date||'')).forEach(m => (days[m.date || 'Undated'] = days[m.date || 'Undated'] || []).push(m));
@@ -1088,7 +1188,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
       return `<div class="match"><div class="vs"><span class="wl ${won?'W':'L'}">${won?'W':'L'}</span>vs <button class="plink" data-player="${opp}">${esc(pname(opp))}</button>${hh.n > 1 ? ` <span class="h2hb">${hh.w}–${hh.l}</span>` : ''}</div><div class="result">${score}${o.close && !won ? ' <span class="pill tb">Close</span>' : ''}${o.ret ? ' <span class="pill">Retired</span>' : ''}${ok.has(m.id) ? '' : ' <span class="pill">Rematch · no pts</span>'}${locPill(m)}<br><span class="hint">${esc(fmtDate(m.date))}</span>${m.notes ? `<span class="note">“${esc(m.notes)}”</span>` : ''}</div></div>`;
     }).join('');
     return `<button class="back" data-tab="standings">← Standings</button>
-      <div><h2>${avatar(id,'lg')}${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}${p.level ? `<span class="lvl">NTRP ${esc(p.level)}</span>` : ''}${streakTag(id)}</h2>
+      <div class="phero" style="--pc:${avColor(id)}"><h2>${avatar(id,'lg')}${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}${p.level ? `<span class="lvl">NTRP ${esc(p.level)}</span>` : ''}${streakTag(id)}</h2>
         ${(() => { const held = awards().filter(a => a.ids.includes(id)); return held.length ? `<div class="chipsrow">${held.slice(0, 2).map(a => `<span class="achip">${icon(a.t)}${esc(a.t)}</span>`).join('')}${held.length > 2 ? `<span class="achip more" title="${esc(held.slice(2).map(a => a.t).join(', '))}">+${held.length - 2} more</span>` : ''}</div>` : ''; })()}
         ${(() => { const pr = p.prof || {}; const bits = [pr.plays, pr.bh ? (pr.bh === 'One-handed' ? '1H' : '2H') + ' backhand' : ''].filter(Boolean), op = (p.open || []).map(k => (OPENL.find(x => x[0] === k) || [0, ''])[1]).filter(Boolean);
           return (pr.bio ? `<p class="bio">“${esc(pr.bio)}”</p>` : '')
@@ -1176,7 +1276,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
   }
   function renderUpcoming(){
     const list = upcomingList();
-    return `<div><h2>Courts</h2><p class="sub">Open courts need an opponent. Tap Claim it.</p></div><button class="btn" data-sheet="book" style="margin:0 0 12px">Post a court</button>${pendHtml('book')}${pendHtml('claim')}
+    return `<div><h2>Courts</h2><p class="sub">Open courts need an opponent. Tap Claim it.</p></div><button class="btn pri" data-sheet="book" style="margin:0 0 12px">Post a court</button>${pendHtml('book')}${pendHtml('claim')}
       ${list.length ? `<section class="logday">${list.map(upRow).join('')}</section>` : `<div class="empty">Nothing booked yet. Book a court, then tap Post a court.</div>`}
       `;
   }
@@ -1596,6 +1696,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     return {added: added.length, addedList: added, skipped};
   }
 
+  const PV_ICON = {"me": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6\"/></svg>", "standings": "<svg viewBox=\"0 0 24 24\"><path d=\"M4 20V11h4v9M10 20V5h4v15M16 20v-6h4v6\"/></svg>", "upcoming": "<svg viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"1\"/><path d=\"M12 5v14M3 12h18\"/></svg>", "results": "<svg viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"M8 10v4M16 10v4M12 9v.01M12 15v.01\"/></svg>", "rules": "<svg viewBox=\"0 0 24 24\"><path d=\"M5 4h11l3 3v13H5z\"/><path d=\"M9 10h6M9 14h6\"/></svg>", "admin": "<svg viewBox=\"0 0 24 24\"><path d=\"M12 3l8 4v5c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V7z\"/></svg>"};
   function render(){
     RAT = null;
     const L = state.league, tip = safeUrl(L.tipUrl);
@@ -1606,8 +1707,8 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     const dates = L.startDate && L.startDate > today() ? 'Season starts ' + fmtDate(L.startDate,{month:'short',day:'numeric'}) : L.endDate ? 'Through ' + fmtDate(L.endDate,{month:'short',day:'numeric'}) : '';
     const span = L.startDate || L.endDate ? `<span>${esc(fmtDate(L.startDate,{month:'short',day:'numeric'}) || 'Now')} – ${esc(fmtDate(L.endDate,{month:'short',day:'numeric'}) || 'Spring')}</span>` : '';
     app.innerHTML = `
-      <header class="board${tab === 'standings' ? '' : ' slim'}">
-        <div class="baseline"></div>
+            <header class="board${tab === 'standings' ? '' : ' slim'}">
+        <div class="baseline"></div><svg class="courtlines" viewBox="0 0 390 200" preserveAspectRatio="none" aria-hidden="true"><rect x="18" y="14" width="354" height="172" /><line x1="18" y1="36" x2="372" y2="36" /><line x1="18" y1="164" x2="372" y2="164" /><line x1="96" y1="36" x2="96" y2="164" /><line x1="294" y1="36" x2="294" y2="164" /><line x1="96" y1="100" x2="294" y2="100" /><line x1="195" y1="14" x2="195" y2="186" class="net" /></svg>
         <div class="board-top">
           ${L.draft ? '<div class="toprow"><span class="draft">Draft · feedback welcome</span></div>' : ''}
           <h1>${esc(L.name)}</h1>
@@ -1618,13 +1719,13 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
       </header>
       ${meBar()}
       ${L.news && newsHidden !== L.news ? `<p class="news"><button type="button" class="newsx" data-newsx="1" aria-label="Hide this note">×</button><b>What's new${L.newsDate ? ' · ' + esc(fmtDate(L.newsDate,{month:'short',day:'numeric'})) : ''}:</b> ${esc(L.news)}</p>` : ''}
-      <nav class="tabs" role="tablist">${tabs.map(([k,v]) => `<button class="tab${PRIMARY.includes(k) ? '' : ' xtra'}" role="tab" aria-selected="${tab===k || (tab==='player' && k==='standings')}" data-tab="${k}">${v}</button>`).join('')}${(() => {
+      <nav class="tabs" role="tablist">${tabs.map(([k,v]) => `<button class="tab${PRIMARY.includes(k) ? '' : ' xtra'}" role="tab" aria-selected="${tab===k || (tab==='player' && k==='standings')}" data-tab="${k}"><i class="ti" aria-hidden="true">${PV_ICON[k] || ''}</i><span class="tl">${v}</span></button>`).join('')}${(() => {
         const sec = tabs.filter(t => !PRIMARY.includes(t[0])), cur = sec.find(t => t[0] === tab); if (!sec.length) return '';
         return `<button class="tab more" aria-haspopup="true" aria-expanded="${moreOpen}" aria-selected="${!!cur}" data-more="1">More <span aria-hidden="true">▾</span></button>`
           + (moreOpen ? `<div class="moremenu" role="menu">${sec.map(([k,v]) => `<button role="menuitem" class="${tab === k ? 'on' : ''}" data-tab="${k}">${v}</button>`).join('')}</div>` : '');
       })()}</nav>
       <main class="panel">${body}</main>
-      <p class="foot">${state.updated ? 'Last updated ' + esc(new Date(state.updated).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})) : ''}${tip ? ` · <a href="${esc(tip)}" target="_blank" rel="noopener" style="color:var(--accent)">Tip jar</a>` : ''}</p>
+      <p class="foot">${state.updated ? 'Last updated ' + esc(new Date(state.updated).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})) : ''}${tip ? ` · <a href="${esc(tip)}" target="_blank" rel="noopener" style="color:var(--accent)">Tip jar</a>` : ''} · <button type="button" class="thsw" data-theme-sw="1" aria-label="Switch light or dark">${document.documentElement.dataset.theme === 'light' ? 'Dark' : 'Light'} mode</button></p>
       ${dirty ? `<div class="savebar"><span>${saving || 'Unsaved changes'}</span><button class="btn ghost" id="discard">Discard</button><button class="btn" id="save">Save and publish</button></div>` : ''}`;
   }
 
@@ -1963,7 +2064,7 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
     const chRow = c => { const o = c.from === me ? c.to : c.from, op = state.players.find(x => x.id === o) || {name: ''}, h = smsHref(op, `Hey ${first(op)}! Locking in our league match. When works for you?`);
       return `<div class="wrow"><span>${c.from === me ? 'You challenged' : 'You accepted'} <button class="plink" data-player="${o}">${esc(op.name)}</button>${c.when ? ' · ' + esc(c.when) : ''}</span><span class="hint">${c.status === 'open' ? `Waiting for an answer · <button class="link" data-chx="${c.id}">Cancel</button>` : c.status === 'declined' ? `${esc(first(op))} can't this time${c.reply ? ': “' + esc(c.reply) + '”' : ''}` : `On! ${h ? `<a class="smslink" href="${esc(h)}" target="_top" data-sms="${esc(first(op))}">Text ${esc(first(op))}</a> · ` : ''}<button class="link" data-bookw="${o}">Post the court</button>`}</span></div>`; };
     return `<div class="mehead">${avatar(me, 'lg')}<div><h2>${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}</h2><p class="sub">${r.mp ? `#${rank} · ${r.pts} pts · ${r.w}–${r.l}` : 'No counted matches yet'} · <button class="link" data-player="${me}">My public page</button></p></div></div>
-      <div class="meacts"><button class="btn" data-sheet="score">Report a score</button><button class="btn ghost" data-sheet="book">Post a court</button><button class="btn ghost" data-chal="">⚔️ Challenge</button></div>
+      <div class="meacts"><button class="btn pri" data-sheet="score">Report a score</button><button class="btn ghost" data-sheet="book">Post a court</button><button class="btn ghost" data-chal="">⚔️ Challenge</button></div>
       ${T.conf.length || T.chIn.length ? `<section class="card todo"><h3>Needs you</h3>
         ${T.conf.map(x => `<div class="wrow"><span>${esc(pname(x.by))} reported: ${repLine(x)}</span><span><button class="btn sm" data-rconf="${x.id}">Confirm</button> <button class="link" data-rdisp="${x.id}">Dispute</button></span></div>`).join('')}
         ${T.chIn.map(c => `<div class="wrow"><span><b>${esc(pname(c.from))}</b> challenged you${c.when ? ' · ' + esc(c.when) : ''}${c.msg ? `<br><i class="hint">“${esc(c.msg)}”</i>` : ''}</span><span><button class="btn sm" data-chok="${c.id}">Accept</button> <button class="link" data-chno="${c.id}">Can't</button></span></div>`).join('')}
@@ -2145,6 +2246,12 @@ details.med[open]{padding-bottom:14px}details.med>*:not(summary){margin-left:16p
   const keepDraft = e => { const t = e.target; if (!t || !t.closest || !t.closest('.meform')) return; if (t.dataset.mfk) { meDraft.free = [...document.querySelectorAll('input[data-mfk]')].filter(x => x.checked).map(x => x.dataset.mfk); return; } if (t.name === 'm-color') { meDraft['m-color'] = t.dataset.color; return; } if (t.name === 'm-plays' || t.name === 'm-bh') { meDraft[t.name] = t.dataset.v; return; } if (t.id) meDraft[t.id] = t.type === 'checkbox' ? t.checked : t.value; };
   document.addEventListener('input', keepDraft); document.addEventListener('change', keepDraft);
   document.addEventListener('change', e => { const s2 = e.target.closest && e.target.closest('select[data-fb-me]'); if (s2) fbAct('me', s2); });
+  try { const t = localStorage.getItem('mws-pv-theme'); document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'; } catch(_) { document.documentElement.dataset.theme = 'dark'; }
+  document.addEventListener('click', e => { const b = e.target.closest('[data-theme-sw]'); if (!b) return; const t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light'; document.documentElement.dataset.theme = t; try { localStorage.setItem('mws-pv-theme', t); } catch(_) {} render(); });
+  // one moment of motion: the points count up the first time the standings appear
+  let pvCounted = false; const pvCount = () => { if (pvCounted || tab !== 'standings' || matchMedia('(prefers-reduced-motion: reduce)').matches) return; const els = [...document.querySelectorAll('.spts b[data-count]')]; if (!els.length) return; pvCounted = true; const t0 = performance.now();
+    const step = t => { const u = Math.min(1, (t - t0)/700), e = 1 - Math.pow(1 - u, 3); els.forEach(el => { el.textContent = Math.round(+el.dataset.count*e); }); if (u < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); };
+  const pvRender = render; render = function(){ pvRender(); pvCount(); };
   render();
   fbBoot();
 })();

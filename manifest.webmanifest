@@ -1,7 +1,7 @@
 {
  "name": "McFetridge Winter Singles",
  "short_name": "Singles",
- "start_url": "./preview.html",
+ "start_url": "./",
  "scope": "./",
  "display": "standalone",
  "background_color": "#0D1B2A",
