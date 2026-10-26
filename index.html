@@ -1004,6 +1004,21 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
 .emos span{display:grid;place-items:center;aspect-ratio:1;border-radius:50%;font:400 20px/1 system-ui,'Apple Color Emoji','Segoe UI Emoji',sans-serif;color:#fff}.emos label:first-child span{font:700 13px var(--body)}
 .emos input:checked+span{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}.emos input:focus-visible+span{outline:2px solid var(--accent);outline-offset:3px}
 .rfoot{margin-top:6px;text-align:center}.rfbtn{font:700 14px var(--body);padding:9px 18px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.welcome{position:relative;margin:12px 0 0;padding:16px;border-radius:14px;background:var(--surface);border:1px solid var(--accent)}
+.welcome h3{margin:0 0 10px;font:700 18px var(--body);padding-right:28px}.welcome .hint{margin:8px 0 0;text-align:center}
+.wsteps{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:8px;counter-reset:ws}
+.wsteps li{counter-increment:ws;display:grid;grid-template-columns:28px 1fr;column-gap:10px;align-items:center}
+.wsteps li::before{content:counter(ws);grid-row:span 2;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--act-ink);font:700 14px var(--body)}
+.wsteps b{font-size:15px}.wsteps span{font-size:13px;color:var(--muted)}
+.wgo{width:100%;padding:13px 18px;font-size:16px}
+.welcome.step2 select{width:100%;font:16px var(--body);padding:11px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.wx{position:absolute;top:8px;right:8px;width:32px;height:32px;border:0;border-radius:50%;background:none;color:var(--muted);font-size:20px;cursor:pointer}
+.gs{position:relative}.gs h3{display:flex;align-items:baseline;gap:8px;padding-right:28px}.gs h3 span{font:600 13px var(--body);color:var(--muted)}
+.gsbar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin:0 0 8px}.gsbar i{display:block;height:100%;background:var(--accent);border-radius:inherit}
+.gsrow{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.gsrow b{display:block;font-size:15px}.gsrow div span{font-size:13px;color:var(--muted)}
+.gsi{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--surface2,var(--bg));font-size:15px}
+.gsrow.ok b{color:var(--muted);text-decoration:line-through}.gsrow.ok .gsi{background:var(--win);color:#fff;font-weight:700}
 .foot .thsw{margin:0;padding:0;border:0;border-radius:0;background:none;font:inherit;color:var(--accent);text-decoration:underline;cursor:pointer}
 </style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","phone":"8473705661","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"}},{"id":"p5onhu0","name":"Spencer C","level":"3.25","phone":"8592216232"},{"id":"wd1jmau","name":"Brendan O","level":"3.0","phone":"7732204199"},{"id":"ata2iuw","name":"Tim S","level":"3.0","phone":"3308358969"},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","phone":"6307883151"},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","phone":"3134455771"},{"id":"67cu010","name":"Vitaliy B","level":"3.25","phone":"3122858599"},{"id":"vswai94","name":"Luke H","level":"3.25","phone":"8155931653"},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","phone":"8029893524"},{"id":"cuwu10i","name":"Juan G","level":"3.0","phone":"5617587298"},{"id":"mfuf932","name":"Zach K","level":"3.0","phone":"4404524279"},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","phone":"7736812050"},{"id":"wg8fb4m","name":"John W","level":"3.25","phone":"7082145282"},{"id":"iev0edc","name":"Nathan H","level":"3.0","phone":"3129250266"},{"id":"tm2km4c","name":"Brian K","phone":"6168560533","level":"3.0"},{"id":"uu82eoc","name":"Aidan V","level":"3.0","phone":"8479098210"},{"id":"w5zwbyo","name":"Salem H","level":"3.25","phone":"2709930457"},{"id":"m620f34","name":"Bill J","level":"3.25","phone":"3125433273"}],"matches":[],"updated":"2026-10-16T16:25:46.833Z","upcoming":[]}</script><script id="page-js">
 (function(){
@@ -1787,7 +1802,7 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
         <div class="ticker" aria-label="Latest results"><span class="tk-label">Latest</span>${ticker()}</div>
       </header>
       ${meBar()}
-      ${tab === 'standings' && A2HS_ON() && !a2hsHid() ? `<div class="a2bar"><button type="button" data-a2hs="1"><span aria-hidden="true">📲</span> Add to your Home Screen</button><button type="button" class="a2x" data-a2x="1" aria-label="Hide">×</button></div>` : ''}
+      ${tab === 'standings' && A2HS_ON() && !a2hsHid() && FBL.user && myPid() ? `<div class="a2bar"><button type="button" data-a2hs="1"><span aria-hidden="true">📲</span> Add to your Home Screen</button><button type="button" class="a2x" data-a2x="1" aria-label="Hide">×</button></div>` : ''}
       ${L.news && newsHidden !== L.news ? `<p class="news"><button type="button" class="newsx" data-newsx="1" aria-label="Hide this note">×</button><b>What's new${L.newsDate ? ' · ' + esc(fmtDate(L.newsDate,{month:'short',day:'numeric'})) : ''}:</b> ${esc(L.news)}</p>` : ''}
       <nav class="tabs" role="tablist">${tabs.map(([k,v]) => `<button class="tab${PRIMARY.includes(k) ? '' : ' xtra'}" role="tab" aria-selected="${tab===k || (tab==='player' && k==='standings')}" data-tab="${k}"><i class="ti" aria-hidden="true">${PV_ICON[k] || ''}</i><span class="tl">${v}</span></button>`).join('')}${(() => {
         const sec = tabs.filter(t => !PRIMARY.includes(t[0])), cur = sec.find(t => t[0] === tab); if (!sec.length) return '';
@@ -2135,6 +2150,7 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
     const chRow = c => { const o = c.from === me ? c.to : c.from, op = state.players.find(x => x.id === o) || {name: ''}, h = smsHref(op, `Hey ${first(op)}! Locking in our league match. When works for you?`);
       return `<div class="wrow"><span>${c.from === me ? 'You challenged' : 'You accepted'} <button class="plink" data-player="${o}">${esc(op.name)}</button>${c.when ? ' · ' + esc(c.when) : ''}</span><span class="hint">${c.status === 'open' ? `Waiting for an answer · <button class="link" data-chx="${c.id}">Cancel</button>` : c.status === 'declined' ? `${esc(first(op))} can't this time${c.reply ? ': “' + esc(c.reply) + '”' : ''}` : `On! ${h ? `<a class="smslink" href="${esc(h)}" target="_top" data-sms="${esc(first(op))}">Text ${esc(first(op))}</a> · ` : ''}<button class="link" data-bookw="${o}">Post the court</button>`}</span></div>`; };
     return `<div class="mehead">${avatar(me, 'lg')}<div><h2>${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}</h2><p class="sub">${r.mp ? `#${rank} · ${r.pts} pts · ${r.w}–${r.l}` : 'No counted matches yet'} · <button class="link" data-player="${me}">My public page</button></p></div></div>
+      ${getStarted(me, p, pf, ct)}
       <div class="meacts"><button class="btn pri" data-sheet="score">Report a score</button><button class="btn ghost" data-sheet="book">Post a court</button><button class="btn ghost" data-chal="">⚔️ Challenge</button></div>
       ${T.conf.length || T.chIn.length ? `<section class="card todo"><h3>Needs you</h3>
         ${T.conf.map(x => `<div class="wrow"><span>${esc(pname(x.by))} reported: ${repLine(x)}</span><span><button class="btn sm" data-rconf="${x.id}">Confirm</button> <button class="link" data-rdisp="${x.id}">Dispute</button></span></div>`).join('')}
@@ -2221,10 +2237,10 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
     closeSheet(); sheetEl = document.createElement('div'); sheetEl.className = 'sheetwrap'; sheetEl.dataset.acct = '1';
     const st = s2 => s2 === 'approved' ? '✅ Approved' : s2 === 'declined' ? '✕ Not added' : '⏳ Waiting for ' + esc(state.league.commissioner || 'the commissioner');
     const body = !FBL.ready ? `<p>${esc(FBL.err || 'Loading sign-in…')}</p>`
-      : !u ? `<p style="margin:0">Sign in to post your scores and courts, claim open courts, challenge other players, and run your own profile, free times and phone number. No more texting ${esc(state.league.commissioner || 'the commissioner')}.</p>
+      : !u ? `<p style="margin:0">Sign in to post scores, book courts, challenge players and set up your profile. Use whichever is easier:</p>
         <button type="button" class="btn" data-fb="google">Sign in with Google</button>
         <div class="row"><input class="lg-em" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-label="Your email" value="${esc(keep)}" style="flex:1;min-width:0;font:15px var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)"><button type="button" class="btn ghost" data-fb="email">Email me a link</button></div>
-        <p class="hint" style="margin:0">Your email is only used to sign you in. Nobody else sees it.</p>`
+        <p class="hint" style="margin:0">No password needed. Your email is only used to sign you in, and nobody else sees it.</p>`
       : `<p style="margin:0">Signed in as <b>${esc(u.email || u.displayName || 'you')}</b>${FBL.admin ? ' · commissioner' : ''}.</p>
         <label class="field">Which player are you?<select data-fb-me="1">${playerOpts(myPid() || '', 'Choose your name', null, true)}</select></label>
         ${FBL.admin ? '' : `
@@ -2269,14 +2285,32 @@ button.btn.pri,.sheet .acts button.btn:first-child,.mb-go,.inbox button.btn[data
   const KIND = {score: 'Score', book: 'New court', claim: 'Court claim', free: 'Free times', profile: 'Profile'};
   function pendHtml(k){ const L = (FBL.mine || []).filter(r => r.status === 'pending' && r.kind === k); if (!L.length || art) return '';
     return `<div class="pend"><b>Waiting for ${esc(state.league.commissioner || 'the commissioner')}'s OK</b>${L.map(r => `<span>${esc((r.msg || '').replace(/\n/g, ' · ').replace(/^🎾\s*/, ''))}</span>`).join('')}</div>`; }
+  const lsGet = k => { try { return localStorage.getItem(k) === '1'; } catch(_) { return false; } };
+  const lsSet = k => { try { localStorage.setItem(k, '1'); } catch(_) {} };
+  document.addEventListener('click', e => { const w = e.target.closest && e.target.closest('[data-welcome-x],[data-gs-x]'); if (!w) return; lsSet(w.dataset.welcomeX ? 'mws-welcome-x' : 'mws-gs-x'); render(); });
+  // first-week checklist on the Me tab; disappears once it's all done (or hidden)
+  function getStarted(me, p, pf, ct){
+    if (lsGet('mws-gs-x')) return '';
+    const uid = FBL.user && FBL.user.uid;
+    const I = [
+      [(p.free || []).length > 0, '🗓️', 'Add when you’re usually free', 'So people know when to ask you', `<button type="button" class="btn sm" data-tab="me" data-jump="me-free">Add</button>`],
+      [!!(pf.plays || pf.bh || pf.bio || pf.emo || pf.nick || pf.pro || pf.shot), '🎾', 'Set up your profile', 'Picture, style, a one-line bio', `<button type="button" class="btn sm" data-tab="me" data-jump="me-prof">Set up</button>`],
+      [!!(ct.phone || (PRIV && PRIV[me])), '📱', 'Add your phone number', 'So players can text you', `<button type="button" class="btn sm" data-tab="me" data-jump="me-ct">Add</button>`],
+      [state.matches.some(m => m.a === me || m.b === me) || LV.courts.some(c => c.uid === uid || c.a === me || c.b === me) || LV.chOut.length > 0 || LV.reports.some(r => r.by === me), '⚔️', 'Get your first match', 'Challenge someone or post a court', `<button type="button" class="btn sm pri" data-chal="">Challenge</button>`]];
+    const done = I.filter(x => x[0]).length; if (done === I.length) return '';
+    return `<section class="card gs"><button type="button" class="wx" data-gs-x="1" aria-label="Hide">×</button><h3>Get set up <span>${done} of ${I.length} done</span></h3><div class="gsbar"><i style="width:${Math.round(done / I.length * 100)}%"></i></div>
+      ${I.map(([ok, ic, t, d, b]) => `<div class="gsrow${ok ? ' ok' : ''}"><span class="gsi" aria-hidden="true">${ok ? '✓' : ic}</span><div><b>${t}</b><span>${d}</span></div>${ok ? '' : b}</div>`).join('')}</section>`; }
   function meBar(){
     if (!FBL.ready) return FBL.err ? `<div class="mebar"><p>${esc(FBL.err)}</p></div>` : '';
     const u = FBL.user, cn = esc(state.league.commissioner || 'the commissioner');
-    if (!u) return `<div class="mebar"><p><b>Sign in</b> to post scores, courts and your profile.</p><button type="button" class="mb-go" data-acct="1">Sign in</button></div>`;
+    if (!u) return tab === 'standings' && !lsGet('mws-welcome-x') ? `<section class="welcome"><button type="button" class="wx" data-welcome-x="1" aria-label="Hide">×</button><h3>👋 New to the league?</h3>
+        <ol class="wsteps"><li><b>Sign in</b><span>Google or an email link</span></li><li><b>Pick your name</b><span>from the player list</span></li><li><b>Find a match</b><span>challenge someone or post a court</span></li></ol>
+        <button type="button" class="mb-go wgo" data-acct="1">Sign in to get started</button><p class="hint">Just checking the standings? They're right below.</p></section>`
+      : `<div class="mebar"><p><b>Sign in</b> to post scores, courts and your profile.</p><button type="button" class="mb-go" data-acct="1">Sign in</button></div>`;
     if (FBL.admin) { const nA = FBL.subs.length + LV.reports.filter(r => r.status === 'disputed').length;
       return `<div class="mebar"><p><b>Commissioner</b> · ${nA ? nA + ' thing' + (nA > 1 ? 's' : '') + ' need you' : 'nothing waiting'}</p><div class="mb-acts"><button type="button" data-tab="admin">Commissioner tab</button>${myPid() ? '<button type="button" data-tab="me">Me</button>' : ''}<button type="button" data-acct="1">Account</button></div></div>`; }
     if (tab === 'me') return '';
-    if (!myPid()) return `<div class="mebar"><p><b>One more step:</b> which player are you?</p><select data-fb-me="1" aria-label="Which player are you?">${playerOpts('', 'Choose your name', null, true)}</select></div>`;
+    if (!myPid()) return `<section class="welcome step2"><h3>Almost there: which player are you?</h3><select data-fb-me="1" aria-label="Which player are you?">${playerOpts('', 'Choose your name', null, true)}</select><p class="hint">Each name can only be picked once. Not on the list? Ask ${cn} to add you.</p></section>`;
     const n = todoCount(), nm0 = first(state.players.find(p => p.id === myPid()) || {name: ''});
     return `<div class="mebar"><p>Hi, <b>${esc(nm0)}</b>${n ? ` · <b class="todo-n">${n} thing${n > 1 ? 's' : ''} need${n > 1 ? '' : 's'} you</b>` : ''}</p><div class="mb-acts"><button type="button" data-tab="me">${n ? 'Open Me' : 'Me'}</button><button type="button" data-sheet="score">Report a score</button><button type="button" data-sheet="book">Post a court</button></div></div>`;
   }
