@@ -3363,7 +3363,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     el.innerHTML = `${avatar(me)}<b>#${i + 1}</b><span>${r.pts} pts</span><span class="rb-rec">${r.w}–${r.l}</span><span class="rb-up" aria-hidden="true">↑</span>`;
     el.setAttribute('aria-label', `You're number ${i + 1} with ${r.pts} points. Back to top`);
     rbObs = new IntersectionObserver(([e]) => el.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.bottom < 0)); rbObs.observe(hc); }
-  const rbRender = render; render = function(){ rbRender(); ringCss(); rankBar(); };
+  const rbRender = render; render = function(){ rbRender(); ringCss(); };
   // motion: tab fade, rows glide to new ranks, points count up, a ball bounces across anything newly scored
   let swipeDir = '';
   let fxReady = false, fxTab = null, fxPts = {}, fxSeen = null; setTimeout(() => { fxReady = true; }, 3500);
