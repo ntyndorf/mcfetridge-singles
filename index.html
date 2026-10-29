@@ -1535,7 +1535,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       const diff = Math.round((m0 - new Date(mon.getFullYear(), mon.getMonth(), mon.getDate())) / 864e5 / 7); return diff <= 0 ? 'This week' : diff === 1 ? 'Last week' : 'Week of ' + mon.toLocaleDateString('en-US', {month: 'short', day: 'numeric'}); };
     state.matches.slice().sort((x,y) => (y.date||'').localeCompare(x.date||'')).forEach(m => { const k = wk(m.date); (days[k] = days[k] || []).push(m); });
     return `<div><h2>Results</h2></div>${rep}
-      ${Object.keys(days).map(d => `<section class="logday"><header>${esc(d)}</header>${days[d].map(m => matchRow(m).replace('<div class="match">', `<div class="match mx${mxOpen.has(m.id) || editing === m.id ? ' mxo' : ''}" data-mx="${m.id}">`).replace('<div class="vs">', `<div class="vs">${m.date ? `<span class="rdate">${esc(fmtDate(m.date))}</span>` : ''}`)).join('')}</section>`).join('')}`;
+      ${Object.keys(days).map(d => `<section class="logday"><header>${esc(d)}</header>${days[d].map(m => matchRow(m).replace('<div class="match">', `<div class="match" data-mx="${m.id}">`).replace('<div class="vs">', `<div class="vs">${m.date ? `<span class="rdate">${esc(fmtDate(m.date))}</span>` : ''}`)).join('')}</section>`).join('')}`;
   }
 
   function playNext(id, h, rank, rows){
