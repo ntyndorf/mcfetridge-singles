@@ -1261,6 +1261,79 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
 .hc-slim .hc-a2{padding:2px 2px 2px 10px}
 
 .hc-mini{grid-template-columns:repeat(3,1fr)}.hc-mini div{padding:5px 2px;gap:0}.hc-mini b{font-size:17px}.hc-mini span{font-size:10.5px}
+
+/* ================= one card style ================= */
+:root{--card-r:16px}
+.card,.homecard,.mebar,.welcome,.logday,.srow,.med,.statline,.news,.empty,.vsyou,.pchart,.podium .pod,.morestats,.phero,.hc-stats{border-radius:var(--card-r)!important}
+.card,.mebar,.logday,.srow,.med,.statline,.news,.vsyou,.pchart,.morestats{border:1px solid var(--line);background:var(--surface)}
+.homecard{border-color:var(--line)}
+.mebar,.news{padding:12px 16px}
+.card{padding:16px}
+.logday header{padding:14px 16px 10px}
+/* ================= floating + button ================= */
+.fab{position:fixed;right:max(16px,calc((100vw - 760px)/2 + 16px));bottom:24px;z-index:45;display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
+.fab>*{pointer-events:auto}
+.fab-main{width:58px;height:58px;border-radius:50%;border:0;background:var(--ball,var(--accent));color:#0B1B2B;display:grid;place-items:center;box-shadow:0 10px 24px rgba(0,0,0,.4),0 0 0 4px color-mix(in srgb,var(--bg) 70%,transparent);cursor:pointer;transition:transform .2s ease}
+.fab-main span{font:400 34px/1 var(--body);margin-top:-3px;transition:transform .25s ease}
+.fab.fabo .fab-main span{transform:rotate(45deg)}
+.fab-menu{display:grid;gap:8px;justify-items:end;opacity:0;transform:translateY(10px) scale(.96);transform-origin:bottom right;visibility:hidden;transition:opacity .18s,transform .18s,visibility 0s .18s}
+.fab.fabo .fab-menu{opacity:1;transform:none;visibility:visible;transition:opacity .18s,transform .18s}
+.fab-menu button{display:flex;align-items:center;gap:8px;min-height:46px;padding:0 18px 0 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 15px var(--body);box-shadow:0 8px 20px rgba(0,0,0,.35);cursor:pointer;white-space:nowrap}
+.fab-menu button span{font-size:18px}
+@media (max-width:640px){.fab{bottom:calc(76px + env(safe-area-inset-bottom,0px))}.wrap{padding-bottom:160px!important}}
+.hc-adm{background:var(--surface2,var(--bg))!important;color:var(--ink)!important;border:1px solid var(--line)!important}
+.meacts .btn{flex:0 0 auto}
+/* ================= podium ================= */
+.podium{display:grid;grid-template-columns:1fr 1.12fr 1fr;align-items:end;gap:8px;margin:6px 0 12px}
+.pod{position:relative;display:grid;justify-items:center;gap:3px;padding:12px 6px 0;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit;overflow:hidden;min-width:0}
+.pod .av.lg{width:48px;height:48px;font-size:17px;margin:0}
+.pod1 .av.lg{width:62px;height:62px;font-size:21px}
+.pod .av.lg.emo{font-size:26px}.pod1 .av.lg.emo{font-size:32px}
+.pod-nm{font-weight:800;font-size:15px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
+.pod1 .pod-nm{font-size:17px}
+.pod-pts{font-size:12px;color:var(--muted)}.pod-pts b{font:800 15px var(--display);color:var(--ink)}
+.pod-step{align-self:stretch;justify-self:stretch;display:grid;place-items:center;margin-top:8px;background:color-mix(in srgb,var(--surface2,var(--bg)) 85%,#CFE8F5 15%);border-top:1px solid var(--line)}
+.pod-step i{font:900 22px var(--display);font-style:normal;color:var(--muted)}
+.pod2 .pod-step{height:34px}.pod1 .pod-step{height:56px}.pod3 .pod-step{height:22px}
+.pod1{border-color:rgba(207,232,245,.55);box-shadow:0 0 22px rgba(159,211,238,.18)}
+.pod1 .pod-step i{color:var(--link,var(--accent))}
+.pod .mv{font-size:11px;line-height:1}
+/* ================= tap-to-expand results ================= */
+.match.mx{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.match.mx::after{content:'›';position:absolute;right:16px;top:12px;color:var(--muted);font:600 18px/1 var(--body);transform:rotate(90deg);transition:transform .2s}
+.match.mx.mxo::after{transform:rotate(-90deg)}
+.match.mx:not(.mxo) .result .pill,.match.mx:not(.mxo) .result .link,.match.mx:not(.mxo) .result br,.match.mx:not(.mxo) .note{display:none}
+.match.mx .vs{padding-right:22px}
+@media (min-width:601px){.match.mx .result{padding-right:22px}}
+/* ================= points chart ================= */
+.pchart{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;margin:12px 0;padding:14px 16px}
+.pc-rank{display:grid;justify-items:center;line-height:1}.pc-rank b{font:900 46px/1 var(--display);color:var(--ink)}.pc-rank span{font-size:12px;color:var(--muted);margin-top:4px}
+.pc-g{display:grid;gap:4px;min-width:0}.pc-k{font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--link,var(--accent))}
+.pc-g svg{width:100%;height:auto;max-height:110px;display:block;overflow:visible}
+.pc-line{fill:none;stroke:var(--link,var(--accent));stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.pc-area{fill:color-mix(in srgb,var(--link,var(--accent)) 16%,transparent)}
+.pc-dot{fill:var(--surface);stroke:var(--link,var(--accent));stroke-width:1.6}.pc-dot.now{fill:var(--ball,var(--accent));stroke:none}
+.pc-x{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+/* ================= motion ================= */
+.panel.tabin{animation:tabIn .26s cubic-bezier(.2,.8,.2,1)}
+@keyframes tabIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.scored{position:relative;overflow:hidden}
+.scored::before{content:'';position:absolute;z-index:3;left:-18px;bottom:10px;width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F2FF8A,var(--ball,#D9F24A) 60%,#B9D23A);box-shadow:0 2px 4px rgba(0,0,0,.35);pointer-events:none;animation:ballX 1.4s cubic-bezier(.4,.1,.6,.9) forwards,ballY .35s cubic-bezier(.3,0,.7,1) 4 alternate}
+@keyframes ballX{to{left:calc(100% + 18px)}}
+@keyframes ballY{to{transform:translateY(-20px)}}
+.srow.scored,.pod.scored,.match.scored{box-shadow:inset 0 0 0 1px var(--link,var(--accent))}
+.le-mark{animation:leBob 5.5s ease-in-out infinite}
+@keyframes leBob{0%,100%{transform:translateY(0)}45%{transform:translateY(2.5px)}70%{transform:translateY(-1px)}}
+:where(button,.btn,.gamelink,.yet-p,.pod):not(:disabled){transition:transform .12s ease}
+:where(button,.btn,.gamelink,.yet-p):not(:disabled):not(.rankbar):not(.fab-main):active{transform:scale(.96)}
+.fab-main:active{transform:scale(.92)}
+.pod:active{transform:scale(.98)}
+@media (prefers-reduced-motion: reduce){.panel.tabin,.le-mark,.scored::before{animation:none!important}.scored::before{display:none}:where(button,.btn,.gamelink,.yet-p):active{transform:none!important}.fab-menu{transition:none}}
+
+/* with a podium, the list starts at #4: no medal stripes or highlighted points */
+.podium + .srows .srow:not(.scored){box-shadow:none}
+.podium + .srows .srow .spts b{color:var(--ink)!important}
+.pod1 .pod-pts b{color:var(--link,var(--accent))}
 </style><link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Archivo+Black&amp;family=Yellowtail&amp;family=Instrument+Serif:ital@0;1&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"},"ph":1},{"id":"p5onhu0","name":"Spencer C","level":"3.25","ph":1},{"id":"wd1jmau","name":"Brendan O","level":"3.0","ph":1},{"id":"ata2iuw","name":"Tim S","level":"3.0","ph":1},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","ph":1},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","ph":1},{"id":"67cu010","name":"Vitaliy B","level":"3.25","ph":1},{"id":"vswai94","name":"Luke H","level":"3.25","ph":1},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","ph":1},{"id":"cuwu10i","name":"Juan G","level":"3.0","ph":1},{"id":"mfuf932","name":"Zach K","level":"3.0","ph":1},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","ph":1},{"id":"wg8fb4m","name":"John W","level":"3.25","ph":1},{"id":"iev0edc","name":"Nathan H","level":"3.0","ph":1},{"id":"tm2km4c","name":"Brian K","level":"3.0","ph":1},{"id":"uu82eoc","name":"Aidan V","level":"3.0","ph":1},{"id":"w5zwbyo","name":"Salem H","level":"3.25","ph":1},{"id":"m620f34","name":"Bill J","level":"3.25","ph":1},{"id":"zwb6fo9","name":"Peter R","level":"3.0","ph":1},{"id":"4xr256c","name":"Will C","level":"3.0","ph":1}],"matches":[],"updated":"2026-10-29T18:05:36.952Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = (() => { const e = document.getElementById('league-data').textContent; try { const c = localStorage.getItem('le-state'); if (c) { const cu = (JSON.parse(c) || {}).updated || '', eu = (JSON.parse(e) || {}).updated || ''; if (cu > eu) return c; } } catch(_) {} return e; })();
@@ -1333,6 +1406,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   const avColor = id => { const i = state.players.findIndex(p => p.id === id), c = i >= 0 && state.players[i].color; return /^#[0-9a-f]{6}$/i.test(c || '') ? c : AVC[(i < 0 ? 0 : i) % AVC.length]; };
   const EMOS = ['🎾', '🔥', '⚡', '🚀', '👑', '🏆', '🎯', '💪', '🧊', '❄️', '🌪️', '🌙', '☀️', '🌵', '🍕', '🌭', '🥯', '🍩', '🐐', '🦅', '🦁', '🐯', '🐻', '🐺', '🦊', '🦈', '🐙', '🐢', '🦖', '🤖', '👻', '😎'];
   const emoOf = id => { const p = state.players.find(x => x.id === id); return p && EMOS.includes(p.emo) ? p.emo : ''; };
+  const PTYPES = ['Aggressive baseliner', 'Counterpuncher', 'All-court', 'Big server', 'Serve & volley', 'Moonballer'];
   const RINGS = ['#D9F24A','#9FD3EE','#FFFFFF','#FF7A59','#F5C542','#7BE0A8','#C9A7F5','#FF8FB1','#4CC38A','#5B8DEF'];
   const ringOf = id => { const p = state.players.find(x => x.id === id); return p && RINGS.includes(p.ring) ? p.ring : ''; };
   const avatar = (id, cls) => { const e = emoOf(id), rg = ringOf(id); return `<span class="av ${cls||''}${e ? ' emo' : ''}${rg ? ' rg' : ''}" style="background:${avColor(id)}${rg ? ';--ring:' + rg : ''}" aria-hidden="true">${e || esc(initials(pname(id)))}</span>`; };
@@ -1375,12 +1449,13 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   };
   const icon = t => ICONS[t] ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[t]}</svg>` : '';
   function renderAwards(){
-    return `<div><h2>Season awards</h2><p class="sub">Updated live. Ties share the award.</p></div>
+    return `<div><h2>Season awards</h2></div>
       <div class="awards">${awards().map(a => `<div class="award"><span class="t">${icon(a.t)}${a.t}</span>
         <span class="who">${a.ids.length ? a.ids.map(id => `<button class="plink" data-player="${id}">${esc(pname(id))}</button>`).join(', ') : 'Up for grabs'}</span>
         <span class="d">${a.d}${a.max ? ' · ' + a.max + ' ' + a.u : ''}</span></div>`).join('')}</div>`;
   }
 
+  const mxOpen = new Set();
   function standings(){
     const t = {}, h2h = {}, ok = countedIds();
     state.players.forEach(p => t[p.id] = {id:p.id, name:p.name, mp:0, w:0, l:0, pts:0, gw:0, gl:0, opp:new Set()});
@@ -1411,9 +1486,10 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     const snap = weekAgoRanks();
     const move = (id, now) => { const was = snap[id]; if (!was || was === now) return ''; return was > now ? `<span class="mv up" title="Up ${was-now} since last week">▲${was-now}</span>` : `<span class="mv dn" title="Down ${now-was} since last week">▼${now-was}</span>`; };
 
-    return `<div><h2>Standings</h2><p class="sub">${state.players.length} players · ${played} match${played===1?'':'es'} played</p></div>
-      <section class="srows">${rows.filter(r => r.mp || rows.every(x => !x.mp)).map((r,i) => { const pl = state.players.find(x => x.id === r.id) || {};
-        const lead = i === 0 && r.pts > 0; return `<div class="srow${lead ? ' lead' : ''}"><div class="srk"><span class="rank ${r.pts>0 ? ['first','second','third'][i]||'' : ''}">${i+1}</span>${move(r.id, i+1)}</div>
+    return `<div><h2>Standings</h2>${played ? `<p class="sub">${played} match${played===1?'':'es'} played</p>` : ''}</div>
+      ${(() => { const top = rows.filter(r => r.pts > 0).slice(0, 3); if (top.length < 3) return ''; return `<section class="podium" aria-label="Top three">${[[top[1], 2], [top[0], 1], [top[2], 3]].map(([r, k]) => `<button type="button" class="pod pod${k}" data-player="${r.id}" data-pid="${r.id}"><span class="pod-av">${avatar(r.id, 'lg' + (streakOf(r.id) >= 3 ? ' hot' : ''))}</span><span class="pod-nm">${esc(r.name)}</span><span class="pod-pts"><b data-count="${r.pts}">${r.pts}</b> pts · ${r.w}–${r.l}</span>${move(r.id, k)}<span class="pod-step"><i>${k}</i></span></button>`).join('')}</section>`; })()}
+      <section class="srows">${rows.filter(r => r.mp || rows.every(x => !x.mp)).map((r,i,all) => { const pl = state.players.find(x => x.id === r.id) || {}; if (i < 3 && all.filter(x => x.pts > 0).length >= 3 && r.pts > 0) return '';
+        const lead = i === 0 && r.pts > 0; return `<div class="srow${lead ? ' lead' : ''}" data-pid="${r.id}"><div class="srk"><span class="rank ${r.pts>0 ? ['first','second','third'][i]||'' : ''}">${i+1}</span>${move(r.id, i+1)}</div>
           <div class="smain"><div class="sname">${avatar(r.id, (lead ? 'lg ' : '') + (streakOf(r.id) >= 3 ? 'hot' : ''))}<span class="snm">${lead ? '<span class="lead-tag">Leader</span>' : ''}<button class="plink" data-player="${r.id}">${esc(r.name)}</button></span>${pl.level ? `<span class="slvl">${esc(pl.level)}</span>` : ''}${streakTag(r.id)}</div>
           <div class="sdet">${r.mp ? `${r.w}–${r.l} · ${Math.round(r.wp*100)}% ${formOf(r.id)}` : '<span class="nomp">No matches yet</span>'}</div></div>
           <div class="spts"><b data-count="${r.pts}">${r.pts}</b><span>pts</span></div></div>`; }).join('')}</section>
@@ -1452,14 +1528,14 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   }
 
   function renderResults(){
-    const rep = `<button class="btn pri" data-sheet="score" style="margin:0 0 14px">Report a score</button>` + pendHtml('score') + repWaiting();
-    if (!state.matches.length) return `<div><h2>Results</h2><p class="sub">Newest first.</p></div>${rep}<div class="empty">No matches logged yet. Book a court, play, and report the first score.</div>`;
+    const rep = pendHtml('score') + repWaiting();
+    if (!state.matches.length) return `<div><h2>Results</h2></div>${rep}<div class="empty">No matches logged yet. Book a court, play, and report the first score.</div>`;
     const days = {}; OK = countedIds();
     const wk = d => { if (!d) return 'Undated'; const t = new Date(d + 'T12:00:00'), mon = new Date(t); mon.setDate(t.getDate() - ((t.getDay() + 6) % 7)); const n = new Date(), m0 = new Date(n.getFullYear(), n.getMonth(), n.getDate()); m0.setDate(m0.getDate() - ((m0.getDay() + 6) % 7));
       const diff = Math.round((m0 - new Date(mon.getFullYear(), mon.getMonth(), mon.getDate())) / 864e5 / 7); return diff <= 0 ? 'This week' : diff === 1 ? 'Last week' : 'Week of ' + mon.toLocaleDateString('en-US', {month: 'short', day: 'numeric'}); };
     state.matches.slice().sort((x,y) => (y.date||'').localeCompare(x.date||'')).forEach(m => { const k = wk(m.date); (days[k] = days[k] || []).push(m); });
-    return `<div><h2>Results</h2><p class="sub">Newest first.</p></div>${rep}
-      ${Object.keys(days).map(d => `<section class="logday"><header>${esc(d)}</header>${days[d].map(m => matchRow(m).replace('<div class="vs">', `<div class="vs">${m.date ? `<span class="rdate">${esc(fmtDate(m.date))}</span>` : ''}`)).join('')}</section>`).join('')}`;
+    return `<div><h2>Results</h2></div>${rep}
+      ${Object.keys(days).map(d => `<section class="logday"><header>${esc(d)}</header>${days[d].map(m => matchRow(m).replace('<div class="match">', `<div class="match mx${mxOpen.has(m.id) || editing === m.id ? ' mxo' : ''}" data-mx="${m.id}">`).replace('<div class="vs">', `<div class="vs">${m.date ? `<span class="rdate">${esc(fmtDate(m.date))}</span>` : ''}`)).join('')}</section>`).join('')}`;
   }
 
   function playNext(id, h, rank, rows){
@@ -1498,18 +1574,31 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     return `<button class="back" data-tab="standings">← Standings</button>
       <div class="phero${(p.prof || {}).surf ? ' surf' : ''}" style="--pc:${avColor(id)}${(() => { const f = SURF.find(x => x[0] === (p.prof || {}).surf); return f ? ';--bc:' + f[2] : ''; })()}"><h2>${avatar(id,'lg')}${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}${p.level ? `<span class="lvl">NTRP ${esc(p.level)}</span>` : ''}${streakTag(id)}</h2>
         ${(() => { const A = awards(), held = A.filter(a => a.ids.includes(id)); return `<div class="shelf" aria-label="Badges: ${held.length} of ${A.length} earned">${A.map(a => { const on = a.ids.includes(id); return `<span class="achip${on ? '' : ' off'}" title="${esc(a.t + ' · ' + a.d + (on ? ' · earned' : ' · not yet'))}">${icon(a.t)}${esc(a.t)}</span>`; }).join('')}</div>`; })()}
-        ${(() => { const pr = p.prof || {}; const bits = [pr.plays, pr.bh ? (pr.bh === 'One-handed' ? '1H' : '2H') + ' backhand' : '', pr.shot ? '⚡ ' + pr.shot : ''].filter(Boolean), op = (p.open || []).map(k => (OPENL.find(x => x[0] === k) || [0, ''])[1]).filter(Boolean);
+        ${(() => { const pr = p.prof || {}; const bits = [pr.type ? '🎯 ' + pr.type : '', pr.plays, pr.bh ? (pr.bh === 'One-handed' ? '1H' : '2H') + ' backhand' : '', pr.shot ? '⚡ ' + pr.shot : ''].filter(Boolean), op = (p.open || []).map(k => (OPENL.find(x => x[0] === k) || [0, ''])[1]).filter(Boolean);
           return (pr.bio ? `<p class="bio">“${esc(pr.bio)}”</p>` : '')
             + (bits.length || op.length || pr.pro || pr.gear || pr.home || pr.since ? `<div class="pmeta">${bits.length ? `<div class="pm"><span class="pmk">Plays</span><span class="ptags">${bits.map(b => `<span class="ptag">${esc(b)}</span>`).join('')}</span></div>` : ''}${[['gear', 'Gear', '🎾 '], ['pro', 'Fave pro', '⭐ '], ['home', 'Home', '📍 '], ['since', 'Since', '']].filter(([k]) => pr[k]).map(([k, L, ic]) => `<div class="pm"><span class="pmk">${L}</span><span class="ptags"><span class="ptag">${ic}${esc(k === 'since' ? sinceTxt(pr.since) : pr[k])}</span></span></div>`).join('')}${op.length ? `<div class="pm"><span class="pmk">Open to</span><span class="ptags">${op.map(b => `<span class="ptag po">${esc(b)}</span>`).join('')}</span></div>` : ''}</div>` : ''); })()}
-        ${(p.free || []).length || p.avail ? `<div class="pfree"><span class="pmk">Free</span>${(p.free || []).length ? freeGrid(p.free) : ''}${p.avail ? `<p class="fnote">${esc(p.avail)}</p>` : ''}</div>` : ''}<p class="sub">${r.mp ? `Ranked #${rank} of ${rows.length}` : 'No counted matches yet'}</p>
+        ${(p.free || []).length || p.avail ? `<div class="pfree"><span class="pmk">Free</span>${(p.free || []).length ? freeGrid(p.free) : ''}${p.avail ? `<p class="fnote">${esc(p.avail)}</p>` : ''}</div>` : ''}${r.mp ? '' : '<p class="sub">No counted matches yet</p>'}
         ${(() => { const h = smsHref(p, `Hey ${first(p)}! Want to get a match in this week? (Lake Effect TC)`); return h ? `<a class="textbtn" href="${esc(h)}" target="_top" data-sms="${esc(first(p))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg>Text ${esc(first(p))}</a>` : ''; })()}${!FBL.user && p.ph ? `<button type="button" class="link" data-acct="1">Sign in to text ${esc(first(p))}</button>` : ''}${myPid() === p.id ? `<div class="pactions"><button class="link" data-tab="me">Edit my profile</button><button class="link" data-tab="me" data-jump="me-free">Edit my free times</button></div>` : art ? `<div class="pactions"><button class="link" data-profile="${p.id}">Update profile</button><button class="link" data-sheet="free" data-pid="${p.id}">Update free times</button></div>` : ''}</div>
       ${vsYou(id)}
+      ${ptsChart(id, rank, rows.length, r)}
       <div class="statline"><div><b>${r.pts}</b><span>Points</span></div><div><b>${r.w}–${r.l}</b><span>Record</span></div><div><b>${r.mp ? Math.round(r.wp*100)+'%' : '—'}</b><span>Win %</span></div></div>
       ${mine.length ? `<details class="morestats"><summary>More stats</summary>${breakdown(id, mine)}</details>` : ''}
       ${highlights(id)}
       <section class="logday"><header>Matches</header>${list || '<div class="match"><div class="hint">No matches logged yet.</div><div></div></div>'}</section>`;
   }
 
+  function ptsChart(id, rank, of, r){ if (!r || !r.mp) return ''; const ok = countedIds();
+    const ms = state.matches.filter(m => (m.a === id || m.b === id) && m.date && ok.has(m.id) && outcome(m)).sort((x, y) => x.date.localeCompare(y.date)); if (!ms.length) return '';
+    const mon = d => { const t = new Date(d + 'T12:00:00'); t.setDate(t.getDate() - ((t.getDay() + 6) % 7)); t.setHours(12, 0, 0, 0); return t; };
+    const first = state.league.startDate && state.league.startDate < ms[0].date ? state.league.startDate : ms[0].date, w0 = mon(first), wN = mon(today());
+    const n = Math.max(1, Math.min(40, Math.round((wN - w0) / 6048e5) + 1)), wk = Array(n).fill(0);
+    ms.forEach(m => { const o = outcome(m), k = Math.min(n - 1, Math.max(0, Math.round((mon(m.date) - w0) / 6048e5))); wk[k] += o.w === id ? 3 + (playedUp(o) ? 1 : 0) : o.ff ? 0 : o.close ? 2 : 1; });
+    let c = 0; const cum = wk.map(v => c += v), mx = Math.max(3, ...cum), W = 260, H = 70, X = i => n === 1 ? W / 2 : 6 + i * (W - 12) / (n - 1), Y = v => H - 8 - v / mx * (H - 18);
+    const pts = cum.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(' ');
+    const lab = d => d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+    return `<section class="pchart"><div class="pc-rank"><b>#${rank}</b><span>of ${of}</span></div><div class="pc-g"><span class="pc-k">Points by week</span>
+      <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(r.pts + ' points over ' + n + ' week' + (n > 1 ? 's' : ''))}"><polygon points="${X(0).toFixed(1)},${H - 8} ${pts} ${X(n - 1).toFixed(1)},${H - 8}" class="pc-area"/><polyline points="${pts}" class="pc-line"/>${cum.map((v, i) => `<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${i === n - 1 ? 3.6 : 2.2}" class="pc-dot${i === n - 1 ? ' now' : ''}"><title>Week of ${lab(new Date(w0.getTime() + i * 6048e5))}: ${v} pts</title></circle>`).join('')}</svg>
+      <span class="pc-x"><span>${esc(lab(w0))}</span><span>This week · ${r.pts} pts</span></span></div></section>`; }
   let h2hA = '', h2hB = '';
   function renderH2H(){
     const P = state.players;
@@ -1621,7 +1710,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
         <li><b>48+ hours ahead:</b> no penalty. The booker cancels with the facility. At McFetridge, email the permit number to tenniscourtrefunds@mcfetridgesportscenter.net for a refund (minus 15%).</li>
         <li><b>Under 48 hours or a no-show:</b> it's a forfeit, and you still owe the booker your half.</li></ul>`]
     ];
-    return `<div><h2>League rules</h2><p class="sub">${window_}Play anyone in the league, as often as you like.</p></div>
+    return `<div><h2>League rules</h2>${window_ ? `<p class="sub">${window_}</p>` : ''}</div>
       <div class="qs">${[['🔎', 'Find someone'], ['📅', 'Book a court'], ['🎾', 'Play'], ['📝', 'Post the score']].map(([i, t], n) => `<div><span>${i}</span><b>${n + 1}. ${t}</b></div>`).join('')}</div>
       <div class="rules2">${items.map(([k, v]) => `<details class="rl" ${k === 'Posting a score' ? 'open' : ''}><summary>${k}</summary><div class="rl-b">${v}</div></details>`).join('')}</div>
       ${tip ? `<p class="hint" style="margin:0;text-align:center">Enjoying the league? <a class="inl" href="${esc(tip)}" target="_blank" rel="noopener">Tip the commissioner</a> (totally optional)</p>` : ''}`;
@@ -1662,7 +1751,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   function renderAdmin(){
     const L = state.league, P = state.players;
     const opts = sel => `<option value="">Choose…</option>` + P.map(p => `<option value="${p.id}" ${sel===p.id?'selected':''}>${esc(p.name)}</option>`).join('');
-    return `<div><h2>Commissioner</h2><p class="sub">Only you see this tab.</p></div>${liveHtml()}${FBL.subs.length ? inboxHtml() : ''}
+    return `<div><h2>Commissioner</h2></div>${liveHtml()}${FBL.subs.length ? inboxHtml() : ''}
       <div class="card logcard"><h3>Log a match</h3>
         ${P.length < 2 ? `<p class="hint">Add at least 2 players to the roster first.</p>` : `
         <form id="log-form" style="display:grid;gap:16px">
@@ -2140,6 +2229,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       })()}</nav>
       <main class="panel">${body}</main>
       <nav class="footi" aria-label="Site tools"><button type="button" data-theme-sw="1"><span aria-hidden="true">🎨</span>Theme</button><button type="button" data-refresh="1"><span aria-hidden="true">↻</span>Refresh</button>${tip ? `<a href="${esc(tip)}" target="_blank" rel="noopener"><span aria-hidden="true">☕</span>Tip jar</a>` : ''}</nav>
+      ${FBL.ready ? `<div class="fab" id="fab"><div class="fab-menu" role="menu"><button type="button" role="menuitem" data-sheet="book"><span aria-hidden="true">📅</span>Post a court</button><button type="button" role="menuitem" data-sheet="score"><span aria-hidden="true">🎾</span>Report a score</button></div><button type="button" class="fab-main" aria-label="Report a score or post a court" aria-expanded="false"><span aria-hidden="true">+</span></button></div>` : ''}
       ${dirty ? `<div class="savebar"><span>${saving || 'Unsaved changes'}</span><button class="btn ghost" id="discard">Discard</button><button class="btn" id="save">Save and publish</button></div>` : ''}`;
   }
 
@@ -2377,7 +2467,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       const pf = LV.profiles[p.id], o = ORIG[p.id];
       PF.forEach(k => { if (o[k] === undefined) delete p[k]; else p[k] = cl(o[k]); });
       if (pf) {
-        const pr = {}; ['plays', 'bh', 'shot', 'pro', 'bio', 'home', 'since'].forEach(k => { const v = clean(pf[k] || ''); if (v) pr[k] = v; }); { const g = cleanL(pf.gear).slice(0, 60); if (g) pr.gear = g; } if (SURF.some(x => x[0] === pf.surf)) pr.surf = pf.surf;
+        const pr = {}; if (PTYPES.includes(pf.type)) pr.type = pf.type; ['plays', 'bh', 'shot', 'pro', 'bio', 'home', 'since'].forEach(k => { const v = clean(pf[k] || ''); if (v) pr[k] = v; }); { const g = cleanL(pf.gear).slice(0, 60); if (g) pr.gear = g; } if (SURF.some(x => x[0] === pf.surf)) pr.surf = pf.surf;
         if (Object.keys(pr).length) p.prof = pr; else delete p.prof;
         if (Array.isArray(pf.free)) { if (pf.free.length) p.free = pf.free.slice(); else delete p.free; }
         if (pf.note != null) { if (clean(pf.note)) p.avail = clean(pf.note); else delete p.avail; }
@@ -2482,7 +2572,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       return `<div class="wrow"><span>${c.from === me ? 'You challenged' : 'You accepted'} <button class="plink" data-player="${o}">${esc(op.name)}</button>${c.when ? ' · ' + esc(c.when) : ''}</span><span class="hint">${c.status === 'open' ? `Waiting for an answer · <button class="link" data-chx="${c.id}">Cancel</button>` : c.status === 'declined' ? `${esc(first(op))} can't this time${c.reply ? ': “' + esc(c.reply) + '”' : ''}` : `On! ${h ? `<a class="smslink" href="${esc(h)}" target="_top" data-sms="${esc(first(op))}">Text ${esc(first(op))}</a> · ` : ''}<button class="link" data-bookw="${o}">Post the court</button>`}</span></div>`; };
     return `<div class="mehead">${avatar(me, 'lg')}<div><h2>${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}</h2><p class="sub">${r.mp ? `#${rank} · ${r.pts} pts · ${r.w}–${r.l}` : 'No counted matches yet'} · <button class="link" data-player="${me}">My public page</button></p></div></div>
       ${getStarted(me, p, pf, ct)}
-      <div class="meacts"><button class="btn pri" data-sheet="score">Report a score</button><button class="btn ghost" data-sheet="book">Post a court</button><button class="btn ghost" data-chal="">⚔️ Challenge</button></div>
+      <div class="meacts"><button class="btn ghost" data-chal="">⚔️ Challenge someone</button></div>
       ${T.conf.length || T.chIn.length ? `<section class="card todo"><h3>Needs you</h3>
         ${T.conf.map(x => `<div class="wrow"><span>${esc(pname(x.by))} reported: ${repLine(x)}</span><span><button class="btn sm" data-rconf="${x.id}">Confirm</button> <button class="link" data-rdisp="${x.id}">Dispute</button></span></div>`).join('')}
         ${T.chIn.map(c => `<div class="wrow"><span><b>${esc(pname(c.from))}</b> challenged you${c.when ? ' · ' + esc(c.when) : ''}${c.msg ? `<br><i class="hint">“${esc(c.msg)}”</i>` : ''}</span><span><button class="btn sm" data-chok="${c.id}">Accept</button> <button class="link" data-chno="${c.id}">Can't</button></span></div>`).join('')}
@@ -2513,6 +2603,8 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
 
         <div class="pe-sec"><h4>Your game</h4>
           <div class="pe-segs"><span class="seg">${['Righty', 'Lefty'].map(x => `<label><input type="radio" name="m-plays" id="m-plays-${x}" data-md data-v="${x}" ${dv('m-plays', pr.plays) === x ? 'checked' : ''}><span>${x}</span></label>`).join('')}</span><span class="seg">${[['One-handed', '1H backhand'], ['Two-handed', '2H backhand']].map(([x, l]) => `<label><input type="radio" name="m-bh" id="m-bh-${x}" data-md data-v="${x}" ${dv('m-bh', pr.bh) === x ? 'checked' : ''}><span>${l}</span></label>`).join('')}</span></div>
+          <div class="pe-lab">Player type</div>
+          <div class="pills pe-pills">${[''].concat(PTYPES).map(x => `<label><input type="radio" name="m-type" id="m-type-${x ? PTYPES.indexOf(x) : 'none'}" data-md data-v="${esc(x)}" ${dv('m-type', pr.type || '') === x ? 'checked' : ''}><span>${x ? esc(x) : 'Not set'}</span></label>`).join('')}</div>
           <div class="pe-grid"><label class="field">Go-to shot<select id="m-shot" data-md>${(() => { const cur = dv('m-shot', pr.shot || ''), L = SHOTS.concat(cur && !SHOTS.includes(cur) ? [cur] : []); return ['<option value="">None</option>'].concat(L.map(x => `<option value="${esc(x)}" ${cur === x ? 'selected' : ''}>${esc(x)}</option>`)).join(''); })()}</select></label>
           <label class="field">Favorite pro<input id="m-pro" data-md maxlength="30" value="${esc(dv('m-pro', pr.pro))}" placeholder="Carlos Alcaraz" autocomplete="off"></label>
           <label class="field">Racquet and string<input id="m-gear" data-md maxlength="60" value="${esc(dv('m-gear', pr.gear))}" placeholder="Pure Aero · poly at 52" autocomplete="off"></label>
@@ -2537,10 +2629,10 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     btn.disabled = true; let err = '';
     if (k === 'prof') { const c = document.querySelector('input[name="m-color"]:checked');
       const rv = n => { const x = document.querySelector('input[name="' + n + '"]:checked'); return x ? x.dataset.v : ''; };
-      const gv = (document.getElementById('m-gear') || {value: ''}).value, X = {gear: cleanL(gv).slice(0, 60), home: v('m-home'), since: v('m-since'), surf: rv('m-surf'), emo: rv('m-emo'), ring: rv('m-ring')};
+      const gv = (document.getElementById('m-gear') || {value: ''}).value, X = {gear: cleanL(gv).slice(0, 60), home: v('m-home'), since: v('m-since'), surf: rv('m-surf'), emo: rv('m-emo'), ring: rv('m-ring'), type: rv('m-type')};
       const P0 = {uid: FBL.user.uid, nick: v('m-nick'), color: c ? c.dataset.color : '', plays: rv('m-plays'), bh: rv('m-bh'), shot: v('m-shot'), pro: v('m-pro'), bio: v('m-bio'), open: [...document.querySelectorAll('input[data-open]')].filter(x => x.checked).map(x => x.dataset.open)};
-      err = await liveSet('profiles', me, Object.assign({}, P0, X)); if (err) { err = await liveSet('profiles', me, P0); if (!err) err = 'Saved, but gear, home court, playing since, banner, picture and ring need a database rules update first.'; }
-      Object.keys(meDraft).filter(x => /^m-(nick|color|plays|bh|shot|pro|bio|open|gear|home|since|surf|emo|ring)/.test(x)).forEach(x => delete meDraft[x]); }
+      err = await liveSet('profiles', me, Object.assign({}, P0, X)); if (err) { err = await liveSet('profiles', me, P0); if (!err) err = 'Saved, but gear, home court, playing since, banner, picture, ring and player type need a database rules update first.'; }
+      Object.keys(meDraft).filter(x => /^m-(nick|color|plays|bh|shot|pro|bio|open|gear|home|since|surf|emo|ring|type)/.test(x)).forEach(x => delete meDraft[x]); }
 
     if (k === 'free') { const keys = [...document.querySelectorAll('input[data-mfk]')].filter(b => b.checked).map(b => b.dataset.mfk);
       err = await liveSet('profiles', me, {uid: FBL.user.uid, free: keys, note: v('m-note')}); delete meDraft.free; delete meDraft['m-note']; }
@@ -2651,11 +2743,11 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       ${I.map(([ok, ic, t, d, b]) => `<div class="gsrow${ok ? ' ok' : ''}"><span class="gsi" aria-hidden="true">${ok ? '✓' : ic}</span><div><b>${t}</b><span>${d}</span></div>${ok ? '' : b}</div>`).join('')}</section>`; }
   const bobber = sz => `<span class="bob" aria-hidden="true"><svg viewBox="0 0 60 60" width="${sz || 30}" height="${sz || 30}"><g class="bob-b"><circle cx="30" cy="27" r="13" fill="#D9F24A"/><path d="M21 18 Q27 27 21 36 M39 18 Q33 27 39 36" fill="none" stroke="#F7FAFC" stroke-width="2.6" stroke-linecap="round"/></g><path class="bob-w" d="M-10 38 Q-2.5 33 5 38 T20 38 T35 38 T50 38 T65 38 T80 38 V64 H-10Z" fill="var(--surface)"/><path class="bob-w" d="M-10 38 Q-2.5 33 5 38 T20 38 T35 38 T50 38 T65 38 T80 38" fill="none" stroke="#9FD3EE" stroke-width="2.6"/></svg></span>`;
   // signed-in home: your rank, record and next match right at the top of Standings
-  function homeCard(){ const me = myPid(), p = state.players.find(x => x.id === me) || {name: ''}, rows = standings(), i = rows.findIndex(r => r.id === me), r = rows[i] || {pts: 0, w: 0, l: 0, mp: 0}, n = todoCount(), cs = curStreak(me);
+  function homeCard(nA){ const me = myPid(), p = state.players.find(x => x.id === me) || {name: ''}, rows = standings(), i = rows.findIndex(r => r.id === me), r = rows[i] || {pts: 0, w: 0, l: 0, mp: 0}, n = todoCount(), cs = curStreak(me);
     const line = r.mp ? `Ranked #${i + 1} of ${rows.length}` : 'Play a match to get ranked';
-    return `<section class="homecard hc-slim"><div class="hc-top"><button type="button" class="hc-me" data-tab="me" aria-label="My page">${avatar(me)}<span class="hc-hi"><b>Hi, ${esc(first(p))}</b><span>${line}</span></span></button><button type="button" class="btn pri hc-rep" data-sheet="score" aria-label="Report a score"><span aria-hidden="true">+</span> Score</button></div>
+    return `<section class="homecard hc-slim"><div class="hc-top"><button type="button" class="hc-me" data-tab="me" aria-label="My page">${avatar(me)}<span class="hc-hi"><b>Hi, ${esc(first(p))}</b><span>${line}</span></span></button></div>
       <div class="hc-stats hc-mini"><div><b>${r.pts}</b><span>Points</span></div><div><b>${r.w}–${r.l}</b><span>Record</span></div><div><b>${esc(cs || '—')}</b><span>Streak</span></div></div>
-      ${n ? `<button type="button" class="hc-todo" data-tab="me">${n} thing${n > 1 ? 's' : ''} need${n > 1 ? '' : 's'} you ›</button>` : ''}${(() => { const L0 = state.league; return L0.news && newsHidden !== L0.news ? `<p class="hc-news"><b>What's new:</b> ${esc(L0.news)} <button type="button" class="link" data-newsx="1">Hide</button></p>` : ''; })()}${A2HS_ON() && !a2hsHid() ? `<p class="hc-a2"><button type="button" class="link" data-a2hs="1">📲 Add the league to your Home Screen</button> <button type="button" class="a2x" data-a2x="1" aria-label="Hide">×</button></p>` : ''}</section>`; }
+      ${nA ? `<button type="button" class="hc-todo hc-adm" data-tab="admin">Commissioner · ${nA} need${nA > 1 ? '' : 's'} you ›</button>` : ''}${n ? `<button type="button" class="hc-todo" data-tab="me">${n} thing${n > 1 ? 's' : ''} need${n > 1 ? '' : 's'} you ›</button>` : ''}${(() => { const L0 = state.league; return L0.news && newsHidden !== L0.news ? `<p class="hc-news"><b>What's new:</b> ${esc(L0.news)} <button type="button" class="link" data-newsx="1">Hide</button></p>` : ''; })()}${A2HS_ON() && !a2hsHid() ? `<p class="hc-a2"><button type="button" class="link" data-a2hs="1">📲 Add the league to your Home Screen</button> <button type="button" class="a2x" data-a2x="1" aria-label="Hide">×</button></p>` : ''}</section>`; }
   function meBar(){
     if (!FBL.ready) return FBL.err ? `<div class="mebar"><p>${esc(FBL.err)}</p></div>` : `<div class="mebar loadbar">${bobber(34)}<p>Loading the league…</p></div>`;
     const u = FBL.user, cn = esc(state.league.commissioner || 'the commissioner');
@@ -2664,14 +2756,14 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
         <button type="button" class="mb-go wgo" data-acct="1">Sign in to get started</button><p class="hint">Just checking the standings? They're right below.</p></section>`
       : `<div class="mebar"><p><b>Sign in</b> to post scores, courts and your profile.</p><button type="button" class="mb-go" data-acct="1">Sign in</button></div>`;
     if (FBL.admin) { const nA = FBL.subs.length + LV.reports.filter(r => r.status === 'disputed').length;
-      if (tab === 'standings' && myPid()) return homeCard() + `<div class="mebar slimbar"><p><b>Commissioner</b> · ${nA ? nA + ' thing' + (nA > 1 ? 's' : '') + ' need you' : 'nothing waiting'}</p><div class="mb-acts"><button type="button" data-tab="admin">Commissioner tab</button></div></div>`;
-      return `<div class="mebar"><p><b>Commissioner</b> · ${nA ? nA + ' thing' + (nA > 1 ? 's' : '') + ' need you' : 'nothing waiting'}</p><div class="mb-acts"><button type="button" data-tab="admin">Commissioner tab</button>${myPid() ? '<button type="button" data-tab="me">Me</button>' : ''}<button type="button" data-acct="1">Account</button></div></div>`; }
+      if (tab === 'standings' && myPid()) return homeCard(nA);
+      if (tab !== 'me') return nA ? `<div class="mebar slimbar"><p><b>Commissioner</b> · ${nA} thing${nA > 1 ? 's' : ''} need${nA > 1 ? '' : 's'} you</p><div class="mb-acts"><button type="button" data-tab="admin">Open</button></div></div>` : '';
+      return `<div class="mebar"><p><b>Commissioner</b> · ${nA ? nA + ' thing' + (nA > 1 ? 's' : '') + ' need you' : 'nothing waiting'}</p><div class="mb-acts"><button type="button" data-tab="admin">Commissioner tab</button><button type="button" data-acct="1">Account</button></div></div>`; }
     if (tab === 'me') return '';
     if (tab === 'standings' && myPid()) return homeCard();
     if (!myPid()) return `<section class="welcome step2"><h3>Almost there: which player are you?</h3><select data-fb-me="1" aria-label="Which player are you?">${playerOpts('', 'Choose your name', null, true)}</select><p class="hint">Each name can only be picked once. Not on the list? Ask ${cn} to add you.</p></section>`;
-    const n = todoCount(), nm0 = first(state.players.find(p => p.id === myPid()) || {name: ''});
-    const pf0 = LV.profiles[myPid()] || {}, thin = !(pf0.emo || pf0.plays || pf0.bio || pf0.pro || pf0.shot) || !(state.players.find(p => p.id === myPid()) || {}).free;
-    return `<div class="mebar"><p>Hi, <b>${esc(nm0)}</b>${n ? ` · <b class="todo-n">${n} thing${n > 1 ? 's' : ''} need${n > 1 ? '' : 's'} you</b>` : thin ? ` · <button type="button" class="link mbprof" data-tab="me" data-jump="me-prof">Finish your profile</button>` : ''}</p><div class="mb-acts"><button type="button" data-tab="me">${n ? 'Open Me' : 'Me'}</button><button type="button" data-sheet="score">Report a score</button><button type="button" data-sheet="book">Post a court</button></div></div>`;
+    const n = todoCount();
+    return n ? `<div class="mebar slimbar"><p><b class="todo-n">${n} thing${n > 1 ? 's' : ''} need${n > 1 ? '' : 's'} you</b></p><div class="mb-acts"><button type="button" data-tab="me">Open Me</button></div></div>` : '';
   }
   function membersHtml(){ if (!FBL.admin) return ''; const L = (FBL.members || []).slice().sort((a, b) => (a.name || '').localeCompare(b.name || ''));
     return `<div class="card"><h3>Signed-in players (${L.length})</h3><p class="hint" style="margin:0">Who has signed in and which player they picked. If someone picked the wrong name, ask them to fix it under Account.</p>${L.length ? `<div class="mems">${L.map(m => `<div><b>${esc(m.name || 'No player picked')}</b><span>${esc(m.email || '')}</span></div>`).join('')}</div>` : '<p class="hint">Nobody yet.</p>'}</div>`; }
@@ -2723,7 +2815,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     if (av) { if (c) av.style.background = c.dataset.color; av.textContent = em || initials(pl.name); av.classList.toggle('emo', !!em); const rg = rv('m-ring'); av.classList.toggle('rg', !!rg); av.style.setProperty('--ring', rg || 'transparent'); }
     if (c) f.querySelectorAll('.pe-emos span').forEach(sp => { sp.style.background = c.dataset.color; });
     const nk = (q('#m-nick') || {}).value || '', ne = q('.pe-nick'); if (ne) ne.textContent = nk.trim() ? ' “' + nk.trim() + '”' : '';
-    const bh = rv('m-bh'), sh = (q('#m-shot') || {}).value || '', ln = q('.pe-line'); if (ln) ln.textContent = [rv('m-plays'), bh ? (bh === 'One-handed' ? '1H' : '2H') + ' backhand' : '', sh].filter(Boolean).join(' · ') || 'Your style shows here'; }
+    const bh = rv('m-bh'), sh = (q('#m-shot') || {}).value || '', ln = q('.pe-line'); if (ln) ln.textContent = [rv('m-type'), rv('m-plays'), bh ? (bh === 'One-handed' ? '1H' : '2H') + ' backhand' : '', sh].filter(Boolean).join(' · ') || 'Your style shows here'; }
   document.addEventListener('input', e => { if (e.target.closest && e.target.closest('#me-prof')) pePreview(); });
   document.addEventListener('change', e => { if (e.target.closest && e.target.closest('#me-prof')) pePreview(); });
   document.addEventListener('change', e => { const s2 = e.target.closest && e.target.closest('select[data-fb-me]'); if (s2) fbAct('me', s2); });
@@ -2738,7 +2830,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   document.addEventListener('click', e => { const p2 = e.target.closest('[data-skin-pick]'); if (p2) { setSkin(p2.dataset.skinPick); try { localStorage.setItem('mws-skin', p2.dataset.skinPick); } catch(_) {} document.querySelectorAll('[data-skin-pick]').forEach(x => x.setAttribute('aria-pressed', x === p2 ? 'true' : 'false')); render(); return; }
     const b = e.target.closest('[data-theme-sw]'); if (!b) return; sheetTheme(); });
   // one moment of motion: the points count up the first time the standings appear
-  let pvCounted = false; const pvCount = () => { if (pvCounted || tab !== 'standings' || matchMedia('(prefers-reduced-motion: reduce)').matches) return; const els = [...document.querySelectorAll('.spts b[data-count]')]; if (!els.length) return; pvCounted = true; const t0 = performance.now();
+  let pvCounted = false; const pvCount = () => { if (pvCounted || tab !== 'standings' || matchMedia('(prefers-reduced-motion: reduce)').matches) return; const els = [...document.querySelectorAll('.spts b[data-count], .pod-pts b[data-count]')]; if (!els.length) return; pvCounted = true; const t0 = performance.now();
     const step = t => { const u = Math.min(1, (t - t0)/700), e = 1 - Math.pow(1 - u, 3); els.forEach(el => { el.textContent = Math.round(+el.dataset.count*e); }); if (u < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); };
   const pvRender = render; render = function(){ pvRender(); pvCount(); };
   function ringCss(){ let st = document.getElementById('ringcss'); if (!st) { st = document.createElement('style'); st.id = 'ringcss'; document.head.appendChild(st); }
@@ -2752,6 +2844,31 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     el.setAttribute('aria-label', `You're number ${i + 1} with ${r.pts} points. Back to top`);
     rbObs = new IntersectionObserver(([e]) => el.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.bottom < 0)); rbObs.observe(hc); }
   const rbRender = render; render = function(){ rbRender(); ringCss(); rankBar(); };
+  // motion: tab fade, rows glide to new ranks, points count up, a ball bounces across anything newly scored
+  let fxReady = false, fxTab = null, fxPts = {}, fxSeen = null; setTimeout(() => { fxReady = true; }, 3500);
+  const fxRM = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fxCount = (el, a, b) => { const t0 = performance.now(); const st = t => { const u = Math.min(1, (t - t0) / 700), e = 1 - Math.pow(1 - u, 3); el.textContent = Math.round(a + (b - a) * e); if (u < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); };
+  const fxBall = el => { el.classList.remove('scored'); void el.offsetWidth; el.classList.add('scored'); setTimeout(() => el.classList.remove('scored'), 1700); };
+  const fxRender = render; render = function(){
+    const same = fxTab === tab, before = {};
+    if (same && tab === 'standings') document.querySelectorAll('[data-pid]').forEach(el => { if (!before[el.dataset.pid]) before[el.dataset.pid] = el.getBoundingClientRect(); });
+    fxRender();
+    const panel = document.querySelector('main.panel'); if (!same && fxTab !== null && panel && !fxRM()) panel.classList.add('tabin'); fxTab = tab;
+    if (tab === 'standings') { const cur = {}; standings().forEach(r => cur[r.id] = r.pts);
+      if (fxReady && same && !fxRM()) document.querySelectorAll('[data-pid]').forEach(el => { const id = el.dataset.pid, b = before[id];
+        if (b) { const a = el.getBoundingClientRect(), dx = b.left - a.left, dy = b.top - a.top; if ((Math.abs(dx) > 2 || Math.abs(dy) > 2) && el.animate) el.animate([{transform: `translate(${dx}px, ${dy}px)`}, {transform: 'none'}], {duration: 480, easing: 'cubic-bezier(.2,.8,.2,1)'}); }
+        if (fxPts[id] != null && cur[id] > fxPts[id]) { const nb = el.querySelector('b[data-count]'); if (nb) fxCount(nb, fxPts[id], cur[id]); fxBall(el); } });
+      fxPts = cur; }
+    if (tab === 'results') { const ids = [...document.querySelectorAll('[data-mx]')].map(e => e.dataset.mx);
+      if (fxSeen && fxReady && !fxRM()) ids.filter(x => !fxSeen.has(x)).forEach(x => { const e = document.querySelector(`[data-mx="${CSS.escape(x)}"]`); if (e) fxBall(e); });
+      fxSeen = new Set([...(fxSeen || []), ...ids]); }
+  };
+  document.addEventListener('click', e => { const t = e.target; if (!t.closest) return;
+    const f = document.getElementById('fab'), fm = t.closest('.fab-main');
+    if (f && fm) { const o = !f.classList.contains('fabo'); f.classList.toggle('fabo', o); fm.setAttribute('aria-expanded', String(o)); return; }
+    if (f && !t.closest('.fab-menu')) f.classList.remove('fabo');
+    const mx = t.closest('.match.mx'); if (mx && !t.closest('button, a, input, select, textarea, form, label')) { const id = mx.dataset.mx, o = !mx.classList.contains('mxo'); mx.classList.toggle('mxo', o); if (o) mxOpen.add(id); else mxOpen.delete(id); } });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { const f = document.getElementById('fab'); if (f) f.classList.remove('fabo'); } });
   render();
   fbBoot();
 })();
