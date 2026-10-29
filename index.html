@@ -1633,13 +1633,11 @@ main.panel>div:first-child h2{margin-bottom:2px}
 .logday .match{padding:var(--sp3) var(--sp4)}
 
 /* 5. a shorter Standings header so the top of the table shows on the first screen */
-.board:not(.slim) .board-top{padding:20px 22px 64px}
+.board:not(.slim) .board-top{padding:20px 22px 96px}
 .board:not(.slim) .le-mark{width:clamp(56px,15vw,80px)}
 .board:not(.slim) .le-script{font-size:clamp(34px,9vw,50px)}
 .board:not(.slim) .le-block{font-size:clamp(38px,10.5vw,58px)}
 .board:not(.slim) .le-tag{margin:2px 0 8px;font-size:18px}
-.board:not(.slim) .le-sky{height:62px}
-.board:not(.slim) .le-refl{height:62px;bottom:-14px}
 .board:not(.slim) .chips span,.board:not(.slim) .chips .lk-chip{font-size:12.5px;padding:3px 10px;min-height:0}
 .ticker{padding-top:8px;padding-bottom:8px}
 
@@ -1665,7 +1663,7 @@ main.panel>div:first-child h2{margin-bottom:2px}
 @media (prefers-reduced-motion: reduce){.skel i{animation:none}}
 
 /* 11. accessibility: 44px touch areas for small controls, readable grays, one focus ring */
-button.link,.rx-b,.wx-btn,.sheetx,.newsx,.a2x,.rf-x,.since-x,.lk-chip,.shr-links button,.shr-wx button,.achip.lockb,.pe-more>summary,.plink{position:relative}
+button.link,.rx-b,.sheetx,.a2x,.rf-x,.since-x,.lk-chip,.shr-links button,.shr-wx button,.achip.lockb,.pe-more>summary,.plink{position:relative}
 button.link::after,.rx-b::after,.wx-btn::after,.sheetx::after,.newsx::after,.a2x::after,.rf-x::after,.since-x::after,.lk-chip::after,.shr-links button::after,.shr-wx button::after,.achip.lockb::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
 .since-x,.a2x,.rf-x,.newsx{min-width:44px;min-height:44px}
 .set i{opacity:.75}.sb1 em,.wk-n,.rx-sum i{color:var(--muted)}
