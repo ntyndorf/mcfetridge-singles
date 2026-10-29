@@ -1533,6 +1533,20 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
 .mp-list li span:first-child{color:var(--muted)}
 .mp-acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .mp-acts .rx{margin-left:auto}
+
+/* calmer result rows */
+.match .result .story{display:inline;font:italic 400 15px/1.3 'Instrument Serif',Georgia,serif;color:var(--sub,var(--muted));margin-left:4px;white-space:nowrap}
+.vs .note{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.rx-sum{display:inline-flex;gap:6px;margin-left:6px;font-size:13px;vertical-align:middle;color:var(--ink)}.rx-sum i{font:700 11px var(--body);font-style:normal;color:var(--muted);margin-left:1px}
+/* rivals + fun stats */
+.rival{display:inline-block;padding:1px 8px;border-radius:99px;background:rgba(240,138,126,.18);color:#F49A8E;font:800 10px/1.6 var(--body);letter-spacing:.08em;text-transform:uppercase;vertical-align:1px;margin-left:4px}
+.rivals{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0}.rivals .rival{margin:0 2px 0 0}.rivals i{font-style:normal;font-size:12px;color:var(--muted);margin-right:6px}
+.funstats .fs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.fs-grid div{display:grid;justify-items:center;gap:1px;padding:10px 4px;border-radius:12px;background:var(--surface2,var(--bg));text-align:center}
+.fs-grid span{font-size:20px}.fs-grid b{font:800 18px/1.2 var(--display);color:var(--ink)}.fs-grid i{font-style:normal;font-size:11px;color:var(--muted)}
+/* commissioner: backups + invites */
+.invcard>summary{list-style:none;display:flex;justify-content:space-between;gap:10px;cursor:pointer}.invcard>summary::-webkit-details-marker{display:none}.invcard>summary span{color:var(--muted);font-size:13px}
+.invcard .wrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}.invcard .wrow b{font-weight:700}
 </style><link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Archivo+Black&amp;family=Yellowtail&amp;family=Instrument+Serif:ital@0;1&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"},"ph":1},{"id":"p5onhu0","name":"Spencer C","level":"3.25","ph":1},{"id":"wd1jmau","name":"Brendan O","level":"3.0","ph":1},{"id":"ata2iuw","name":"Tim S","level":"3.0","ph":1},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","ph":1},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","ph":1},{"id":"67cu010","name":"Vitaliy B","level":"3.25","ph":1},{"id":"vswai94","name":"Luke H","level":"3.25","ph":1},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","ph":1},{"id":"cuwu10i","name":"Juan G","level":"3.0","ph":1},{"id":"mfuf932","name":"Zach K","level":"3.0","ph":1},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","ph":1},{"id":"wg8fb4m","name":"John W","level":"3.25","ph":1},{"id":"iev0edc","name":"Nathan H","level":"3.0","ph":1},{"id":"tm2km4c","name":"Brian K","level":"3.0","ph":1},{"id":"uu82eoc","name":"Aidan V","level":"3.0","ph":1},{"id":"w5zwbyo","name":"Salem H","level":"3.25","ph":1},{"id":"m620f34","name":"Bill J","level":"3.25","ph":1},{"id":"zwb6fo9","name":"Peter R","level":"3.0","ph":1},{"id":"4xr256c","name":"Will C","level":"3.0","ph":1}],"matches":[],"updated":"2026-10-29T18:05:36.952Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = (() => { const e = document.getElementById('league-data').textContent; try { const c = localStorage.getItem('le-state'); if (c) { const cu = (JSON.parse(c) || {}).updated || '', eu = (JSON.parse(e) || {}).updated || ''; if (cu > eu) return c; } } catch(_) {} return e; })();
@@ -1713,6 +1727,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     if (S.some(([a, b]) => b === 1 && a >= 6)) return 'Breadstick 🥖';
     return ''; }
   const RX = ['🔥', '👏', '😮'];
+  const rxSum = id => { const c = LV.rx[id] || {}, t = RX.filter(e => c[e]).map(e => `${e}<i>${c[e]}</i>`).join(' '); return t ? ` <span class="rx-sum">${t}</span>` : ''; };
   const rxRow = id => { if (!LV.rxOk) return ''; const c = LV.rx[id] || {}, mine = FBL.user ? (LV.rxMine[id] || '') : '';
     return `<span class="rx" role="group" aria-label="Reactions">${RX.map(e => `<button type="button" class="rx-b${mine === e ? ' on' : ''}" data-rx="${id}" data-rxe="${e}" aria-pressed="${mine === e}" aria-label="${e} ${c[e] || 0}">${e}${c[e] ? `<i>${c[e]}</i>` : ''}</button>`).join('')}</span>`; };
   function matchRow(m){
@@ -1721,14 +1736,14 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     const A = esc(pname(m.a)), B = esc(pname(m.b));
     const noteL = m.notes ? `<span class="note">“${esc(m.notes)}”</span>` : '';
     const pe = o && OK.has(m.id) ? ptsFrom(o) : null, st = editing === m.id ? '' : storyOf(m, o);
-    const left = o ? `<div class="vs"><button type="button" class="av-btn" data-player="${o.w}" aria-label="${esc(pname(o.w))}'s page">${avatar(o.w, 'rw')}</button><span class="wn">${esc(pname(o.w))}</span>${pe ? `<span class="pe" title="Points earned">+${pe.w}</span>` : ''}<span class="x">d.</span><span class="ln">${esc(pname(o.l))}</span>${pe ? `<span class="pe lo" title="Points earned">+${pe.l}</span>` : ''}${st ? `<span class="story">${esc(st)}</span>` : ''}${editing === m.id ? '' : noteL}</div>`
+    const left = o ? `<div class="vs"><button type="button" class="av-btn" data-player="${o.w}" aria-label="${esc(pname(o.w))}'s page">${avatar(o.w, 'rw')}</button><span class="wn">${esc(pname(o.w))}</span>${pe ? `<span class="pe" title="Points earned">+${pe.w}</span>` : ''}<span class="x">d.</span><span class="ln">${esc(pname(o.l))}</span>${editing === m.id ? '' : noteL}</div>`
                    : `<div class="vs"><span>${A}</span><span class="x">vs</span><span>${B}</span>${noteL}</div>`;
-    let right = !o ? `<span class="pill">No result</span>` : o.ff ? `<span class="pill ff">${esc(pname(o.l))} ${o.reason === 'noshow' ? 'no-show' : o.reason === 'late' ? 'late cancel' : 'forfeit'}</span>` : `<span class="sets" aria-label="${esc(setText(o.sets))}">${o.sets.map(([a, b]) => `<span class="set${a >= 10 || b >= 10 ? ' stb' : ''}"><b>${a}</b><i>–</i>${b}</span>`).join('')}</span> ${isMini(m) ? '<span class="pill">Mini</span> ' : ''}${o.close ? '<span class="pill tb">Close</span>' : ''}${playedUp(o) ? ' <span class="pill tb">Upset +1</span>' : ''}${o.ret ? `<span class="pill">${esc(pname(o.l))} retired</span>` : ''}`;
-    right += extra + locPill(m);
+    let right = !o ? `<span class="pill">No result</span>` : o.ff ? `<span class="pill ff">${esc(pname(o.l))} ${o.reason === 'noshow' ? 'no-show' : o.reason === 'late' ? 'late cancel' : 'forfeit'}</span>` : `<span class="sets" aria-label="${esc(setText(o.sets))}">${o.sets.map(([a, b]) => `<span class="set${a >= 10 || b >= 10 ? ' stb' : ''}"><b>${a}</b><i>–</i>${b}</span>`).join('')}</span> ${isMini(m) ? '<span class="pill">Mini</span> ' : ''}${st ? `<span class="story">${esc(st)}</span>` : playedUp(o) ? '<span class="pill tb">Upset +1</span>' : o.close ? '<span class="pill tb">Close</span>' : ''}${o.ret ? ` <span class="pill">${esc(pname(o.l))} retired</span>` : ''}`;
+    right += extra + (o ? rxSum(m.id) : '');
     const noteHtml = '';
     const rem = o && !o.ff && myPid() && o.l === myPid() ? ` <button type="button" class="link" data-chal="${o.w}">Rematch</button>` : '';
-    if (m.rep) return `<div class="match">${left}<div class="result">${right}<br>${o && !o.ff ? `<button type="button" class="link shr" data-share="${m.id}">Share</button>${rem} ` : ''}${o ? rxRow(m.id) : ''}${art ? `<button class="link" data-repx="${m.rep}">Remove</button>` : ''}</div></div>`;
-    if (!art) return `<div class="match">${left}<div class="result">${right}${noteHtml}${o && !o.ff ? `<br><button type="button" class="link shr" data-share="${m.id}">Share</button>${rem}` : ''}${o ? rxRow(m.id) : ''}</div></div>`;
+    if (m.rep) return `<div class="match">${left}<div class="result">${right}${art ? `<br><button class="link" data-repx="${m.rep}">Remove</button>` : ''}</div></div>`;
+    if (!art) return `<div class="match">${left}<div class="result">${right}</div></div>`;
     if (editing === m.id){
       const s = m.score || {};
       return `<div class="match">${left}<div class="result">${right}</div>
@@ -1755,7 +1770,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     const done = state.matches.filter(m => outcome(m) && !outcome(m).ff), ups = done.filter(m => playedUp(outcome(m))).length, three = done.filter(m => outcome(m).sets.length > 2).length;
     return `<div><h2>Results</h2></div>${rep}
       ${done.length ? `<div class="rstats"><div><b>${done.length}</b><span>Matches</span></div><div><b>${three}</b><span>Went the distance</span></div><div><b>${ups}</b><span>Upsets</span></div></div>` : ''}
-      ${Object.keys(days).map((d, wi) => (wi === 3 && !resAll ? `<button type="button" class="btn ghost res-more" data-res-all="1">Show earlier weeks (${Object.keys(days).length - 3})</button><div hidden>` : '') + `<section class="logday"><header><span>${esc(d)}</span><span class="wk-n">${days[d].length} match${days[d].length === 1 ? '' : 'es'}</span></header>${days[d].map(m => { const o = outcome(m); return matchRow(m).replace('<div class="match">', `<div class="match${o && playedUp(o) ? ' m-up' : ''}" data-mx="${m.id}">`).replace('<div class="vs">', `<div class="vs">${m.date ? `<span class="rdate">${esc(fmtDate(m.date))}</span>` : ''}`); }).join('')}</section>`).join('')}${Object.keys(days).length > 3 && !resAll ? '</div>' : ''}`;
+      ${Object.keys(days).map((d, wi) => (wi === 3 && !resAll ? `<button type="button" class="btn ghost res-more" data-res-all="1">Show earlier weeks (${Object.keys(days).length - 3})</button><div hidden>` : '') + `<section class="logday"><header><span>${esc(d)}</span><span class="wk-n">${days[d].length} match${days[d].length === 1 ? '' : 'es'}</span></header>${days[d].map(m => { const o = outcome(m); return matchRow(m).replace('<div class="match">', `<div class="match${o && playedUp(o) ? ' m-up' : ''}" data-mx="${m.id}">`).replace('<div class="vs">', `<div class="vs">${m.date || (m.loc && !isMcF(m.loc)) ? `<span class="rdate">${esc([m.date ? fmtDate(m.date) : '', m.loc && !isMcF(m.loc) ? m.loc : ''].filter(Boolean).join(' · '))}</span>` : ''}`); }).join('')}</section>`).join('')}${Object.keys(days).length > 3 && !resAll ? '</div>' : ''}`;
   }
 
   function playNext(id, h, rank, rows){
@@ -1803,6 +1818,8 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       ${ptsChart(id, rank, rows.length, r)}
       <div class="statline"><div><b>${r.pts}</b><span>Points</span></div><div><b>${r.w}–${r.l}</b><span>Record</span></div><div><b>${r.mp ? Math.round(r.wp*100)+'%' : '—'}</b><span>Win %</span></div></div>
       ${r.mp ? `<div class="shr-links"><span>Share</span><button type="button" data-card="player" data-arg="${id}">🪪 Player card</button>${streakOf(id) >= 3 ? `<button type="button" data-card="streak" data-arg="${id}">🔥 W${streakOf(id)} streak</button>` : ''}${milestones(id).map(m => `<button type="button" data-card="milestone" data-arg="${id}|${m.k}">${m.emo} ${esc(m.title)}</button>`).join('')}</div>` : ''}
+      ${(() => { const rv = rivalsOf(id); return rv.length ? `<div class="rivals"><span class="rival">Rivals</span>${rv.map(([o, k]) => `<button type="button" class="plink" data-player="${o}">${esc(pname(o))}</button><i>${k} meetings</i>`).join('')}</div>` : ''; })()}
+      ${funStats(id)}
       ${mine.length ? `<details class="morestats"><summary>More stats</summary>${breakdown(id, mine)}</details>` : ''}
       ${highlights(id)}
       <section class="logday"><header>Matches</header>${list || '<div class="match"><div class="hint">No matches logged yet.</div><div></div></div>'}</section>`;
@@ -1821,6 +1838,17 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(r.pts + ' points over ' + n + ' week' + (n > 1 ? 's' : ''))}"><polygon points="${X(0).toFixed(1)},${H - 8} ${pts} ${X(n - 1).toFixed(1)},${H - 8}" class="pc-area"/><polyline points="${pts}" class="pc-line"/>${cum.map((v, i) => `<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${i === n - 1 ? 3.6 : 2.2}" class="pc-dot${i === n - 1 ? ' now' : ''}"><title>Week of ${lab(new Date(w0.getTime() + i * 6048e5))}: ${v} pts</title></circle>`).join('')}</svg>
       <span class="pc-x"><span>${esc(lab(w0))}</span><span>This week · ${r.pts} pts</span></span></div></section>`; }
   let h2hA = '', h2hB = '';
+  const meetN = (a, b) => state.matches.filter(x => outcome(x) && ((x.a === a && x.b === b) || (x.a === b && x.b === a))).length;
+  function rivalsOf(id){ const n = {}; state.matches.forEach(m => { const o = outcome(m); if (!o || (m.a !== id && m.b !== id)) return; const op = m.a === id ? m.b : m.a; n[op] = (n[op] || 0) + 1; });
+    return Object.entries(n).filter(([, k]) => k >= 3).sort((a, b) => b[1] - a[1]); }
+  function funStats(id){ let bag = 0, bread = 0, tbw = 0, cb = 0, long = 0, t3w = 0, t3 = 0, big = null;
+    chrono().forEach(m => { const o = outcome(m); if (!o || o.ff || (m.a !== id && m.b !== id)) return; const won = o.w === id, S = won ? o.sets : o.sets.map(([a, b]) => [b, a]);
+      S.forEach(([a, b], i) => { if (a >= 6 && b === 0) bag++; if (a >= 6 && b === 1) bread++; if ((a === 7 && b === 6) || (a >= 10 && a - b === 2) || (S.length === 3 && i === 2 && a >= 10 && a > b)) tbw++; });
+      if (won && o.sets.length > 1 && o.sets[0][0] < o.sets[0][1]) cb++; long = Math.max(long, o.wg + o.lg);
+      if (o.sets.length === 3) { t3++; if (won) t3w++; } if (won) { const mg = o.wg - o.lg; if (!big || mg > big.mg) big = {mg, sc: setText(o.sets), op: o.l}; } });
+    const L = [bag && ['🥯', bag === 1 ? 'Bagel served' : 'Bagels served', bag], bread && ['🥖', bread === 1 ? 'Breadstick' : 'Breadsticks', bread], tbw && ['🎯', 'Tiebreaks won', tbw], cb && ['🔁', cb === 1 ? 'Comeback' : 'Comebacks', cb],
+      t3 && ['🧱', 'Three-setters', `${t3w}–${t3 - t3w}`], long && ['⏱️', 'Longest match', long + ' games'], big && big.mg > 0 && ['💪', 'Biggest win', big.sc]].filter(Boolean);
+    return L.length ? `<section class="card funstats"><h3>Fun stats</h3><div class="fs-grid">${L.map(([e, k, v]) => `<div><span aria-hidden="true">${e}</span><b>${esc(String(v))}</b><i>${esc(k)}</i></div>`).join('')}</div></section>` : ''; }
   function renderMatch(id){ const m = state.matches.find(x => x.id === id), o = m && outcome(m); OK = countedIds();
     if (!m || !o) return `<button class="back" data-tab="results">← Results</button><div class="empty">That match isn't on the board anymore.</div>`;
     const pe = OK.has(m.id) ? ptsFrom(o) : null, st = storyOf(m, o), all = state.matches;
@@ -1834,10 +1862,40 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
         ${st ? `<p class="story mp-story">${esc(st)}</p>` : ''}${playedUp(o) ? '<p class="mp-tag"><span class="pill tb">Upset +1</span></p>' : ''}
         ${m.notes ? `<blockquote class="mp-note">“${esc(m.notes)}”</blockquote>` : ''}
         ${odds ? `<div class="mp-odds"><span class="pc-k">Odds going in</span>${odds}</div>` : ''}
-        <div class="mp-h2h"><span class="pc-k">Head to head</span><p><b>${esc(first({name: pname(o.w)}))} ${ww}–${meet.length - ww} ${esc(first({name: pname(o.l)}))}</b> in ${meet.length} meeting${meet.length === 1 ? '' : 's'}</p>
+        <div class="mp-h2h"><span class="pc-k">Head to head${meet.length >= 3 ? ' <span class="rival">Rivals</span>' : ''}</span><p><b>${esc(first({name: pname(o.w)}))} ${ww}–${meet.length - ww} ${esc(first({name: pname(o.l)}))}</b> in ${meet.length} meeting${meet.length === 1 ? '' : 's'}</p>
           ${meet.length > 1 ? `<ul class="mp-list">${meet.map(x => { const ox = outcome(x); return `<li${x.id === m.id ? ' class="cur"' : ''}><span>${esc(fmtDate(x.date, {month: 'short', day: 'numeric'}))}</span><span>${esc(pname(ox.w))} ${ox.ff ? 'by forfeit' : esc(setText(ox.sets))}</span></li>`; }).join('')}</ul>` : ''}</div>
         <div class="mp-acts">${o.ff ? '' : `<button type="button" class="btn pri" data-share="${m.id}">Share result</button>`}${myPid() && o.l === myPid() ? `<button type="button" class="btn" data-chal="${o.w}">Rematch</button>` : ''}${rxRow(m.id)}</div>
       </section>`; }
+  // ---- backups: everything the commissioner can see, as one file; also saved automatically once a week ----
+  const bkData = () => { let lg = null; try { lg = JSON.parse(BASE || SRC); } catch(_) { lg = state; }
+    return {kind: 'lake-effect-backup', v: 1, at: new Date().toISOString(), by: (FBL.user && FBL.user.email) || '', league: lg, phones: PRIV || {}, reports: LV.reports, courts: LV.courts, profiles: LV.profiles, claims: LV.claims, members: FBL.members || [], submissions: FBL.subs || [], reactions: LV.rx || {}}; };
+  const bkDay = () => today();
+  function bkDownload(){ const j = JSON.stringify(bkData(), null, 1), a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([j], {type: 'application/json'})); a.download = `lake-effect-backup-${bkDay()}.json`; document.body.appendChild(a); a.click(); a.remove(); try { localStorage.setItem('le-bk-dl', String(Date.now())); } catch(_) {} toastLg('Backup downloaded'); render(); }
+  const lsNum = k => { try { return +(localStorage.getItem(k) || 0) || 0; } catch(_) { return 0; } };
+  let bkState = {last: lsNum('le-bk-at'), err: ''};
+  async function bkAuto(force){ if (!FBL.admin || !FBL.live || !FBL.F || !FBL.db) return; if (!force && Date.now() - bkState.last < 6 * 864e5) return;
+    const j = JSON.stringify(bkData()); try { localStorage.setItem('le-bk-local', j); } catch(_) {}
+    try { await FBL.F.setDoc(FBL.F.doc(FBL.db, 'league', 'backup-' + bkDay()), {json: j, at: Date.now(), by: (FBL.user && FBL.user.email) || ''}); bkState = {last: Date.now(), err: ''}; try { localStorage.setItem('le-bk-at', String(bkState.last)); } catch(_) {} }
+    catch(_) { bkState.err = 'rules'; } if (tab === 'admin') render(); }
+  setInterval(() => bkAuto(false), 6e4); setTimeout(() => bkAuto(false), 9000);
+  function backupHtml(){ if (!FBL.admin) return ''; const t = bkState.last, dl = lsNum('le-bk-dl');
+    return `<section class="card bkcard"><h3>Backups</h3><p class="hint">${t ? `Last automatic backup: <b>${esc(new Date(t).toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'}))}</b>. A new one saves itself every week when you open the site.` : 'The first automatic backup saves itself shortly after you open this tab.'}${dl ? ` · Last download ${esc(new Date(dl).toLocaleDateString('en-US', {month: 'short', day: 'numeric'}))}` : ''}</p>
+      ${bkState.err ? `<p class="hint" style="color:var(--loss)">Automatic backups couldn't save to the database yet; the database rules need one small addition. Downloads still work, and a copy is kept on this device.</p>` : ''}
+      <div class="row"><button type="button" class="btn pri" data-bk-dl="1">Download backup</button><button type="button" class="btn ghost" data-bk-now="1">Back up now</button></div></section>`; }
+  document.addEventListener('click', e => { const t = e.target.closest && e.target.closest('[data-bk-dl],[data-bk-now]'); if (!t) return; if (t.dataset.bkDl) bkDownload(); else bkAuto(true).then(() => toastLg(bkState.err ? 'Saved on this device; the database needs a rules update' : 'Backed up')); });
+
+  // ---- invite links: a personal link that signs a new player straight into their name ----
+  const invUrl = pid => location.origin + location.pathname + '?invite=' + encodeURIComponent(pid);
+  let INV = ''; try { const q = new URLSearchParams(location.search).get('invite'); if (q) { localStorage.setItem('le-invite', q); history.replaceState(null, '', location.pathname + location.hash); } INV = localStorage.getItem('le-invite') || ''; } catch(_) {}
+  function inviteHtml(){ if (!FBL.admin) return ''; const open = state.players.filter(p => !LV.claims[p.id]);
+    return `<details class="card invcard"><summary><b>Invite links</b><span>${open.length ? open.length + ' not signed up yet' : 'Everyone has signed up'}</span></summary>
+      <p class="hint">Each link signs that player straight into their own name. Send it by text, or copy it.</p>
+      ${open.map(p => { const ph = PRIV && PRIV[p.id], sh = ph ? smsHref({phone: ph}, `Hey ${first(p)}! Here's your link to the Lake Effect Tennis Club league site. It signs you right in as you: ${invUrl(p.id)}`) : '';
+        return `<div class="wrow"><span>${avatar(p.id)}<b>${esc(p.name)}</b></span><span>${sh ? `<a class="link" href="${esc(sh)}" target="_top">Text</a> · ` : ''}<button type="button" class="link" data-inv-copy="${p.id}">Copy link</button></span></div>`; }).join('')}</details>`; }
+  document.addEventListener('click', async e => { const t = e.target.closest && e.target.closest('[data-inv-copy],[data-inv-join]'); if (!t) return;
+    if (t.dataset.invCopy) { try { await navigator.clipboard.writeText(invUrl(t.dataset.invCopy)); toastLg('Invite link copied for ' + pname(t.dataset.invCopy)); } catch(_) { window.prompt('Copy this invite link', invUrl(t.dataset.invCopy)); } return; }
+    if (t.dataset.invJoin) { const pid = t.dataset.invJoin; await fbAct('me', {value: pid}); try { if (myPid() === pid) localStorage.removeItem('le-invite'); } catch(_) {} } });
+  const invFor = () => INV && state.players.some(p => p.id === INV) && !LV.claims[INV] ? INV : '';
   function renderH2H(){
     const P = state.players;
     const opts = sel => `<option value="">Choose a player</option>` + P.map(p => `<option value="${p.id}" ${sel===p.id?'selected':''}>${esc(p.name)}</option>`).join('');
@@ -1990,7 +2048,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   function renderAdmin(){
     const L = state.league, P = state.players;
     const opts = sel => `<option value="">Choose…</option>` + P.map(p => `<option value="${p.id}" ${sel===p.id?'selected':''}>${esc(p.name)}</option>`).join('');
-    return `<div><h2>Commissioner</h2></div>${liveHtml()}${FBL.subs.length ? inboxHtml() : ''}
+    return `<div><h2>Commissioner</h2></div>${liveHtml()}${FBL.subs.length ? inboxHtml() : ''}${backupHtml()}${inviteHtml()}
       <div class="card logcard"><h3>Log a match</h3>
         ${P.length < 2 ? `<p class="hint">Add at least 2 players to the roster first.</p>` : `
         <form id="log-form" style="display:grid;gap:16px">
@@ -3271,7 +3329,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   function meBar(){
     if (!FBL.ready) return FBL.err ? `<div class="mebar"><p>${esc(FBL.err)}</p></div>` : `<div class="mebar loadbar">${bobber(34)}<p>Loading the league…</p></div>`;
     const u = FBL.user, cn = esc(state.league.commissioner || 'the commissioner');
-    if (!u) return tab === 'standings' && !lsGet('mws-welcome-x') ? `<section class="welcome"><button type="button" class="wx" data-welcome-x="1" aria-label="Hide">×</button><h3>👋 New to the league?</h3>
+    if (!u) return tab === 'standings' && (!lsGet('mws-welcome-x') || invFor()) ? `<section class="welcome"><button type="button" class="wx" data-welcome-x="1" aria-label="Hide">×</button><h3>👋 ${invFor() ? `Welcome, ${esc(first(state.players.find(p => p.id === invFor())))}! Sign in and you'll be set up as ${esc(pname(invFor()))}.` : 'New to the league?'}</h3>
         <ol class="wsteps"><li><b>Sign in</b><span>Google or an email link</span></li><li><b>Pick your name</b><span>from the player list</span></li><li><b>Set up your profile</b><span>picture, playing style, when you're free</span></li><li><b>Find a match</b><span>challenge someone or post a court</span></li></ol>
         <button type="button" class="mb-go wgo" data-acct="1">Sign in to get started</button><p class="hint">Just checking the standings? They're right below.</p></section>`
       : `<div class="mebar"><p><b>Sign in</b> to post scores, courts and your profile.</p><button type="button" class="mb-go" data-acct="1">Sign in</button></div>`;
@@ -3281,7 +3339,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       return `<div class="mebar"><p><b>Commissioner</b> · ${nA ? nA + ' thing' + (nA > 1 ? 's' : '') + ' need you' : 'nothing waiting'}</p><div class="mb-acts"><button type="button" data-tab="admin">Commissioner tab</button><button type="button" data-acct="1">Account</button></div></div>`; }
     if (tab === 'me') return '';
     if (tab === 'standings' && myPid()) return homeCard();
-    if (!myPid()) return `<section class="welcome step2"><h3>Almost there: which player are you?</h3><select data-fb-me="1" aria-label="Which player are you?">${playerOpts('', 'Choose your name', null, true)}</select><p class="hint">Each name can only be picked once. Not on the list? Ask ${cn} to add you.</p></section>`;
+    if (!myPid()) return invFor() ? `<section class="welcome step2"><h3>Welcome, ${esc(first(state.players.find(p => p.id === invFor())))}! 👋</h3><p>You were invited as <b>${esc(pname(invFor()))}</b>.</p><button type="button" class="mb-go wgo" data-inv-join="${invFor()}">Yes, that's me</button><p class="hint">Not you? Pick your name instead: <select data-fb-me="1" aria-label="Which player are you?">${playerOpts('', 'Choose your name', null, true)}</select></p></section>` : `<section class="welcome step2"><h3>Almost there: which player are you?</h3><select data-fb-me="1" aria-label="Which player are you?">${playerOpts('', 'Choose your name', null, true)}</select><p class="hint">Each name can only be picked once. Not on the list? Ask ${cn} to add you.</p></section>`;
     const n = todoCount();
     return n ? `<div class="mebar slimbar"><p><b class="todo-n">${n} thing${n > 1 ? 's' : ''} need${n > 1 ? '' : 's'} you</b></p><div class="mb-acts"><button type="button" data-tab="me">Open Me</button></div></div>` : '';
   }
