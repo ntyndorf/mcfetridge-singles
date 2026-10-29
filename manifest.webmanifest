@@ -1,11 +1,11 @@
 {
- "name": "McFetridge Winter Singles",
- "short_name": "Singles",
+ "name": "Lake Effect Tennis Club",
+ "short_name": "Lake Effect",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
- "background_color": "#0D1B2A",
- "theme_color": "#0D1B2A",
+ "background_color": "#0B1B2B",
+ "theme_color": "#0B1B2B",
  "icons": [
   {
    "src": "icon-192.png",
