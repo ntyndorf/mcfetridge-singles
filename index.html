@@ -2269,7 +2269,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     if (tok !== scTok || !sheetEl || !blob) return; const b2 = sheetEl.querySelector('.shr-box'); if (!b2) return;
     const ext = vid ? (blob.type.includes('mp4') ? 'mp4' : 'webm') : 'png', name = `lake-effect-${SC.kind}-${SC.fmt}.${ext}`;
     shareFile = new File([blob], name, {type: blob.type}); const url = URL.createObjectURL(blob), can = !!(navigator.canShare && navigator.canShare({files: [shareFile]}));
-    b2.innerHTML = `<div class="shr-prev shr-${SC.fmt}">${vid ? `<video src="${url}" autoplay loop muted playsinline class="shr-img"></video>` : `<img src="${url}" alt="${esc(CARDS[SC.kind].t.replace('Share ', ''))} card" class="shr-img">`}</div>
+    b2.innerHTML = `<div class="shr-prev shr-${SC.fmt}">${vid ? `<video src="${url}" autoplay muted playsinline controls class="shr-img"></video>` : `<img src="${url}" alt="${esc(CARDS[SC.kind].t.replace('Share ', ''))} card" class="shr-img">`}</div>
       <div class="row">${can ? '<button type="button" class="btn pri" data-share-go="1">Share</button>' : ''}<a class="btn${can ? '' : ' pri'}" href="${url}" download="${name}">Save ${vid ? 'clip' : 'image'}</a></div>`; }
   async function sheetShare(o){ openCard('result', o); }
   const shareInfo = id => cardData('result', id);
