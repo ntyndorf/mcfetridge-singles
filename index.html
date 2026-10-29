@@ -2526,7 +2526,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     RAT = null;
     const L = state.league, tip = safeUrl(L.tipUrl);
     const upN = upcomingList().length;
-    const tabs = (FBL.user ? [['me', meTabLabel()]] : []).concat([['standings','Standings'],['upcoming', upN ? `Courts (${upN})` : 'Courts'],['results','Results'],['rules','Rules']]).concat(art ? [['admin','Commissioner']] : []);
+    const tabs = (FBL.user ? [['me', meTabLabel()]] : []).concat([['standings','Standings'],['results','Results'],['upcoming', upN ? `Courts (${upN})` : 'Courts'],['rules','Rules']]).concat(art ? [['admin','Commissioner']] : []);
     if (tab !== 'player' && !tabs.some(t => t[0] === tab)) tab = 'standings';
     const body = tab === 'me' ? renderMe() : tab === 'player' ? renderPlayer(viewPlayer) : tab === 'standings' ? renderStandings() : tab === 'upcoming' ? renderUpcoming() : tab === 'awards' ? renderAwards() : tab === 'results' ? renderResults() : tab === 'h2h' ? renderH2H() : tab === 'rules' ? renderRules() : renderAdmin();
     const span = L.startDate || L.endDate ? `<span>${esc(fmtDate(L.startDate,{month:'short',day:'numeric'}) || 'Now')} – ${esc(fmtDate(L.endDate,{month:'short',day:'numeric'}) || 'Spring')}</span>` : '';
