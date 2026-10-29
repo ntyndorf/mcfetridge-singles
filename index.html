@@ -3095,7 +3095,8 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   let ORIG = {}; // the league record's own profile fields for players who manage theirs
   const cl = o => o === undefined ? undefined : JSON.parse(JSON.stringify(o));
   const myPid = () => { const u = FBL.user, c = u && FBL.me && LV.claims[FBL.me]; return c && c.uid === u.uid ? FBL.me : ''; };
-  const counts = r => r.status === 'confirmed' || (r.status === 'pending' && Date.now() - (r.at || 0) > AUTO);
+  // a reported score counts right away; only a dispute holds it back
+  const counts = r => r.status === 'confirmed' || r.status === 'pending';
   function baseEdited(p){ if (!LV.profiles[p.id]) { ORIG[p.id] = {}; PF.forEach(k => ORIG[p.id][k] = cl(p[k])); } }
   function applyPriv(){ overlay(); }
   function overlay(){
@@ -3188,7 +3189,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   const repLine = r => `<b>${esc(pname(r.w))}</b> d. ${esc(pname(r.l))} · ${esc(setText(parseSets(r.sc || '') || []))} · ${esc(whenTxt(r))}${isMcF(r.loc) ? '' : ' · ' + esc(r.loc)}`;
   function repWaiting(){ const L = LV.reports.filter(r => r.status === 'pending' && !counts(r)), D = LV.reports.filter(r => r.status === 'disputed');
     if (!L.length && !D.length) return ''; const me = myPid();
-    return `<section class="logday waitc"><header>Under review</header>${L.map(r => `<div class="wrow"><span>${repLine(r)}</span><span class="hint">${me && otherOf(r) === me ? `<button class="btn sm" data-rconf="${r.id}">Confirm</button> <button class="link" data-rdisp="${r.id}">Dispute</button>` : me && r.by === me ? `Waiting on ${esc(first(state.players.find(x => x.id === otherOf(r)) || {name: ''}))} · <button class="link" data-rwd="${r.id}">Withdraw</button>` : 'Counts once ' + esc(first(state.players.find(x => x.id === otherOf(r)) || {name: 'the opponent'})) + ' confirms'}</span></div>`).join('')}
+    return `<section class="logday waitc"><header>Disputed</header>${L.map(r => `<div class="wrow"><span>${repLine(r)}</span><span class="hint">${me && otherOf(r) === me ? `<button class="btn sm" data-rconf="${r.id}">Confirm</button> <button class="link" data-rdisp="${r.id}">Dispute</button>` : me && r.by === me ? `Waiting on ${esc(first(state.players.find(x => x.id === otherOf(r)) || {name: ''}))} · <button class="link" data-rwd="${r.id}">Withdraw</button>` : 'Counts once ' + esc(first(state.players.find(x => x.id === otherOf(r)) || {name: 'the opponent'})) + ' confirms'}</span></div>`).join('')}
       ${D.map(r => `<div class="wrow"><span>${repLine(r)}</span><span class="hint">Disputed · ${esc(state.league.commissioner || 'the commissioner')} will sort it out</span></div>`).join('')}</section>`; }
   const COLORS = ['#006778', '#1f6f9f', '#2b4c7e', '#4b4fa6', '#6b3f7a', '#9a2f55', '#c0392b', '#a5512a', '#b7791f', '#5b5f1f', '#2f6b45', '#3d6b6b', '#4a4a4a'];
   function renderMe(){
@@ -3201,7 +3202,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     const rows = standings(), rank = rows.findIndex(r => r.id === me) + 1, r = rows[rank - 1] || {pts: 0, w: 0, l: 0, mp: 0};
     const myCourts = upcomingList().filter(x => x.a === me || x.b === me);
     const mine = LV.reports.filter(x => x.by === me && (x.status === 'pending' && !counts(x) || x.status === 'disputed'));
-    const fresh = LV.reports.filter(x => x.status === 'confirmed' && (x.w === me || x.l === me) && Date.now() - (x.at || 0) < 3*864e5);
+    const fresh = LV.reports.filter(x => (x.status === 'confirmed' || x.status === 'pending') && (x.w === me || x.l === me) && Date.now() - (x.at || 0) < 3*864e5);
     const outs = LV.chOut.filter(c => c.status === 'open' || (c.status !== 'cancelled' && Date.now() - (c.doneAt || c.at || 0) < 7*864e5));
     const ins = LV.chIn.filter(c => c.status === 'accepted' && Date.now() - (c.doneAt || 0) < 7*864e5);
     const opt = (v, list) => list.map(x => `<option ${v === x ? 'selected' : ''}>${x}</option>`).join('');
