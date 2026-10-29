@@ -1678,6 +1678,24 @@ button.link::after,.rx-b::after,.wx-btn::after,.sheetx::after,.newsx::after,.a2x
 /* skyline: never crop the towers; headroom for antennas and their lights, taller on wide screens */
 .board:not(.slim) .le-sky{height:auto;aspect-ratio:600/90;min-height:94px}
 .board:not(.slim) .board-top{padding-bottom:max(106px,calc(min(100vw,760px) * .15 + 8px))}
+
+/* ---- bug sweep fixes ---- */
+/* yellow is for filled buttons only: text that used it goes link-blue (fixes unreadable yellow on the light theme) */
+:root:is([data-skin="lakefx"],[data-skin="lakelight"]) :is(.up .cal,.fb .d,.fpick .d,.btnl.ghost,.smssheet button.ghost,.smslink,button.ghost,button.link,.plink:hover,.tip,.mb-acts button,.mbprof,.foot .thsw,.fmtpick label:has(input:checked)){color:var(--link)}
+:root:is([data-skin="lakefx"],[data-skin="lakelight"]) .up .when{color:var(--ink)}
+:root[data-skin="lakelight"] .open{color:#fff!important}
+.gsrow.ok .gsi{color:#0B1B2B}
+.wl.W,.wl.L{color:#0B1B2B!important}
+:root[data-skin="lakelight"] .pod-step i{color:var(--ink)}
+/* 320px match page: names and set boxes shrink instead of spilling */
+.mp-vs{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.mp-sets{flex-wrap:nowrap}.mp-set{min-width:0;flex:1 1 0;max-width:96px;padding:8px 6px}
+.mp-meta{overflow-wrap:anywhere}
+@media (max-width:359px){.mp-side .av.lg{width:52px;height:52px;font-size:18px}.mp-side b{font-size:15px}.mp-set b{font-size:24px}}
+/* small links get a full-size touch area */
+.back,.up .cal,.bookrem .link,.rl-b a,.plink,.av-btn{position:relative}
+.back::after,.up .cal::after,.bookrem .link::after,.av-btn::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
+.back{display:inline-flex;align-items:center;min-height:36px}
 </style><link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Archivo+Black&amp;family=Yellowtail&amp;family=Instrument+Serif:ital@0;1&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"},"ph":1},{"id":"p5onhu0","name":"Spencer C","level":"3.25","ph":1},{"id":"wd1jmau","name":"Brendan O","level":"3.0","ph":1},{"id":"ata2iuw","name":"Tim S","level":"3.0","ph":1},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","ph":1},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","ph":1},{"id":"67cu010","name":"Vitaliy B","level":"3.25","ph":1},{"id":"vswai94","name":"Luke H","level":"3.25","ph":1},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","ph":1},{"id":"cuwu10i","name":"Juan G","level":"3.0","ph":1},{"id":"mfuf932","name":"Zach K","level":"3.0","ph":1},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","ph":1},{"id":"wg8fb4m","name":"John W","level":"3.25","ph":1},{"id":"iev0edc","name":"Nathan H","level":"3.0","ph":1},{"id":"tm2km4c","name":"Brian K","level":"3.0","ph":1},{"id":"uu82eoc","name":"Aidan V","level":"3.0","ph":1},{"id":"w5zwbyo","name":"Salem H","level":"3.25","ph":1},{"id":"m620f34","name":"Bill J","level":"3.25","ph":1},{"id":"zwb6fo9","name":"Peter R","level":"3.0","ph":1},{"id":"4xr256c","name":"Will C","level":"3.0","ph":1}],"matches":[],"updated":"2026-10-29T18:05:36.952Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = (() => { const e = document.getElementById('league-data').textContent; try { const c = localStorage.getItem('le-state'); if (c) { const cu = (JSON.parse(c) || {}).updated || '', eu = (JSON.parse(e) || {}).updated || ''; if (cu > eu) return c; } } catch(_) {} return e; })();
