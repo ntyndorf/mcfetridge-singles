@@ -1410,6 +1410,11 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
 .wx-aur i:nth-child(3){top:4%;opacity:.5;animation-duration:15s}
 @keyframes wxAur{0%{transform:translateX(-8%) rotate(-6deg) scaleY(.8)}100%{transform:translateX(8%) rotate(3deg) scaleY(1.2)}}
 @media (prefers-reduced-motion: reduce){.wx-fx *,.wx-fx i,.wx-fx g,.wx-fx path{animation:none!important}.board[data-wx="storm"] .wx-flash,.board[data-wx="storm"] .wx-bolt{display:none}}
+
+.shr-wx{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:-4px 0 12px;padding:2px}
+.shr-wx::-webkit-scrollbar{display:none}
+.shr-wx button{flex:none;display:inline-flex;align-items:center;gap:5px;min-height:34px;padding:0 11px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--muted);font:600 13px var(--body);cursor:pointer;white-space:nowrap}
+.shr-wx button[aria-pressed="true"]{background:var(--surface2,var(--bg));color:var(--ink);border-color:var(--link,var(--accent))}
 </style><link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Archivo+Black&amp;family=Yellowtail&amp;family=Instrument+Serif:ital@0;1&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"},"ph":1},{"id":"p5onhu0","name":"Spencer C","level":"3.25","ph":1},{"id":"wd1jmau","name":"Brendan O","level":"3.0","ph":1},{"id":"ata2iuw","name":"Tim S","level":"3.0","ph":1},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","ph":1},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","ph":1},{"id":"67cu010","name":"Vitaliy B","level":"3.25","ph":1},{"id":"vswai94","name":"Luke H","level":"3.25","ph":1},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","ph":1},{"id":"cuwu10i","name":"Juan G","level":"3.0","ph":1},{"id":"mfuf932","name":"Zach K","level":"3.0","ph":1},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","ph":1},{"id":"wg8fb4m","name":"John W","level":"3.25","ph":1},{"id":"iev0edc","name":"Nathan H","level":"3.0","ph":1},{"id":"tm2km4c","name":"Brian K","level":"3.0","ph":1},{"id":"uu82eoc","name":"Aidan V","level":"3.0","ph":1},{"id":"w5zwbyo","name":"Salem H","level":"3.25","ph":1},{"id":"m620f34","name":"Bill J","level":"3.25","ph":1},{"id":"zwb6fo9","name":"Peter R","level":"3.0","ph":1},{"id":"4xr256c","name":"Will C","level":"3.0","ph":1}],"matches":[],"updated":"2026-10-29T18:05:36.952Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = (() => { const e = document.getElementById('league-data').textContent; try { const c = localStorage.getItem('le-state'); if (c) { const cu = (JSON.parse(c) || {}).updated || '', eu = (JSON.parse(e) || {}).updated || ''; if (cu > eu) return c; } } catch(_) {} return e; })();
@@ -2054,19 +2059,44 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     x.beginPath(); x.arc(cx, cy, r, 0, 6.283); x.fillStyle = avColor(id); x.fill();
     x.textBaseline = 'middle'; if (e) shT(x, e, cx, cy + r * .06, `${Math.round(r * 1.05)}px "Apple Color Emoji","Segoe UI Emoji",sans-serif`, '#fff'); else shT(x, initials(pname(id)), cx, cy + r * .04, `${Math.round(r * .72)}px ${FA}`, '#fff');
     x.textBaseline = 'alphabetic'; }
-  function shWave(x, W, y, amp, col, lw){ x.beginPath(); for (let t = 0; t <= W; t += 6) { const yy = y + amp * Math.sin(t / 34); t ? x.lineTo(t, yy) : x.moveTo(t, yy); } x.strokeStyle = col; x.lineWidth = lw; x.stroke(); }
+  function shWave(x, W, y, amp, col, lw, ph){ x.beginPath(); for (let t = 0; t <= W; t += 6) { const yy = y + amp * Math.sin(t / 34 + (ph || 0)); t ? x.lineTo(t, yy) : x.moveTo(t, yy); } x.strokeStyle = col; x.lineWidth = lw; x.stroke(); }
+  const shWaterY = (H, fmt) => H - (fmt === 'story' ? 250 : 70);
+  function shBg(x, W, H, T){ const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, T.bg2); g.addColorStop(1, T.bg); x.fillStyle = g; x.fillRect(0, 0, W, H); }
+  function shWaves(x, W, H, T, fmt, ph){ const wy = shWaterY(H, fmt); shWave(x, W, wy, 10, T.wave, 5, ph); shWave(x, W, wy + 22, 10, T.wave + (T.wave.length === 7 ? '88' : ''), 5, ph ? ph * .7 + 1.3 : 0); }
+  // brand, season tag and the card's own content; no background, so weather can sit behind it
   function shFrame(x, W, H, T, fmt){
-    const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, T.bg2); g.addColorStop(1, T.bg); x.fillStyle = g; x.fillRect(0, 0, W, H);
-    let sd = 7; const rnd = () => (sd = (sd * 9301 + 49297) % 233280) / 233280; x.fillStyle = T.snow; for (let i = 0; i < 46; i++) { x.beginPath(); x.arc(rnd() * W, rnd() * H * .8, 2 + rnd() * 4, 0, 6.283); x.fill(); }
     const story = fmt === 'story', by = story ? 290 : 120, cx = W / 2;
-    // brand lockup
     shBall(x, cx - 182, by, 46, T); x.save(); x.translate(cx - 118, by - 10); x.rotate(-.08); shT(x, 'Lake', 0, 0, `58px ${FY}`, T.lake, 'left'); x.restore();
     shT(x, 'EFFECT', cx - 120, by + 46, `62px ${FA}`, T.ink, 'left');
-    // season tag in the corner
     shSp(x, 3); shT(x, seasonTag().toUpperCase(), W - 54, story ? 150 : 58, `22px ${FA}`, T.muted, 'right'); shSp(x, 0);
-    // waves along the bottom
-    const wy = H - (story ? 250 : 70); shWave(x, W, wy, 10, T.wave, 5); shWave(x, W, wy + 22, 10, T.wave + (T.wave.length === 7 ? '88' : ''), 5);
-    return {top: by + 110, bottom: wy - 40};
+    return {top: by + 110, bottom: shWaterY(H, fmt) - 40};
+  }
+  // weather behind the card (same choices as the header button); t in ms so the clip can animate it
+  function shWx(x, W, H, T, wx, t, wy){ const s = t / 1000, dark = T === SH_TH.dark;
+    const prng = n => { let sd = n; return () => (sd = (sd * 9301 + 49297) % 233280) / 233280; };
+    const tint = (a, b) => { const g = x.createLinearGradient(0, 0, 0, wy); g.addColorStop(0, a); g.addColorStop(1, b); x.fillStyle = g; x.fillRect(0, 0, W, wy); };
+    const flakes = (n, sp, drift, rmax, alpha) => { const r = prng(7 + n); x.fillStyle = T.snow; for (let i = 0; i < n; i++) { const fx = r() * W, fy = r() * H, v = sp * (.6 + r() * .8), rr = 1.8 + r() * rmax; const yy = (fy + v * s) % (wy + 20), xx = ((fx + drift * s + Math.sin(s * 1.3 + fy) * 10) % W + W) % W; x.globalAlpha = alpha * (.5 + r() * .5); x.beginPath(); x.arc(xx, yy, rr, 0, 6.283); x.fill(); } x.globalAlpha = 1; };
+    const rain = (n, a) => { const r = prng(41); x.strokeStyle = T.wave; x.lineWidth = 2.4; x.globalAlpha = a; x.beginPath(); for (let i = 0; i < n; i++) { const fx = r() * (W + 200), fy = r() * wy, v = 1500 + r() * 600, yy = (fy + v * s) % wy, xx = fx - yy * .22 - 100; x.moveTo(xx, yy); x.lineTo(xx - 9, yy + 38); } x.stroke(); x.globalAlpha = 1; };
+    if (wx === 'snow') flakes(60, 60, 0, 4, .9);
+    else if (wx === 'blizzard') { flakes(150, 420, -260, 3.6, 1); x.fillStyle = dark ? 'rgba(230,240,248,.16)' : 'rgba(255,255,255,.35)'; x.fillRect(0, 0, W, wy); }
+    else if (wx === 'sunny') { const sx = W * .8, sy = H * .2; if (dark) tint('rgba(70,140,200,.35)', 'rgba(70,140,200,0)');
+      const g = x.createRadialGradient(sx, sy, 0, sx, sy, W * .55); g.addColorStop(0, 'rgba(255,236,170,.55)'); g.addColorStop(.3, 'rgba(255,236,170,.16)'); g.addColorStop(1, 'rgba(255,236,170,0)'); x.fillStyle = g; x.fillRect(0, 0, W, wy);
+      x.save(); x.translate(sx, sy); x.rotate(s * .12); x.fillStyle = 'rgba(255,236,170,.10)'; for (let i = 0; i < 16; i++) { x.rotate(Math.PI / 8); x.beginPath(); x.moveTo(0, 0); x.lineTo(W, -60); x.lineTo(W, 60); x.closePath(); x.fill(); } x.restore();
+      x.beginPath(); x.arc(sx, sy, 70, 0, 6.283); x.fillStyle = '#FFF0B8'; x.fill(); }
+    else if (wx === 'rain' || wx === 'storm') { tint(dark ? 'rgba(20,30,40,.55)' : 'rgba(60,80,100,.22)', 'rgba(20,30,40,0)'); rain(wx === 'storm' ? 170 : 120, dark ? .5 : .45);
+      if (wx === 'storm') { const ph = t % 2600; const f = ph > 1900 && ph < 1990 ? 1 - (ph - 1900) / 90 : ph > 2060 && ph < 2120 ? .6 : 0;
+        if (f) { x.fillStyle = `rgba(234,244,251,${.45 * f})`; x.fillRect(0, 0, W, H); x.fillStyle = `rgba(247,250,252,${f})`; const bx = W * .74, by = H * .1; x.beginPath(); x.moveTo(bx, by); x.lineTo(bx - 70, by + 230); x.lineTo(bx - 20, by + 230); x.lineTo(bx - 60, by + 430); x.lineTo(bx + 50, by + 170); x.lineTo(bx, by + 170); x.lineTo(bx + 40, by); x.closePath(); x.fill(); } } }
+    else if (wx === 'tornado') { tint(dark ? 'rgba(40,58,50,.6)' : 'rgba(70,90,80,.25)', 'rgba(40,58,50,.1)'); rain(70, .3);
+      const tx = W * .8, top = H * .12, sw = Math.sin(s * 1.6) * 40; x.save(); x.beginPath(); x.moveTo(tx - 200, top); x.quadraticCurveTo(tx, top - 40, tx + 200, top);
+      x.bezierCurveTo(tx + 120, top + (wy - top) * .35, tx + 30 + sw, top + (wy - top) * .7, tx + 12 + sw * 1.4, wy); x.lineTo(tx - 12 + sw * 1.4, wy); x.bezierCurveTo(tx - 30 + sw, top + (wy - top) * .7, tx - 120, top + (wy - top) * .35, tx - 200, top); x.closePath();
+      const tg = x.createLinearGradient(tx - 200, 0, tx + 200, 0); tg.addColorStop(0, dark ? '#141B18' : '#3B4741'); tg.addColorStop(.5, dark ? '#3A4741' : '#6B7A72'); tg.addColorStop(1, dark ? '#141B18' : '#3B4741'); x.fillStyle = tg; x.globalAlpha = .9; x.fill(); x.clip();
+      x.strokeStyle = dark ? 'rgba(143,162,154,.6)' : 'rgba(230,236,232,.6)'; x.lineWidth = 5; for (let k = 0; k < 14; k++) { const yy = top + ((k * 70 + s * 260) % (wy - top)); x.beginPath(); x.moveTo(tx - 220, yy); x.quadraticCurveTo(tx, yy + 22, tx + 220, yy); x.stroke(); } x.restore(); x.globalAlpha = 1;
+      x.fillStyle = dark ? '#141B18' : '#3B4741'; for (let k = 0; k < 6; k++) { const a = s * 4 + k; x.beginPath(); x.arc(tx + sw * 1.4 + Math.cos(a) * (50 + k * 9), wy - 30 - k * 12 + Math.sin(a) * 10, 4, 0, 6.283); x.fill(); } }
+    else if (wx === 'fog') { tint(dark ? 'rgba(120,140,155,.35)' : 'rgba(200,205,210,.35)', 'rgba(120,140,155,.2)');
+      [[.35, .5, 0], [.62, .7, 1.7], [.82, .45, 3.1]].forEach(([fy, a, o]) => { const cx = W * (.5 + .35 * Math.sin(s * .25 + o)), g = x.createRadialGradient(cx, wy * fy, 0, cx, wy * fy, W * .7); g.addColorStop(0, `rgba(235,242,247,${a * .7})`); g.addColorStop(1, 'rgba(235,242,247,0)'); x.fillStyle = g; x.fillRect(0, 0, W, wy + 20); }); }
+    else if (wx === 'aurora') { if (!dark) tint('rgba(20,40,70,.2)', 'rgba(20,40,70,0)'); x.save(); x.globalCompositeOperation = dark ? 'lighter' : 'source-over';
+      [[.16, '98,240,170', 0], [.26, '80,200,255', 1.4], [.1, '170,110,255', 2.6]].forEach(([fy, c, o]) => { x.beginPath(); for (let xx = -40; xx <= W + 40; xx += 20) { const yy = H * fy + Math.sin(xx / 170 + s * .8 + o) * 60; xx < -30 ? x.moveTo(xx, yy) : x.lineTo(xx, yy); }
+        x.strokeStyle = `rgba(${c},.22)`; x.lineWidth = 140; x.stroke(); x.strokeStyle = `rgba(${c},.28)`; x.lineWidth = 40; x.stroke(); }); x.restore(); flakes(30, 25, 0, 2, .5); }
   }
   // the cards (drawn in a 1080-wide design space; the frame scales them to fit)
   const CARDS = {
@@ -2166,38 +2196,36 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     try { state.matches = all.filter(m => m.date && m.date <= cut); standings().forEach((r, i) => { if (r.mp) was[r.id] = i + 1; }); } catch(_) {} finally { state.matches = all; }
     let best = null; standings().forEach((r, i) => { if (was[r.id] && was[r.id] - (i + 1) > 0 && (!best || was[r.id] - (i + 1) > best.d)) best = {id: r.id, d: was[r.id] - (i + 1)}; }); return best; }
   function closestMatch(){ let best = null; chrono().forEach(m => { const o = outcome(m); if (o.ff || o.ret) return; const d = o.wg - o.lg; if (!best || d < best.d || (d === best.d && o.wg + o.lg > best.g)) best = {o, d, g: o.wg + o.lg}; }); return best; }
-  // render one card to a canvas
-  function cardCanvas(kind, data, fmt, theme){ const [W, H] = SH_FMT[fmt] || SH_FMT.post, T = SH_TH[theme] || SH_TH.dark, C = CARDS[kind];
+  // the card's own layer: brand, tag and content on a clear background
+  function cardLayer(kind, data, fmt, theme){ const [W, H] = SH_FMT[fmt] || SH_FMT.post, T = SH_TH[theme] || SH_TH.dark, C = CARDS[kind];
     const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.textBaseline = 'alphabetic';
-    const box = shFrame(x, W, H, T, fmt), dh = C.h(data), s = Math.min(1, (box.bottom - box.top) / dh, W / 1080);
-    x.save(); x.translate((W - 1080 * s) / 2, box.top + ((box.bottom - box.top) - dh * s) / 2); x.scale(s, s); C.draw(x, T, data); x.restore(); return c; }
-  // ~3-second clip: the ball drops into the lake, bobs, ripples spread, then the card rises in.
-  // Everything heavy is drawn once up front, so each frame is just a few image copies (smooth at 60fps).
-  async function cardVideo(kind, data, fmt, theme){ const full = cardCanvas(kind, data, fmt, theme), W = full.width, H = full.height, T = SH_TH[theme] || SH_TH.dark;
+    const box = shFrame(x, W, H, T, fmt), dh = C.h(data), sc = Math.min(1, (box.bottom - box.top) / dh, W / 1080);
+    x.save(); x.translate((W - 1080 * sc) / 2, box.top + ((box.bottom - box.top) - dh * sc) / 2); x.scale(sc, sc); C.draw(x, T, data); x.restore(); return c; }
+  function cardCanvas(kind, data, fmt, theme, wx){ const L = cardLayer(kind, data, fmt, theme), W = L.width, H = L.height, T = SH_TH[theme] || SH_TH.dark;
+    const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+    shBg(x, W, H, T); shWx(x, W, H, T, wx || 'snow', 1800, shWaterY(H, fmt)); shWaves(x, W, H, T, fmt, 0); x.drawImage(L, 0, 0); return c; }
+  // 5-second clip. The ball drops into the same water line the card sits on, bobs and sinks, the ripples settle,
+  // and only then does the card ease in. Heavy layers are drawn once; each frame is cheap.
+  async function cardVideo(kind, data, fmt, theme, wx){ const L = cardLayer(kind, data, fmt, theme), W = L.width, H = L.height, T = SH_TH[theme] || SH_TH.dark, wy = shWaterY(H, fmt);
     const types = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm']; const type = types.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t));
     if (!type && !('VideoEncoder' in window)) return null;
-    const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
-    const bg = mk(), bx = bg.getContext('2d'), g = bx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, T.bg2); g.addColorStop(1, T.bg); bx.fillStyle = g; bx.fillRect(0, 0, W, H);
-    const R = 130, ballC = document.createElement('canvas'); ballC.width = ballC.height = R * 2 + 8; shBall(ballC.getContext('2d'), R + 4, R + 4, R, T, false);
-    let sd = 3; const rnd = () => (sd = (sd * 9301 + 49297) % 233280) / 233280, flakes = Array.from({length: 60}, () => ({x: rnd() * W, y: rnd() * H, r: 2 + rnd() * 4, v: 40 + rnd() * 70, o: .25 + rnd() * .45}));
-    const wl = Math.round(H * .56), c = mk(), x = c.getContext('2d', {alpha: false});
-    const ease = {in: u => u * u * u, out: u => 1 - Math.pow(1 - u, 3), inOut: u => u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2};
+    const bg = document.createElement('canvas'); bg.width = W; bg.height = H; shBg(bg.getContext('2d'), W, H, T);
+    const R = 120, ballC = document.createElement('canvas'); ballC.width = ballC.height = R * 2 + 8; shBall(ballC.getContext('2d'), R + 4, R + 4, R, T, false);
+    const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d', {alpha: false});
+    const ease = {in: u => u * u * u, out: u => 1 - Math.pow(1 - u, 3), inOut: u => u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2, sine: u => .5 - Math.cos(Math.PI * u) / 2};
     const cl = (a, b, t) => Math.max(0, Math.min(1, (t - a) / (b - a)));
-    const draw = t => { x.drawImage(bg, 0, 0);
-      x.fillStyle = T.snow; flakes.forEach(f => { const yy = (f.y + f.v * t / 1000) % H, xx = f.x + Math.sin((t / 1000) * 1.3 + f.y) * 10; x.globalAlpha = f.o; x.beginPath(); x.arc(xx, yy, f.r, 0, 6.283); x.fill(); }); x.globalAlpha = 1;
-      const intro = 1 - ease.inOut(cl(1500, 2200, t));
-      if (intro > 0) { x.globalAlpha = intro;
-        // fall (ease-in), then a soft damped bob in the water
-        const fall = ease.in(cl(0, 950, t)), bob = t > 950 ? Math.sin((t - 950) / 140) * 38 * Math.exp(-(t - 950) / 380) : 0, sink = ease.out(cl(950, 2000, t)) * R * .55;
-        const cy = -R + (wl + R * .25 + R) * fall + bob + sink; x.save(); x.beginPath(); x.rect(0, 0, W, wl + 4); x.clip(); x.drawImage(ballC, W / 2 - R - 4, cy - R - 4); x.restore();
-        // ripples
-        for (let i = 0; i < 4; i++) { const k = cl(950 + i * 170, 2150 + i * 170, t); if (k <= 0 || k >= 1) continue; const e = ease.out(k); x.beginPath(); x.ellipse(W / 2, wl + 6, 120 + e * 420, 16 + e * 52, 0, 0, 6.283); x.strokeStyle = T.wave; x.lineWidth = 6 * (1 - k) + 1; x.globalAlpha = intro * (1 - k) * .9; x.stroke(); }
-        // splash drops
-        const sp = cl(950, 1550, t); if (sp > 0 && sp < 1) { x.fillStyle = T.wave; for (let i = 0; i < 9; i++) { const th = Math.PI * (.14 + .72 * i / 8), v = 300 + (i % 3) * 80, px = W / 2 + Math.cos(th) * v * sp, py = wl - Math.sin(th) * v * sp + 620 * sp * sp; x.globalAlpha = intro * (1 - ease.in(sp)); x.beginPath(); x.arc(px, py, 9 - (i % 3) * 2, 0, 6.283); x.fill(); } }
-        x.globalAlpha = intro; x.beginPath(); for (let tt = 0; tt <= W; tt += 6) { const yy = wl + 6 + 12 * Math.sin(tt / 34 + t / 260); tt ? x.lineTo(tt, yy) : x.moveTo(tt, yy); } x.strokeStyle = T.wave; x.lineWidth = 6; x.stroke(); x.globalAlpha = 1; }
-      // the card rises in and fades up
-      const rv = ease.out(cl(1500, 2350, t)); if (rv > 0) { x.globalAlpha = rv; x.drawImage(full, 0, (1 - rv) * 60); x.globalAlpha = 1; } };
-    const D = 3300; const exact = await encodeClip(c, draw, D); if (exact) return exact;
+    const HIT = 1250, draw = t => { x.drawImage(bg, 0, 0); shWx(x, W, H, T, wx || 'snow', t, wy);
+      // the ball: falls (ease-in) to the water line, a damped bob, then sinks out of sight below the line
+      if (t < 3200) { const fall = ease.in(cl(0, HIT, t)), dt = t - HIT, bob = dt > 0 ? -Math.sin(dt / 170) * 34 * Math.exp(-dt / 520) : 0, sink = ease.sine(cl(HIT, 3000, t)) * (R * 2.1);
+        const cy = -R - 20 + (wy - R * .35 + R + 20) * fall + bob + sink; x.save(); x.beginPath(); x.rect(0, 0, W, wy + 2); x.clip(); x.drawImage(ballC, W / 2 - R - 4, cy - R - 4); x.restore(); }
+      // ripples spread along the water and fade out before the card appears
+      for (let i = 0; i < 4; i++) { const k = cl(HIT + i * 260, HIT + 1700 + i * 260, t); if (k <= 0 || k >= 1) continue; const e = ease.out(k); x.beginPath(); x.ellipse(W / 2, wy + 4, 110 + e * 460, 12 + e * 34, 0, 0, 6.283); x.strokeStyle = T.wave; x.lineWidth = 6 * (1 - k) + 1; x.globalAlpha = (1 - k) * .85; x.stroke(); x.globalAlpha = 1; }
+      // splash drops
+      const sp = cl(HIT, HIT + 750, t); if (sp > 0 && sp < 1) { x.fillStyle = T.wave; for (let i = 0; i < 10; i++) { const th = Math.PI * (.14 + .72 * i / 9), v = 320 + (i % 3) * 90, px = W / 2 + Math.cos(th) * v * sp, py = wy - Math.sin(th) * v * sp + 640 * sp * sp; if (py > wy + 6) continue; x.globalAlpha = 1 - ease.in(sp); x.beginPath(); x.arc(px, py, 9 - (i % 3) * 2, 0, 6.283); x.fill(); } x.globalAlpha = 1; }
+      shWaves(x, W, H, T, fmt, t / 420);
+      // the card eases in slowly once the water has calmed
+      const rv = ease.inOut(cl(2900, 4300, t)); if (rv > 0) { x.globalAlpha = rv; x.drawImage(L, 0, (1 - rv) * 46); x.globalAlpha = 1; } };
+    const D = 5000; const exact = await encodeClip(c, draw, D); if (exact) return exact; if (!type) return null;
     draw(0); const st = c.captureStream(60), rec = new MediaRecorder(st, {mimeType: type, videoBitsPerSecond: 12e6}), chunks = [];
     rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); }; rec.start(250);
     await new Promise(r => setTimeout(r, 180));
@@ -2226,17 +2254,18 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
   const lsS = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch(_) {} return null; };
   const canVid = () => !!(window.MediaRecorder && HTMLCanvasElement.prototype.captureStream);
   function openCard(kind, arg){ const data = cardData(kind, arg); if (!data) { toastLg('Nothing to share yet'); return; }
-    SC = {kind, data, fmt: lsS('le-shr-fmt') || 'post', theme: lsS('le-shr-th') || 'dark', anim: false};
-    openSheet(CARDS[kind].t, `<div class="shr-opts"><div class="seg shr-seg" role="group" aria-label="Size">${[['story', 'Story'], ['square', 'Square'], ['post', 'Post']].map(([k, l]) => `<button type="button" data-shr-fmt="${k}">${l}</button>`).join('')}</div><div class="seg shr-seg" role="group" aria-label="Look">${[['dark', 'Dark'], ['light', 'Light']].map(([k, l]) => `<button type="button" data-shr-th="${k}">${l}</button>`).join('')}</div>${canVid() ? '<button type="button" class="shr-anim" data-shr-anim="1" aria-pressed="false">▶ Animated</button>' : ''}</div><div class="shr-box"></div>`, () => ({}), 'share');
+    SC = {kind, data, fmt: lsS('le-shr-fmt') || 'post', theme: lsS('le-shr-th') || 'dark', anim: false, wx: lsS('le-shr-wx') || wxNow()};
+    openSheet(CARDS[kind].t, `<div class="shr-opts"><div class="seg shr-seg" role="group" aria-label="Size">${[['story', 'Story'], ['square', 'Square'], ['post', 'Post']].map(([k, l]) => `<button type="button" data-shr-fmt="${k}">${l}</button>`).join('')}</div><div class="seg shr-seg" role="group" aria-label="Look">${[['dark', 'Dark'], ['light', 'Light']].map(([k, l]) => `<button type="button" data-shr-th="${k}">${l}</button>`).join('')}</div>${canVid() ? '<button type="button" class="shr-anim" data-shr-anim="1" aria-pressed="false">▶ Animated</button>' : ''}</div><div class="shr-wx" role="group" aria-label="Weather">${WX.map(([k, e, l]) => `<button type="button" data-shr-wx="${k}" title="${l}"><span aria-hidden="true">${e}</span>${l}</button>`).join('')}</div><div class="shr-box"></div>`, () => ({}), 'share');
     paintCard(); }
   async function paintCard(){ if (!SC || !sheetEl) return; const tok = ++scTok, box = sheetEl.querySelector('.shr-box'); if (!box) return;
     sheetEl.querySelectorAll('[data-shr-fmt]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.shrFmt === SC.fmt)));
     sheetEl.querySelectorAll('[data-shr-th]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.shrTh === SC.theme)));
     const ab = sheetEl.querySelector('[data-shr-anim]'); if (ab) ab.setAttribute('aria-pressed', String(SC.anim));
+    sheetEl.querySelectorAll('[data-shr-wx]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.shrWx === SC.wx)));
     box.innerHTML = `<div class="shr-wait">${bobber(40)}<p class="hint">${SC.anim ? 'Making your clip…' : 'Making your card…'}</p></div>`;
     await shFonts(); let blob = null, vid = false;
-    if (SC.anim) { blob = await cardVideo(SC.kind, SC.data, SC.fmt, SC.theme); vid = !!blob; }
-    if (!blob) blob = await new Promise(r => cardCanvas(SC.kind, SC.data, SC.fmt, SC.theme).toBlob(r, 'image/png'));
+    if (SC.anim) { blob = await cardVideo(SC.kind, SC.data, SC.fmt, SC.theme, SC.wx); vid = !!blob; }
+    if (!blob) blob = await new Promise(r => cardCanvas(SC.kind, SC.data, SC.fmt, SC.theme, SC.wx).toBlob(r, 'image/png'));
     if (tok !== scTok || !sheetEl || !blob) return; const b2 = sheetEl.querySelector('.shr-box'); if (!b2) return;
     const ext = vid ? (blob.type.includes('mp4') ? 'mp4' : 'webm') : 'png', name = `lake-effect-${SC.kind}-${SC.fmt}.${ext}`;
     shareFile = new File([blob], name, {type: blob.type}); const url = URL.createObjectURL(blob), can = !!(navigator.canShare && navigator.canShare({files: [shareFile]}));
@@ -2252,11 +2281,12 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       <b>Nice win!</b><p>${esc(o.sc)} over ${esc(o.l)}</p><div class="row"><button type="button" class="btn pri" data-cb-share="1">Share result</button><button type="button" class="btn" data-cb-x="1">Done</button></div></div>`;
     d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-cb-x]')) d.remove(); else if (e.target.closest('[data-cb-share]')) { d.remove(); sheetShare(o); } });
     document.body.appendChild(d); }
-  document.addEventListener('click', e => { const t = e.target.closest && e.target.closest('[data-share],[data-share-go],[data-card],[data-shr-fmt],[data-shr-th],[data-shr-anim]'); if (!t) return;
+  document.addEventListener('click', e => { const t = e.target.closest && e.target.closest('[data-share],[data-share-go],[data-card],[data-shr-fmt],[data-shr-th],[data-shr-anim],[data-shr-wx]'); if (!t) return;
     if (t.dataset.shareGo) { if (shareFile) navigator.share({files: [shareFile], title: 'Lake Effect Tennis Club'}).catch(() => {}); return; }
     if (t.dataset.shrFmt) { if (SC) { SC.fmt = t.dataset.shrFmt; lsS('le-shr-fmt', SC.fmt); paintCard(); } return; }
     if (t.dataset.shrTh) { if (SC) { SC.theme = t.dataset.shrTh; lsS('le-shr-th', SC.theme); paintCard(); } return; }
     if (t.dataset.shrAnim) { if (SC) { SC.anim = !SC.anim; paintCard(); } return; }
+    if (t.dataset.shrWx) { if (SC) { SC.wx = t.dataset.shrWx; lsS('le-shr-wx', SC.wx); paintCard(); } return; }
     if (t.dataset.card) { openCard(t.dataset.card, t.dataset.arg || ''); return; }
     openCard('result', t.dataset.share); });
 
@@ -2485,7 +2515,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
         <div class="baseline"></div><svg class="courtlines" viewBox="0 0 390 200" preserveAspectRatio="none" aria-hidden="true"><rect x="18" y="14" width="354" height="172" /><line x1="18" y1="36" x2="372" y2="36" /><line x1="18" y1="164" x2="372" y2="164" /><line x1="96" y1="36" x2="96" y2="164" /><line x1="294" y1="36" x2="294" y2="164" /><line x1="96" y1="100" x2="294" y2="100" /><line x1="195" y1="14" x2="195" y2="186" class="net" /></svg>
         <div class="board-top">
           ${L.draft ? '<div class="toprow"><span class="draft">Draft · feedback welcome</span></div>' : ''}
-          ${wxBtn()}<h1 class="le-lock" aria-label="Lake Effect Tennis Club" title="Back to Standings" tabindex="0"><svg class="le-mark" viewBox="0 0 200 200" aria-hidden="true"><defs><clipPath id="le-hd"><circle cx="100" cy="104" r="76"/></clipPath></defs><circle cx="100" cy="104" r="76" fill="#D9F24A"/><g clip-path="url(#le-hd)"><path d="M40 50 Q80 104 40 158" fill="none" stroke="#F7FAFC" stroke-width="10" stroke-linecap="round"/><path d="M160 50 Q120 104 160 158" fill="none" stroke="#F7FAFC" stroke-width="10" stroke-linecap="round"/><path d="M0 126 Q25 112 50 126 T100 126 T150 126 T200 126 V210 H0 Z" fill="#0F2A40"/><path d="M0 154 Q25 140 50 154 T100 154 T150 154 T200 154" fill="none" stroke="#9FD3EE" stroke-width="9" stroke-linecap="round"/></g></svg><span class="le-words"><span class="le-script">Lake</span><span class="le-block">EFFECT</span><span class="le-sub">TENNIS CLUB</span></span></h1>
+          ${tab === 'standings' ? wxBtn() : ''}<h1 class="le-lock" aria-label="Lake Effect Tennis Club" title="Back to Standings" tabindex="0"><svg class="le-mark" viewBox="0 0 200 200" aria-hidden="true"><defs><clipPath id="le-hd"><circle cx="100" cy="104" r="76"/></clipPath></defs><circle cx="100" cy="104" r="76" fill="#D9F24A"/><g clip-path="url(#le-hd)"><path d="M40 50 Q80 104 40 158" fill="none" stroke="#F7FAFC" stroke-width="10" stroke-linecap="round"/><path d="M160 50 Q120 104 160 158" fill="none" stroke="#F7FAFC" stroke-width="10" stroke-linecap="round"/><path d="M0 126 Q25 112 50 126 T100 126 T150 126 T200 126 V210 H0 Z" fill="#0F2A40"/><path d="M0 154 Q25 140 50 154 T100 154 T150 154 T200 154" fill="none" stroke="#9FD3EE" stroke-width="9" stroke-linecap="round"/></g></svg><span class="le-words"><span class="le-script">Lake</span><span class="le-block">EFFECT</span><span class="le-sub">TENNIS CLUB</span></span></h1>
           <p class="le-tag">Cooler by the lake.</p>
           <div class="chips"><span>${state.players.length} players</span></div>
           <a class="gamelink" aria-label="Play McFetridge Tour 2k26, the league video game" href="https://ntyndorf.github.io/mcfetridge-tour/" target="_blank" rel="noopener"><span aria-hidden="true">🎾</span><b>Play 2k26</b><em aria-hidden="true">›</em></a>
