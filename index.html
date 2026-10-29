@@ -2336,7 +2336,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     const Jt = 2451545 + Js + 0.0053 * Math.sin(M * R) - 0.0069 * Math.sin(2 * L * R), dec = Math.asin(Math.sin(L * R) * Math.sin(23.44 * R));
     const w = Math.acos((Math.sin(-0.833 * R) - Math.sin(lat * R) * Math.sin(dec)) / (Math.cos(lat * R) * Math.cos(dec))) / R, ms = J => (J - 2440587.5) * 864e5;
     return {rise: ms(Jt - w / 360), set: ms(Jt + w / 360)}; }
-  const WX = [['snow', '❄️', 'Snow'], ['blizzard', '🌨️', 'Blizzard'], ['sunny', '☀️', 'Sunny'], ['windy', '💨', 'Windy'], ['fog', '🌫️', 'Lake fog']];
+  const WX = [['snow', '❄️', 'Snow'], ['blizzard', '🌨️', 'Blizzard'], ['windy', '💨', 'Windy'], ['fog', '🌫️', 'Lake fog']];
   const wxNow = () => { try { const w = localStorage.getItem('le-wx'); if (WX.some(x => x[0] === w)) return w; } catch(_) {} return 'snow'; };
   const wxBtn = () => { const w = WX.find(x => x[0] === wxNow()); return `<button type="button" class="wx-btn" data-wx-next="1" aria-label="Weather: ${w[2]}. Tap to change"><span class="wx-i" aria-hidden="true">${w[1]}</span><span class="wx-l">${w[2]}</span></button>`; };
   document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-wx-next]'); if (!b) return; e.stopPropagation();
