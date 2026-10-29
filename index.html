@@ -1692,10 +1692,9 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
           <div class="smain"><div class="sname"><button type="button" class="av-btn" data-player="${r.id}" aria-label="${esc(r.name)}'s page">${avatar(r.id, (lead ? 'lg ' : '') + (streakOf(r.id) >= 3 ? 'hot' : ''))}</button><span class="snm">${lead ? '<span class="lead-tag">Leader</span>' : ''}<button class="plink" data-player="${r.id}">${esc(r.name)}</button></span>${pl.level ? `<span class="slvl">${esc(pl.level)}</span>` : ''}${streakTag(r.id)}</div>
           <div class="sdet">${r.mp ? `${r.w}–${r.l} · ${Math.round(r.wp*100)}% ${formOf(r.id)}` : '<span class="nomp">No matches yet</span>'}</div></div>
           <div class="spts"><b data-count="${r.pts}">${r.pts}</b><span>pts</span></div></div>`; }).join('')}</section>
-      ${played ? `<div class="shr-links"><span>Share</span><button type="button" data-card="standings">📊 Standings</button><button type="button" data-card="recap">🗞️ Weekly recap</button></div>` : ''}
-      ${(() => { const yet = rows.filter(r => !r.mp); if (!yet.length || yet.length === rows.length) return ''; return `<section class="yet"><h3>Yet to play</h3><div class="yet-l">${yet.map(r => `<button class="yet-p${LV.claims[r.id] ? ' joined' : ''}" data-player="${r.id}"${LV.claims[r.id] ? ' title="Signed up and ready to play"' : ''}>${avatar(r.id)}<span>${esc(r.name)}</span></button>`).join('')}</div></section>`; })()}
-
       <div class="scorebox"><b>Scoring</b> Win 3 · Close loss 2 · Loss 1 · Forfeit 0 · Upset +1 <button class="link" data-tab="rules" style="padding:0">Rules</button></div>
+      ${(() => { const yet = rows.filter(r => !r.mp); if (!yet.length || yet.length === rows.length) return ''; return `<section class="yet"><h3>Yet to play</h3><div class="yet-l">${yet.map(r => `<button class="yet-p${LV.claims[r.id] ? ' joined' : ''}" data-player="${r.id}"${LV.claims[r.id] ? ' title="Signed up and ready to play"' : ''}>${avatar(r.id)}<span>${esc(r.name)}</span></button>`).join('')}</div></section>`; })()}
+      ${played ? `<div class="shr-links"><span>Share</span><button type="button" data-card="standings">📊 Standings</button><button type="button" data-card="recap">🗞️ Weekly recap</button></div>` : ''}
       `;
   }
 
