@@ -1223,6 +1223,25 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
 
 /* the game pill only shows on the Standings home screen */
 .board.slim .gamelink{display:none!important}
+
+/* match rows on phones: names on one line, score and tags on the next, Share/Remove at the end */
+@media (max-width:600px){
+  .match{grid-template-columns:minmax(0,1fr);gap:6px;padding:12px 16px}
+  .vs .wn,.vs .ln,.vs > span:not(.rdate):not(.note):not(.x){white-space:nowrap}
+  .match .result{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;text-align:left;white-space:normal}
+  .match .result br{display:none}
+  .match .result .shr{margin-left:auto}
+  .match .result .shr ~ .link,.match .result .link[data-repx]{margin-left:0}
+  .match .result .link:first-of-type:not(.shr){margin-left:auto}
+  .match .result .pill{white-space:nowrap}
+}
+
+/* Me tab: long summaries (free times etc.) shorten with "…" instead of stretching the page */
+.wrap,#app,#app>*,.med,.card{min-width:0;max-width:100%}
+.med>summary{min-width:0}
+.med>summary b{flex:none}
+.med>summary span{flex:0 1 auto;min-width:0}
+#app section,#app details,#app .card{box-sizing:border-box}
 </style><link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Archivo+Black&amp;family=Yellowtail&amp;family=Instrument+Serif:ital@0;1&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"Lake Effect Tennis Club","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","phone":"8473705661","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"}},{"id":"p5onhu0","name":"Spencer C","level":"3.25","phone":"8592216232"},{"id":"wd1jmau","name":"Brendan O","level":"3.0","phone":"7732204199"},{"id":"ata2iuw","name":"Tim S","level":"3.0","phone":"3308358969"},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","phone":"6307883151"},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","phone":"3134455771"},{"id":"67cu010","name":"Vitaliy B","level":"3.25","phone":"3122858599"},{"id":"vswai94","name":"Luke H","level":"3.25","phone":"8155931653"},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","phone":"8029893524"},{"id":"cuwu10i","name":"Juan G","level":"3.0","phone":"5617587298"},{"id":"mfuf932","name":"Zach K","level":"3.0","phone":"4404524279"},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","phone":"7736812050"},{"id":"wg8fb4m","name":"John W","level":"3.25","phone":"7082145282"},{"id":"iev0edc","name":"Nathan H","level":"3.0","phone":"3129250266"},{"id":"tm2km4c","name":"Brian K","phone":"6168560533","level":"3.0"},{"id":"uu82eoc","name":"Aidan V","level":"3.0","phone":"8479098210"},{"id":"w5zwbyo","name":"Salem H","level":"3.25","phone":"2709930457"},{"id":"m620f34","name":"Bill J","level":"3.25","phone":"3125433273"}],"matches":[],"updated":"2026-10-16T16:25:46.833Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = document.getElementById('league-data').textContent;
@@ -2093,7 +2112,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       ${L.news && newsHidden !== L.news && !(tab === 'standings' && FBL.user && myPid()) ? `<p class="news"><button type="button" class="newsx" data-newsx="1" aria-label="Hide this note">×</button><b>What's new${L.newsDate ? ' · ' + esc(fmtDate(L.newsDate,{month:'short',day:'numeric'})) : ''}:</b> ${esc(L.news)}</p>` : ''}
       <nav class="tabs" role="tablist">${tabs.map(([k,v]) => `<button class="tab${PRIMARY.includes(k) ? '' : ' xtra'}" role="tab" aria-selected="${tab===k || (tab==='player' && k==='standings')}" data-tab="${k}"><i class="ti" aria-hidden="true">${PV_ICON[k] || ''}</i><span class="tl">${v}</span></button>`).join('')}${(() => {
         const sec = tabs.filter(t => !PRIMARY.includes(t[0])), cur = sec.find(t => t[0] === tab); if (!sec.length) return '';
-        return `<button class="tab more" aria-haspopup="true" aria-expanded="${moreOpen}" aria-selected="${!!cur}" data-more="1">More <span aria-hidden="true">▾</span></button>`
+        return `<button class="tab more" aria-haspopup="true" aria-expanded="${moreOpen}" aria-selected="${!!cur}" data-more="1"><i class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></i><span class="tl">More</span></button>`
           + (moreOpen ? `<div class="moremenu" role="menu">${sec.map(([k,v]) => `<button role="menuitem" class="${tab === k ? 'on' : ''}" data-tab="${k}">${v}</button>`).join('')}</div>` : '');
       })()}</nav>
       <main class="panel">${body}</main>
