@@ -1436,6 +1436,35 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
 .board:is([data-wx="snow"],[data-wx="blizzard"]) .le-sun{display:none!important}
 :root[data-skin="lakefx"] .board[data-sky="day"]:is([data-wx="snow"],[data-wx="blizzard"]){--b1:#3F5E78;--b2:#6B879D}
 :root[data-skin="lakefx"] .board:is([data-sky="sunset"],[data-sky="dawn"]):is([data-wx="snow"],[data-wx="blizzard"]){--b1:#2A3A57;--b2:#7A6B7E}
+
+/* no tennis court lines in the header */
+.board .courtlines,.board .baseline{display:none!important}
+/* lake level */
+.lk-chip{display:inline-flex;align-items:center;gap:4px}
+.le-lake{position:absolute;left:0;right:0;bottom:44px;height:calc(18px + var(--lv,0) * 54px);z-index:1;pointer-events:none;transition:height 1.2s cubic-bezier(.2,.8,.2,1)}
+.le-lake i{position:absolute;inset:0;background:linear-gradient(180deg,rgba(159,211,238,.30),rgba(159,211,238,.12));-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 12' preserveAspectRatio='none'%3E%3Cpath d='M0 6 Q20 0 40 6 T80 6 V12 H0Z' fill='%23000'/%3E%3C/svg%3E") 0 0/80px 12px repeat-x,linear-gradient(#000,#000) 0 11px/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 12' preserveAspectRatio='none'%3E%3Cpath d='M0 6 Q20 0 40 6 T80 6 V12 H0Z' fill='%23000'/%3E%3C/svg%3E") 0 0/80px 12px repeat-x,linear-gradient(#000,#000) 0 11px/100% 100% no-repeat;animation:lakeLap 6s linear infinite}
+@keyframes lakeLap{to{-webkit-mask-position:80px 0,0 11px;mask-position:80px 0,0 11px}}
+@media (prefers-reduced-motion: reduce){.le-lake i{animation:none}}
+/* swipe direction */
+.panel.tabin.swl{animation:tabSwL .28s cubic-bezier(.2,.8,.2,1)}.panel.tabin.swr{animation:tabSwR .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes tabSwL{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes tabSwR{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+/* head-to-head grid */
+.lgrid{padding:0!important;gap:0;display:block!important;min-width:0;max-width:100%;overflow:hidden}.lgrid>summary span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.lgrid>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;cursor:pointer}
+.lgrid>summary::-webkit-details-marker{display:none}.lgrid>summary span{color:var(--muted);font-size:13px}
+.lgrid>summary::after{content:'›';color:var(--muted);font-size:18px;transition:transform .15s}.lgrid[open]>summary::after{transform:rotate(90deg)}
+.lh-wrap{overflow-x:auto;margin:0 16px;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.lh{border-collapse:separate;border-spacing:3px;font-size:12px}
+.lh th{font:700 11px var(--body);color:var(--muted);padding:2px 4px;white-space:nowrap}
+.lh tbody th{position:sticky;left:0;background:var(--surface);text-align:left;z-index:1;padding-right:8px}
+.lh tbody th .plink{font-size:13px;display:block;max-width:86px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lh th,.lh td{border:0}
+.lh td{width:34px;height:30px;border-radius:7px;text-align:center;padding:0}
+.lh td button{width:100%;height:100%;border:0;background:none;color:inherit;font:700 12px var(--body);cursor:pointer;padding:0}
+.lh-x{background:repeating-linear-gradient(45deg,transparent 0 4px,var(--line) 4px 5px)}
+.lh-n{background:var(--surface2,var(--bg))}
+.lh-w{background:rgba(76,195,138,.28);color:var(--ink)}.lh-l{background:rgba(240,138,126,.24);color:var(--ink)}.lh-e{background:rgba(159,211,238,.2);color:var(--ink)}
+.lh-key{margin:10px 16px 14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.lh-key i{display:inline-block;width:12px;height:12px;border-radius:3px}
 </style><link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Archivo+Black&amp;family=Yellowtail&amp;family=Instrument+Serif:ital@0;1&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"},"ph":1},{"id":"p5onhu0","name":"Spencer C","level":"3.25","ph":1},{"id":"wd1jmau","name":"Brendan O","level":"3.0","ph":1},{"id":"ata2iuw","name":"Tim S","level":"3.0","ph":1},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","ph":1},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","ph":1},{"id":"67cu010","name":"Vitaliy B","level":"3.25","ph":1},{"id":"vswai94","name":"Luke H","level":"3.25","ph":1},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","ph":1},{"id":"cuwu10i","name":"Juan G","level":"3.0","ph":1},{"id":"mfuf932","name":"Zach K","level":"3.0","ph":1},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","ph":1},{"id":"wg8fb4m","name":"John W","level":"3.25","ph":1},{"id":"iev0edc","name":"Nathan H","level":"3.0","ph":1},{"id":"tm2km4c","name":"Brian K","level":"3.0","ph":1},{"id":"uu82eoc","name":"Aidan V","level":"3.0","ph":1},{"id":"w5zwbyo","name":"Salem H","level":"3.25","ph":1},{"id":"m620f34","name":"Bill J","level":"3.25","ph":1},{"id":"zwb6fo9","name":"Peter R","level":"3.0","ph":1},{"id":"4xr256c","name":"Will C","level":"3.0","ph":1}],"matches":[],"updated":"2026-10-29T18:05:36.952Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = (() => { const e = document.getElementById('league-data').textContent; try { const c = localStorage.getItem('le-state'); if (c) { const cu = (JSON.parse(c) || {}).updated || '', eu = (JSON.parse(e) || {}).updated || ''; if (cu > eu) return c; } } catch(_) {} return e; })();
@@ -1595,6 +1624,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
           <div class="smain"><div class="sname">${avatar(r.id, (lead ? 'lg ' : '') + (streakOf(r.id) >= 3 ? 'hot' : ''))}<span class="snm">${lead ? '<span class="lead-tag">Leader</span>' : ''}<button class="plink" data-player="${r.id}">${esc(r.name)}</button></span>${pl.level ? `<span class="slvl">${esc(pl.level)}</span>` : ''}${streakTag(r.id)}</div>
           <div class="sdet">${r.mp ? `${r.w}–${r.l} · ${Math.round(r.wp*100)}% ${formOf(r.id)}` : '<span class="nomp">No matches yet</span>'}</div></div>
           <div class="spts"><b data-count="${r.pts}">${r.pts}</b><span>pts</span></div></div>`; }).join('')}</section>
+      ${h2hGrid(rows)}
       ${played ? `<div class="shr-links"><span>Share</span><button type="button" data-card="standings">📊 Standings</button><button type="button" data-card="recap">🗞️ Weekly recap</button></div>` : ''}
       ${(() => { const yet = rows.filter(r => !r.mp); if (!yet.length || yet.length === rows.length) return ''; return `<section class="yet"><h3>Yet to play</h3><div class="yet-l">${yet.map(r => `<button class="yet-p${LV.claims[r.id] ? ' joined' : ''}" data-player="${r.id}"${LV.claims[r.id] ? ' title="Signed up and ready to play"' : ''}>${avatar(r.id)}<span>${esc(r.name)}</span></button>`).join('')}</div></section>`; })()}
 
@@ -1613,8 +1643,9 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     let right = !o ? `<span class="pill">No result</span>` : o.ff ? `<span class="pill ff">${esc(pname(o.l))} ${o.reason === 'noshow' ? 'no-show' : o.reason === 'late' ? 'late cancel' : 'forfeit'}</span>` : `${setText(o.sets)} ${isMini(m) ? '<span class="pill">Mini</span> ' : ''}${o.close ? '<span class="pill tb">Close</span>' : ''}${playedUp(o) ? ' <span class="pill tb">Upset +1</span>' : ''}${o.ret ? `<span class="pill">${esc(pname(o.l))} retired</span>` : ''}`;
     right += extra + locPill(m);
     const noteHtml = '';
-    if (m.rep) return `<div class="match">${left}<div class="result">${right}<br>${o && !o.ff ? `<button type="button" class="link shr" data-share="${m.id}">Share</button> ` : ''}${art ? `<button class="link" data-repx="${m.rep}">Remove</button>` : ''}</div></div>`;
-    if (!art) return `<div class="match">${left}<div class="result">${right}${noteHtml}${o && !o.ff ? `<br><button type="button" class="link shr" data-share="${m.id}">Share</button>` : ''}</div></div>`;
+    const rem = o && !o.ff && myPid() && o.l === myPid() ? ` <button type="button" class="link" data-chal="${o.w}">Rematch</button>` : '';
+    if (m.rep) return `<div class="match">${left}<div class="result">${right}<br>${o && !o.ff ? `<button type="button" class="link shr" data-share="${m.id}">Share</button>${rem} ` : ''}${art ? `<button class="link" data-repx="${m.rep}">Remove</button>` : ''}</div></div>`;
+    if (!art) return `<div class="match">${left}<div class="result">${right}${noteHtml}${o && !o.ff ? `<br><button type="button" class="link shr" data-share="${m.id}">Share</button>${rem}` : ''}</div></div>`;
     if (editing === m.id){
       const s = m.score || {};
       return `<div class="match">${left}<div class="result">${right}</div>
@@ -1704,6 +1735,14 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
       <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(r.pts + ' points over ' + n + ' week' + (n > 1 ? 's' : ''))}"><polygon points="${X(0).toFixed(1)},${H - 8} ${pts} ${X(n - 1).toFixed(1)},${H - 8}" class="pc-area"/><polyline points="${pts}" class="pc-line"/>${cum.map((v, i) => `<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${i === n - 1 ? 3.6 : 2.2}" class="pc-dot${i === n - 1 ? ' now' : ''}"><title>Week of ${lab(new Date(w0.getTime() + i * 6048e5))}: ${v} pts</title></circle>`).join('')}</svg>
       <span class="pc-x"><span>${esc(lab(w0))}</span><span>This week · ${r.pts} pts</span></span></div></section>`; }
   let h2hA = '', h2hB = '';
+  function h2hGrid(rows){ const on = rows.filter(r => r.mp); if (on.length < 3) return ''; const rec = {};
+    state.matches.forEach(m => { const o = outcome(m); if (!o) return; const k = o.w + '>' + o.l; rec[k] = (rec[k] || 0) + 1; });
+    const ini = id => esc(initials(pname(id)));
+    const head = `<tr><th class="lh-corner"></th>${on.map(c => `<th scope="col" title="${esc(c.name)}">${ini(c.id)}</th>`).join('')}</tr>`;
+    const body = on.map((r, i) => `<tr><th scope="row"><button type="button" class="plink" data-player="${r.id}">${esc(r.name)}</button></th>${on.map(c => { if (c.id === r.id) return '<td class="lh-x"></td>';
+      const w = rec[r.id + '>' + c.id] || 0, l = rec[c.id + '>' + r.id] || 0; if (!w && !l) return '<td class="lh-n"></td>';
+      return `<td class="${w > l ? 'lh-w' : w < l ? 'lh-l' : 'lh-e'}"><button type="button" data-card="h2h" data-arg="${r.id}|${c.id}" title="${esc(r.name)} vs ${esc(c.name)}: ${w}–${l}. Tap to share">${w}–${l}</button></td>`; }).join('')}</tr>`).join('');
+    return `<details class="card lgrid"><summary><b>Head-to-head grid</b><span>Who has beaten whom</span></summary><div class="lh-wrap"><table class="lh"><thead>${head}</thead><tbody>${body}</tbody></table></div><p class="hint lh-key"><i class="lh-w"></i>Row player leads <i class="lh-l"></i>Trails <i class="lh-e"></i>Even · read across each row</p></details>`; }
   function renderH2H(){
     const P = state.players;
     const opts = sel => `<option value="">Choose a player</option>` + P.map(p => `<option value="${p.id}" ${sel===p.id?'selected':''}>${esc(p.name)}</option>`).join('');
@@ -2354,6 +2393,15 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     const t = Date.now(), {rise, set} = sunRS(), r = (t - rise) / 6e4, z = (t - set) / 6e4;
     return r < -50 || z > 75 ? 'night' : r < 35 ? 'dawn' : z >= 20 ? 'dusk' : z >= -55 ? 'sunset' : 'day'; }
   setInterval(() => { const h = document.querySelector('header.board'); if (h) h.dataset.sky = skyNow(); }, 3e5);
+  const weekCount = () => { const cut = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10); return state.matches.filter(m => m.date && m.date >= cut && outcome(m)).length; };
+  // the lake rises with the week's activity: a quiet week is low water, a busy week floods the skyline's feet
+  const lakeLevel = () => { const n = weekCount(), lv = Math.min(1, n / 12); return `<div class="le-lake" style="--lv:${lv.toFixed(2)}" aria-hidden="true"><i></i></div>`; };
+  // swipe left or right on a phone to move between tabs
+  (function swipeTabs(){ let x0 = null, y0 = 0, ok = false;
+    window.addEventListener('touchstart', e => { const t = e.target; ok = e.touches.length === 1 && !(t.closest && t.closest('input, select, textarea, .sheetwrap, .shr-wx, .ticker, .yet-l, .lh-wrap, .fab, header.board, .tabs, .pe-emos, .pe-sw')); if (!ok) { x0 = null; return; } x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, {passive: true});
+    window.addEventListener('touchend', e => { if (x0 == null || !ok) return; const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null; if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 2) return;
+      const order = [...document.querySelectorAll('nav.tabs .tab[data-tab]')].map(b => b.dataset.tab), cur = tab === 'player' ? 'standings' : tab, i = order.indexOf(cur); if (i < 0) return;
+      const nx = order[i + (dx < 0 ? 1 : -1)]; if (!nx) return; swipeDir = dx < 0 ? 'l' : 'r'; const b = document.querySelector(`nav.tabs .tab[data-tab="${nx}"]`); if (b) b.click(); window.scrollTo(0, 0); }, {passive: true}); })();
   function toastLg(t){ const d = document.createElement('div'); d.className = 'lgtoast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 4200); }
   function closeSheet(){ if (sheetEl) { sheetEl.remove(); sheetEl = null; } }
   function openSheet(title, body, build, kind){
@@ -2542,10 +2590,10 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
           ${L.draft ? '<div class="toprow"><span class="draft">Draft · feedback welcome</span></div>' : ''}
           ${tab === 'standings' ? wxBtn() : ''}<h1 class="le-lock" aria-label="Lake Effect Tennis Club" title="Back to Standings" tabindex="0"><svg class="le-mark" viewBox="0 0 200 200" aria-hidden="true"><defs><clipPath id="le-hd"><circle cx="100" cy="104" r="76"/></clipPath></defs><circle cx="100" cy="104" r="76" fill="#D9F24A"/><g clip-path="url(#le-hd)"><path d="M40 50 Q80 104 40 158" fill="none" stroke="#F7FAFC" stroke-width="10" stroke-linecap="round"/><path d="M160 50 Q120 104 160 158" fill="none" stroke="#F7FAFC" stroke-width="10" stroke-linecap="round"/><path d="M0 126 Q25 112 50 126 T100 126 T150 126 T200 126 V210 H0 Z" fill="#0F2A40"/><path d="M0 154 Q25 140 50 154 T100 154 T150 154 T200 154" fill="none" stroke="#9FD3EE" stroke-width="9" stroke-linecap="round"/></g></svg><span class="le-words"><span class="le-script">Lake</span><span class="le-block">EFFECT</span><span class="le-sub">TENNIS CLUB</span></span></h1>
           <p class="le-tag">Cooler by the lake.</p>
-          <div class="chips"><span>${state.players.length} players</span></div>
+          <div class="chips"><span>${state.players.length} players</span>${(() => { const n = weekCount(); return `<span class="lk-chip" title="Matches played in the last 7 days">🌊 ${n} match${n === 1 ? '' : 'es'} this week</span>`; })()}</div>
           <a class="gamelink" aria-label="Play McFetridge Tour 2k26, the league video game" href="https://ntyndorf.github.io/mcfetridge-tour/" target="_blank" rel="noopener"><span aria-hidden="true">🎾</span><b>Play 2k26</b><em aria-hidden="true">›</em></a>
         </div>
-        <svg class="le-waves" viewBox="0 0 390 26" preserveAspectRatio="none" aria-hidden="true"><path d="M-64 8 Q-48 2 -32 8 T0 8 T32 8 T64 8 T96 8 T128 8 T160 8 T192 8 T224 8 T256 8 T288 8 T320 8 T352 8 T384 8 T416 8 T448 8 T480 8" fill="none" stroke="#9FD3EE" stroke-width="2.5"/><path d="M-64 19 Q-48 13 -32 19 T0 19 T32 19 T64 19 T96 19 T128 19 T160 19 T192 19 T224 19 T256 19 T288 19 T320 19 T352 19 T384 19 T416 19 T448 19 T480 19" fill="none" stroke="#9FD3EE" stroke-width="2.5" opacity=".5"/></svg>
+        ${tab === 'standings' ? lakeLevel() : ''}<svg class="le-waves" viewBox="0 0 390 26" preserveAspectRatio="none" aria-hidden="true"><path d="M-64 8 Q-48 2 -32 8 T0 8 T32 8 T64 8 T96 8 T128 8 T160 8 T192 8 T224 8 T256 8 T288 8 T320 8 T352 8 T384 8 T416 8 T448 8 T480 8" fill="none" stroke="#9FD3EE" stroke-width="2.5"/><path d="M-64 19 Q-48 13 -32 19 T0 19 T32 19 T64 19 T96 19 T128 19 T160 19 T192 19 T224 19 T256 19 T288 19 T320 19 T352 19 T384 19 T416 19 T448 19 T480 19" fill="none" stroke="#9FD3EE" stroke-width="2.5" opacity=".5"/></svg>
         <div class="ticker" aria-label="Latest results"><span class="tk-label">Latest</span>${ticker()}</div>
       </header>
       ${meBar()}
@@ -3174,6 +3222,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     rbObs = new IntersectionObserver(([e]) => el.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.bottom < 0)); rbObs.observe(hc); }
   const rbRender = render; render = function(){ rbRender(); ringCss(); rankBar(); };
   // motion: tab fade, rows glide to new ranks, points count up, a ball bounces across anything newly scored
+  let swipeDir = '';
   let fxReady = false, fxTab = null, fxPts = {}, fxSeen = null; setTimeout(() => { fxReady = true; }, 3500);
   const fxRM = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fxCount = (el, a, b) => { const t0 = performance.now(); const st = t => { const u = Math.min(1, (t - t0) / 700), e = 1 - Math.pow(1 - u, 3); el.textContent = Math.round(a + (b - a) * e); if (u < 1) requestAnimationFrame(st); }; requestAnimationFrame(st); };
@@ -3182,7 +3231,7 @@ button.btn:active,.mb-acts button:active,.rfbtn:active,.gamelink:active{box-shad
     const same = fxTab === tab, before = {};
     if (same && tab === 'standings') document.querySelectorAll('[data-pid]').forEach(el => { if (!before[el.dataset.pid]) before[el.dataset.pid] = el.getBoundingClientRect(); });
     fxRender();
-    const panel = document.querySelector('main.panel'); if (!same && fxTab !== null && panel && !fxRM()) panel.classList.add('tabin'); fxTab = tab;
+    const panel = document.querySelector('main.panel'); if (!same && fxTab !== null && panel && !fxRM()) { panel.classList.add('tabin'); if (swipeDir) panel.classList.add('sw' + swipeDir); } swipeDir = ''; fxTab = tab;
     if (tab === 'standings') { const cur = {}; standings().forEach(r => cur[r.id] = r.pts);
       if (fxReady && same && !fxRM()) document.querySelectorAll('[data-pid]').forEach(el => { const id = el.dataset.pid, b = before[id];
         if (b) { const a = el.getBoundingClientRect(), dx = b.left - a.left, dy = b.top - a.top; if ((Math.abs(dx) > 2 || Math.abs(dy) > 2) && el.animate) el.animate([{transform: `translate(${dx}px, ${dy}px)`}, {transform: 'none'}], {duration: 480, easing: 'cubic-bezier(.2,.8,.2,1)'}); }
