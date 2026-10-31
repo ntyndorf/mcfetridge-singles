@@ -1696,6 +1696,14 @@ button.link::after,.rx-b::after,.wx-btn::after,.sheetx::after,.newsx::after,.a2x
 .back,.up .cal,.bookrem .link,.rl-b a,.plink,.av-btn{position:relative}
 .back::after,.up .cal::after,.bookrem .link::after,.av-btn::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
 .back{display:inline-flex;align-items:center;min-height:36px}
+
+.mybar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 8px 8px 14px;border-radius:var(--card-r,16px);border:1px dashed var(--line);background:var(--surface);font-size:13px;color:var(--muted)}
+.mybar .btn{display:inline-flex;align-items:center;gap:6px;flex:none;min-height:38px}.mybar .lic{width:16px;height:16px}
+
+/* Me tab badge sits on the icon, not over the next tab */
+.tab{position:relative}
+.tab .tabn{position:absolute!important;top:2px;left:calc(50% + 4px);margin:0!important;min-width:17px;height:17px;padding:0 4px;font:700 10.5px/17px var(--body)}
+@media (min-width:641px){.tab .tabn{position:static!important;margin-left:5px!important;vertical-align:1px}}
 </style><link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Archivo+Black&amp;family=Yellowtail&amp;family=Instrument+Serif:ital@0;1&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"},"ph":1},{"id":"p5onhu0","name":"Spencer C","level":"3.25","ph":1},{"id":"wd1jmau","name":"Brendan O","level":"3.0","ph":1},{"id":"ata2iuw","name":"Tim S","level":"3.0","ph":1},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","ph":1},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","ph":1},{"id":"67cu010","name":"Vitaliy B","level":"3.25","ph":1},{"id":"vswai94","name":"Luke H","level":"3.25","ph":1},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","ph":1},{"id":"cuwu10i","name":"Juan G","level":"3.0","ph":1},{"id":"mfuf932","name":"Zach K","level":"3.0","ph":1},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","ph":1},{"id":"wg8fb4m","name":"John W","level":"3.25","ph":1},{"id":"iev0edc","name":"Nathan H","level":"3.0","ph":1},{"id":"tm2km4c","name":"Brian K","level":"3.0","ph":1},{"id":"uu82eoc","name":"Aidan V","level":"3.0","ph":1},{"id":"w5zwbyo","name":"Salem H","level":"3.25","ph":1},{"id":"m620f34","name":"Bill J","level":"3.25","ph":1},{"id":"zwb6fo9","name":"Peter R","level":"3.0","ph":1},{"id":"4xr256c","name":"Will C","level":"3.0","ph":1}],"matches":[],"updated":"2026-10-29T18:05:36.952Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = (() => { const e = document.getElementById('league-data').textContent; try { const c = localStorage.getItem('le-state'); if (c) { const cu = (JSON.parse(c) || {}).updated || '', eu = (JSON.parse(e) || {}).updated || ''; if (cu > eu) return c; } } catch(_) {} return e; })();
@@ -2801,6 +2809,8 @@ button.link::after,.rx-b::after,.wx-btn::after,.sheetx::after,.newsx::after,.a2x
   // one personality for motion: after 10 seconds the everyday snow and wind settle; the waves keep going
   setTimeout(() => document.documentElement.setAttribute('data-calm', ''), 10000);
   document.addEventListener('click', e => { if (e.target.closest && e.target.closest('[data-wx-next]')) document.documentElement.removeAttribute('data-calm'); }, true);
+  document.addEventListener('click', e => { const t = e.target.closest && e.target.closest('[data-me-edit],[data-me-view]'); if (!t || t.dataset.tab) return;
+    meEdit = !!t.dataset.meEdit; tab = 'me'; render(); window.scrollTo(0, 0); });
   function toastLg(t){ const d = document.createElement('div'); d.className = 'lgtoast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 4200); }
   function closeSheet(){ if (sheetEl) { sheetEl.remove(); sheetEl = null; } }
   function openSheet(title, body, build, kind){
@@ -3075,7 +3085,7 @@ button.link::after,.rx-b::after,.wx-btn::after,.sheetx::after,.newsx::after,.a2x
     if (t.dataset.claim){ sheetClaim(t.dataset.claim); return; }
     if (t.dataset.profile){ sheetProfile(t.dataset.profile); return; }
     if (t.dataset.player){ moreOpen = false; viewPlayer = t.dataset.player; tab = 'player'; editing = null; try { history.replaceState(null,'','#p-'+viewPlayer); } catch(_){} render(); window.scrollTo(0,0); return; }
-    if (t.dataset.tab){ moreOpen = false; tab = t.dataset.tab; editing = null; try { history.replaceState(null,'','#'+tab); } catch(_){} render(); return; }
+    if (t.dataset.tab){ if (t.dataset.tab === 'me') meEdit = !!(t.dataset.jump || t.dataset.meEdit); moreOpen = false; tab = t.dataset.tab; editing = null; try { history.replaceState(null,'','#'+tab); } catch(_){} render(); return; }
     if (t.dataset.edit){ editing = t.dataset.edit; render(); return; }
     if (t.hasAttribute('data-cancel')){ editing = null; render(); return; }
     if (t.dataset.del){ state.matches = state.matches.filter(m => m.id !== t.dataset.del); editing = null; markDirty(); return; }
@@ -3323,17 +3333,28 @@ button.link::after,.rx-b::after,.wx-btn::after,.sheetx::after,.newsx::after,.a2x
     return {conf: LV.reports.filter(r => r.status === 'pending' && !counts(r) && otherOf(r) === me), chIn: LV.chIn.filter(c => c.status === 'open')}; }
   const todoCount = () => { const t = todos(); return t.conf.length + t.chIn.length; };
   const meTabLabel = () => { const n = todoCount(); return n ? `Me <b class="tabn">${n}</b>` : 'Me'; };
-  function goMe(jump){ if (jump) meOpen[jump] = true; moreOpen = false; tab = 'me'; editing = null; closeSheet(); try { history.replaceState(null, '', '#me'); } catch(_) {} render(); const el = jump && document.getElementById(jump); if (el) el.scrollIntoView({block: 'start'}); else window.scrollTo(0, 0); }
+  function goMe(jump){ meEdit = !!jump; if (jump) meOpen[jump] = true; moreOpen = false; tab = 'me'; editing = null; closeSheet(); try { history.replaceState(null, '', '#me'); } catch(_) {} render(); const el = jump && document.getElementById(jump); if (el) el.scrollIntoView({block: 'start'}); else window.scrollTo(0, 0); }
   const repLine = r => `<b>${esc(pname(r.w))}</b> d. ${esc(pname(r.l))} · ${esc(setText(parseSets(r.sc || '') || []))} · ${esc(whenTxt(r))}${isMcF(r.loc) ? '' : ' · ' + esc(r.loc)}`;
   function repWaiting(){ const L = LV.reports.filter(r => r.status === 'pending' && !counts(r)), D = LV.reports.filter(r => r.status === 'disputed');
     if (!L.length && !D.length) return ''; const me = myPid();
     return `<section class="logday waitc"><header>Disputed</header>${L.map(r => `<div class="wrow"><span>${repLine(r)}</span><span class="hint">${me && otherOf(r) === me ? `<button class="btn sm" data-rconf="${r.id}">Confirm</button> <button class="link" data-rdisp="${r.id}">Dispute</button>` : me && r.by === me ? `Waiting on ${esc(first(state.players.find(x => x.id === otherOf(r)) || {name: ''}))} · <button class="link" data-rwd="${r.id}">Withdraw</button>` : 'Counts once ' + esc(first(state.players.find(x => x.id === otherOf(r)) || {name: 'the opponent'})) + ' confirms'}</span></div>`).join('')}
       ${D.map(r => `<div class="wrow"><span>${repLine(r)}</span><span class="hint">Disputed · ${esc(state.league.commissioner || 'the commissioner')} will sort it out</span></div>`).join('')}</section>`; }
   const COLORS = ['#006778', '#1f6f9f', '#2b4c7e', '#4b4fa6', '#6b3f7a', '#9a2f55', '#c0392b', '#a5512a', '#b7791f', '#5b5f1f', '#2f6b45', '#3d6b6b', '#4a4a4a'];
+  let meEdit = false;
+  function meNeeds(me){ const T = todos(); return T.conf.length || T.chIn.length ? `<section class="card todo"><h3>Needs you</h3>
+        ${T.conf.map(x => `<div class="wrow"><span>${esc(pname(x.by))} reported: ${repLine(x)}</span><span><button class="btn sm" data-rconf="${x.id}">Confirm</button> <button class="link" data-rdisp="${x.id}">Dispute</button></span></div>`).join('')}
+        ${T.chIn.map(c => `<div class="wrow"><span><b>${esc(pname(c.from))}</b> challenged you${c.when ? ' · ' + esc(c.when) : ''}${c.msg ? `<br><i class="hint">“${esc(c.msg)}”</i>` : ''}</span><span><button class="btn sm" data-chok="${c.id}">Accept</button> <button class="link" data-chno="${c.id}">Can't</button></span></div>`).join('')}
+        </section>` : ''; }
+  function renderMyPage(me){
+    const pg = renderPlayer(me).replace('<button class="back" data-tab="standings">← Standings</button>', '')
+      .replace('<button class="link" data-tab="me">Edit my profile</button>', '<button class="link" data-tab="me" data-me-edit="1" data-jump="me-prof">Edit my profile</button>')
+      .replace('<button class="link" data-tab="me" data-jump="me-free">Edit my free times</button>', '<button class="link" data-tab="me" data-me-edit="1" data-jump="me-free">Edit my free times</button>');
+    return `${meNeeds(me)}<div class="mybar"><span>This is how others see your page</span><button type="button" class="btn sm" data-me-edit="1">${lic('pencil')}Edit my page</button></div>${pg}`; }
   function renderMe(){
     const u = FBL.user, me = myPid(), cn = esc(state.league.commissioner || 'the commissioner');
     if (!u) return `<div><h2>Me</h2></div><div class="empty">Sign in to see your page. <button class="btn" data-acct="1">Sign in</button></div>`;
     if (!me) return `<div><h2>Welcome!</h2><p class="sub">Pick which player you are. Each name can only be picked once.</p></div><div class="card"><select data-fb-me="1" aria-label="Which player are you?">${playerOpts('', 'Choose your name', null, true)}</select><p class="hint" style="margin:0">Name already taken by mistake? Ask ${cn} to free it up.</p></div>`;
+    if (!meEdit) return renderMyPage(me);
     const p = state.players.find(x => x.id === me) || {name: ''}, pf = LV.profiles[me] || {}, ct = LV.contacts[me] || {}, pr = p.prof || {}, T = todos();
     const dv = (id, v) => meDraft[id] !== undefined ? meDraft[id] : (v == null ? '' : v);
     const dc = (id, v) => meDraft[id] !== undefined ? !!meDraft[id] : !!v;
@@ -3352,6 +3373,7 @@ button.link::after,.rx-b::after,.wx-btn::after,.sheetx::after,.newsx::after,.a2x
         ${T.conf.map(x => `<div class="wrow"><span>${esc(pname(x.by))} reported: ${repLine(x)}</span><span><button class="btn sm" data-rconf="${x.id}">Confirm</button> <button class="link" data-rdisp="${x.id}">Dispute</button></span></div>`).join('')}
         ${T.chIn.map(c => `<div class="wrow"><span><b>${esc(pname(c.from))}</b> challenged you${c.when ? ' · ' + esc(c.when) : ''}${c.msg ? `<br><i class="hint">“${esc(c.msg)}”</i>` : ''}</span><span><button class="btn sm" data-chok="${c.id}">Accept</button> <button class="link" data-chno="${c.id}">Can't</button></span></div>`).join('')}
         </section>` : ''}
+      <button type="button" class="back" data-me-view="1">← My page</button>
       <div class="mehead">${avatar(me, 'lg')}<div><h2>${esc(p.name)}${p.nick ? ` <span class="nick">“${esc(p.nick)}”</span>` : ''}</h2><p class="sub">${r.mp ? `#${rank} · ${r.pts} pts · ${r.w}–${r.l}` : 'No counted matches yet'} · <button class="link" data-player="${me}">My public page</button></p></div></div>
       ${getStarted(me, p, pf, ct)}
       <div class="meacts"><button class="btn ghost" data-chal="">⚔️ Challenge someone</button></div>
