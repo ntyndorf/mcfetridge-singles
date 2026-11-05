@@ -1803,7 +1803,7 @@ button.link::after,.rx-b::after,.wx-btn::after,.sheetx::after,.newsx::after,.a2x
     });
     const aWon = sets.length === 1 ? sets[0][0] > sets[0][1] : sa === 2;
     const [x,y] = sets[0];
-    const close = sets.length === 3 || (sets.length === 1 && Math.abs(x-y) === 1 && [7,9,11].includes(Math.max(x,y))) || (sets.length === 1 && Math.max(x,y) >= 11 && Math.abs(x-y) <= 2);
+    const close = sets.length === 3 || (sets.length === 1 && Math.abs(x-y) === 1 && [7,9,11].includes(Math.max(x,y))) || (sets.length === 1 && Math.max(x,y) >= 10 && Math.abs(x-y) <= 2);
     const view = aWon ? sets : sets.map(([a,b]) => [b,a]);
     return aWon ? {w:m.a, l:m.b, wg:ga, lg:gb, close, ff:false, sets:view} : {w:m.b, l:m.a, wg:gb, lg:ga, close, ff:false, sets:view};
   }
@@ -2244,7 +2244,7 @@ button.link::after,.rx-b::after,.wx-btn::after,.sheetx::after,.newsx::after,.a2x
         <li><b>Out of time:</b> whoever is ahead wins. Tied? Play one deciding point.</li></ul>`],
       ['Scoring', `<ul>
         <li><b>Win</b> 3 · <b>close loss</b> 2 · <b>loss</b> 1 · <b>forfeit</b> 0.</li>
-        <li><b>Close loss</b> means a tiebreak, a 3rd set, or a 10-game pro set that goes past 10 (11-9, 12-10, 11-10).</li>
+        <li><b>Close loss</b> means a tiebreak, a 3rd set, or a 10-game pro set decided by 2 games or fewer (10-8, 11-9, 12-10, 11-10).</li>
         <li><b>+1</b> for beating someone at a higher level.</li>
         <li>Play as often as you like, but try to vary your opponents if you can.</li>
         <li>Ties go to win %, then head-to-head, then games won.</li></ul>`],
