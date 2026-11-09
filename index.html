@@ -1798,6 +1798,38 @@ main.panel h3{font:800 12px/1.3 var(--body)!important;letter-spacing:.13em!impor
 :root[data-skin="lakelight"] .homecard,:root[data-skin="lakelight"] .phero{background:linear-gradient(140deg,#E3EEF6,#FFFFFF 70%)!important;border:1px solid rgba(31,111,168,.3)!important}
 :root[data-skin="lakelight"] .srow.top3{background:linear-gradient(90deg,#E3EEF6,#fff 60%)}
 :root[data-skin="lakelight"] :is(.card,.srow,.logday,.homecard,.up,.pod){box-shadow:0 1px 2px rgba(11,27,43,.06),0 6px 16px -8px rgba(11,27,43,.18)}
+
+/* ================= a color for every tab ================= */
+:root{--c-me:#3FD8C2;--c-standings:#5CC2F2;--c-results:#B49BFF;--c-courts:#FFB04D;--c-rules:#FF8FB8;--c-admin:#A9BECD;--c-more:#A9BECD}
+:root[data-skin="lakelight"]{--c-me:#0E9483;--c-standings:#1F6FA8;--c-results:#6D4FD8;--c-courts:#B86200;--c-rules:#C2185B;--c-admin:#56697A;--c-more:#56697A}
+:root[data-tab="me"]{--tabc:var(--c-me)}:root[data-tab="standings"]{--tabc:var(--c-standings)}:root[data-tab="results"]{--tabc:var(--c-results)}
+:root[data-tab="courts"]{--tabc:var(--c-courts)}:root[data-tab="rules"]{--tabc:var(--c-rules)}:root[data-tab="admin"],:root[data-tab="more"]{--tabc:var(--c-admin)}
+:root:is([data-skin="lakefx"],[data-skin="lakelight"])[data-tab]{--link:var(--tabc)}
+/* the page picks up a soft glow of its tab's color */
+:root[data-skin="lakefx"][data-tab] body{background:radial-gradient(130% 55% at 50% 0%,color-mix(in srgb,var(--tabc) 17%,transparent),transparent 70%) no-repeat,#06101A}
+:root[data-skin="lakelight"][data-tab] body{background:radial-gradient(130% 55% at 50% 0%,color-mix(in srgb,var(--tabc) 12%,transparent),transparent 70%) no-repeat,#F6F2E7}
+/* the small header on other tabs takes the tab's color too */
+:root[data-skin][data-tab] header.board.slim[data-sky][data-wx]{--b1:color-mix(in srgb,var(--tabc) 38%,#0C2238);--b2:color-mix(in srgb,var(--tabc) 14%,#0A1C2E)}
+/* cards: a colored edge on top, banded headers, colored labels and numbers */
+:root[data-tab] main.panel :is(.card,.logday,.statline div,.rstats div,.pchart,.bookrem,.mybar,.since){border-top:2px solid color-mix(in srgb,var(--tabc) 70%,transparent)!important}
+:root[data-tab] .logday>header{background:color-mix(in srgb,var(--tabc) 18%,var(--surface2))}
+:root[data-tab] :is(.rstats,.statline) div{background:color-mix(in srgb,var(--tabc) 12%,var(--surface2))}
+:root[data-skin="lakefx"][data-tab] .srow.top3{background:linear-gradient(90deg,color-mix(in srgb,var(--tabc) 24%,var(--surface)),var(--surface) 62%)}
+:root[data-tab] .match.m-up{box-shadow:inset 3px 0 0 var(--tabc)}
+:root[data-tab] .pc-line{stroke:var(--tabc)}:root[data-tab] .pc-area{fill:color-mix(in srgb,var(--tabc) 18%,transparent)}
+/* tab bar: every icon wears its own color; the open tab lights up */
+.tab[data-tab="me"]{--tc:var(--c-me)}.tab[data-tab="standings"]{--tc:var(--c-standings)}.tab[data-tab="results"]{--tc:var(--c-results)}
+.tab[data-tab="upcoming"]{--tc:var(--c-courts)}.tab[data-tab="rules"]{--tc:var(--c-rules)}.tab[data-tab="admin"],.tab[data-more]{--tc:var(--c-admin)}
+.tab .ti{color:var(--tc,var(--muted));opacity:.62;transition:opacity .2s,transform .2s}
+.tab .ti{position:relative;z-index:0}
+.tab .ti::before{content:'';position:absolute;inset:-5px -12px;border-radius:99px;background:color-mix(in srgb,var(--tc,var(--muted)) 22%,transparent);opacity:0;transform:scale(.6);transition:opacity .2s,transform .2s;z-index:-1}
+:root:is([data-skin="lakefx"],[data-skin="lakelight"]) .tab[aria-selected="true"] .ti svg{stroke:var(--tc)}
+.tab[aria-selected="true"] .ti{opacity:1}.tab[aria-selected="true"] .ti::before{opacity:1;transform:none}
+.tab[aria-selected="true"]{color:var(--tc)!important;border-bottom-color:transparent!important}
+@media (min-width:641px){.tab[aria-selected="true"]{border-bottom-color:var(--tc)!important}}
+
+:root[data-skin="lakefx"][data-tab] .phero{background:linear-gradient(160deg,color-mix(in srgb,var(--tabc) 34%,#13293F),#13293F 75%)!important;border-color:color-mix(in srgb,var(--tabc) 40%,transparent)!important}
+:root[data-skin="lakelight"][data-tab] .phero{background:linear-gradient(140deg,color-mix(in srgb,var(--tabc) 14%,#fff),#fff 70%)!important;border-color:color-mix(in srgb,var(--tabc) 35%,transparent)!important}
 </style><link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Archivo+Black&amp;family=Yellowtail&amp;family=Instrument+Serif:ital@0;1&amp;display=swap"><div class="wrap" id="app"></div><script type="application/json" id="league-data">{"league":{"name":"McFetridge Winter Singles","season":"Winter 2026–27","venue":"McFetridge Sports Center","address":"3843 N California Ave","level":"3.0–3.5","startDate":"2026-11-01","endDate":"","tipUrl":"https://venmo.com/u/nicktyndorf","commissioner":"Nick","draft":false,"news":"","newsDate":"2026-10-09"},"players":[{"id":"5u76dri","name":"Nick T","level":"3.0","prof":{"plays":"Righty","bh":"Two-handed","shot":"Inside-out forehand","pro":"Daniil Medvedev"},"ph":1},{"id":"p5onhu0","name":"Spencer C","level":"3.25","ph":1},{"id":"wd1jmau","name":"Brendan O","level":"3.0","ph":1},{"id":"ata2iuw","name":"Tim S","level":"3.0","ph":1},{"id":"sxkx0ga","name":"Emmett F","level":"3.0","ph":1},{"id":"prz4fd6","name":"Mohammed F","level":"3.5","ph":1},{"id":"67cu010","name":"Vitaliy B","level":"3.25","ph":1},{"id":"vswai94","name":"Luke H","level":"3.25","ph":1},{"id":"dp9j7ls","name":"Spencer P","level":"3.25","ph":1},{"id":"cuwu10i","name":"Juan G","level":"3.0","ph":1},{"id":"mfuf932","name":"Zach K","level":"3.0","ph":1},{"id":"iivf8x7","name":"Alvaro R","level":"3.0","ph":1},{"id":"wg8fb4m","name":"John W","level":"3.25","ph":1},{"id":"iev0edc","name":"Nathan H","level":"3.0","ph":1},{"id":"tm2km4c","name":"Brian K","level":"3.0","ph":1},{"id":"uu82eoc","name":"Aidan V","level":"3.0","ph":1},{"id":"w5zwbyo","name":"Salem H","level":"3.25","ph":1},{"id":"m620f34","name":"Bill J","level":"3.25","ph":1},{"id":"zwb6fo9","name":"Peter R","level":"3.0","ph":1},{"id":"4xr256c","name":"Will C","level":"3.0","ph":1}],"matches":[],"updated":"2026-10-29T18:05:36.952Z","upcoming":[]}</script><script id="page-js">
 (function(){
   const SRC = (() => { const e = document.getElementById('league-data').textContent; try { const c = localStorage.getItem('le-state'); if (c) { const cu = (JSON.parse(c) || {}).updated || '', eu = (JSON.parse(e) || {}).updated || ''; if (cu > eu) return c; } } catch(_) {} return e; })();
@@ -3752,7 +3784,7 @@ main.panel h3{font:800 12px/1.3 var(--body)!important;letter-spacing:.13em!impor
     el.innerHTML = `${avatar(me)}<b>#${i + 1}</b><span>${r.pts} pts</span><span class="rb-rec">${r.w}–${r.l}</span><span class="rb-up" aria-hidden="true">↑</span>`;
     el.setAttribute('aria-label', `You're number ${i + 1} with ${r.pts} points. Back to top`);
     rbObs = new IntersectionObserver(([e]) => el.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.bottom < 0)); rbObs.observe(hc); }
-  const rbRender = render; render = function(){ rbRender(); ringCss(); };
+  const rbRender = render; render = function(){ rbRender(); ringCss(); document.documentElement.dataset.tab = ({player: 'standings', match: 'results', upcoming: 'courts'})[tab] || tab; };
   // motion: tab fade, rows glide to new ranks, points count up, a ball bounces across anything newly scored
   let swipeDir = '';
   let fxReady = false, fxTab = null, fxPts = {}, fxSeen = null; setTimeout(() => { fxReady = true; }, 3500);
